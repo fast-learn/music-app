@@ -1,0 +1,24 @@
+// @import './index.rn.scss';
+.swiper-pagination-bullet {
+  width: 20px !important;
+  height: 2px !important;
+  background: rgba(66, 80, 107, 0.5) !important;
+}
+.swiper-pagination-bullet-active {
+  background: rgba(222, 224, 230, 0.5) !important;
+}
+.swiper-slide .hydrated {
+  width: 100%;
+  height: 100%;
+}
+.banner {
+  width: 100%;
+  margin: 20px 0;
+  box-sizing: border-box;
+  padding: 0 20px;
+  .taro-swiper-0 {
+    border: 1px solid rgb(222, 222, 222);
+    border-radius: 30px;
+    overflow: hidden;
+  }
+}

@@ -1,0 +1,52 @@
+@import './index.rn.scss';
+
+.mentIcon,.seracrBae-video{
+    width: 60px;
+    line-height: 60px;
+    display: block;
+    font-size: 40px;
+    .hydrated{
+        width: 40px;
+        height:40px;
+        position: relative;
+        z-index: 20;
+    }
+
+}
+.mentIcon{
+    position: relative;
+    margin-right: 10px;
+    .message{
+        position: absolute;
+        top: 0;
+        right: 10px;
+        font-size: 18px;
+        width: 25px;
+        height: 25px;
+        border-radius: 25px;
+        z-index: 21;
+    }
+}
+.seracrBae-video{
+    font-size: 50px;
+    margin-left: 10px;
+}
+.searchInput{
+    .at-icon{
+        font-size: 30px;
+        margin: 0;
+    }
+    .weui-input{
+        font-size: 24px;
+        margin: 0;
+        border: 0;
+    }
+    .at-input{
+        padding: 0;
+        margin-left: 10px !important;
+    }
+    .at-input::after{
+        border: none;
+    }
+}
+
