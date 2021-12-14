@@ -1,0 +1,136 @@
+.homeSwiper{
+  background-color: #fff;
+  margin-top:20px;
+  padding: 0 20px;
+  .homeSwiper-top{
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding-top:20px;
+    align-items: center;
+    .homeSwiper-top-left{
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      .homeSwiper-top-left-img{
+        width: 40px;
+        height: 40px;
+        align-self: center;
+        margin-right: 10px;
+      }
+      .homeSwiper-top-left-content{
+        font-size: 40px;
+        line-height: 60px;
+        margin-right: 10px;
+      }
+    }
+    .homeSwiper-top-right{
+      display: flex;
+      flex-direction: row;
+      justify-content: start;
+      align-items: center;
+      border: 1px solid rgb(109, 108, 108);
+      border-radius: 40px;
+      padding: 0 10px;
+      .homeSwiper-top-right-img{
+        width: 40px;
+        height: 40px;
+        align-self: center;
+      }
+      .homeSwiper-top-right-content{
+        font-size: 30px;
+        line-height: 60px;
+      }
+    }
+  }
+  .homeSwiper-bottom{
+    margin-top: 20px;
+    width: 100%;
+    taro-swiper-core{
+      height: 400px;
+    }
+    .swiper-container{
+      padding-right: 50px;
+    }
+    .homeSwiper-buttom-swiper{
+      height: 120px;
+      margin-right:20px;
+      box-sizing: border-box;
+      margin-bottom:10px;
+      .homeSwiper-buttom-swipe-content{
+        display: flex;
+        margin-bottom: 10px;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        .homeSwiper-buttom-swipe-content-left{
+          width:100px;
+          position: relative;
+          .homeSwiper-buttom-swipe-content-left-image{
+            width:100px;
+            height:120px;
+          }
+          .homeSwiper-buttom-swipe-content-left-image-te{
+            position: absolute;
+            left: 0 ;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 40px;
+            height:40px;
+            margin: auto;
+            z-index: 10;
+          }
+        }
+        .homeSwiper-buttom-swipe-content-center{
+          border-bottom: 1px solid rgb(110, 109, 109);
+          margin-left: 20px;
+          display: flex;
+          flex: 1 ;
+          flex-direction: column;
+          justify-content: flex-end;
+          overflow: hidden;
+          .homeSwiper-buttom-swipe-content-center-top{
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            .homeSwiper-buttom-swipe-content-center-top-top{
+              font-size: 35px;
+              width: 200px;
+              max-width: 800px ;
+              min-width: 100px ;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow:ellipsis;
+              box-sizing: border-box;
+            }
+            .homeSwiper-buttom-swipe-content-center-top-bottom{
+              font-size: 20px;
+              line-height: 60px;
+              max-width: 500px;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow:ellipsis;
+              box-sizing: border-box;
+            }
+          }
+          .homeSwiper-buttom-swipe-content-center-bottom{
+            font-size: 30px;
+            max-width: 500px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow:ellipsis;
+            box-sizing: border-box;
+          }
+        }
+        .homeSwiper-buttom-swipe-content-right{
+          width: 40px;
+          height:40px;
+        }
+      }
+    }
+  }
+}
