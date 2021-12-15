@@ -35,7 +35,7 @@ export default class SearchBar extends  React.Component<SearchProps,IsndexState>
         <View className='mentIcon'>
           <View className='message'>{this.state.message}</View>
           {/* <AtIcon  value='menu'  color='f6f6f6' /> */}
-          <Image  src={MenuIng} />
+          <Image  className='mentIcon-image' src={MenuIng} />
         </View>
         {/* 搜索 */}
         <View className='searchInput' >
@@ -53,7 +53,7 @@ export default class SearchBar extends  React.Component<SearchProps,IsndexState>
         {/* <AtIcon  value='video'  color='f6f6f6' /> */}
           {/* <img src={img} alt='' />
           <img src={img2} alt='' /> */}
-          <Image  src={MicrophoneImg} />
+          <Image className='mentIcon-image'  src={MicrophoneImg} />
         </View>
       </View>
     );

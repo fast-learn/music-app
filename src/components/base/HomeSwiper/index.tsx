@@ -8,36 +8,36 @@ import { HomeSwiperProps } from './type'
 
 import "./index.scss";
 
-export interface SearchProps { }
-export interface SearchState {
-  musicList: any,
+export interface HomeSwiperState {
+  homeSwiperList: any,
   title: string
 }
 
 export default class HomeSwiper extends React.Component<
-  SearchProps,
-  SearchState
+HomeSwiperProps,
+HomeSwiperState
 > {
   constructor(props: HomeSwiperProps) {
     super(props);
     this.state = {
-      // eslint-disable-next-line react/no-unused-state
-      musicList: [],
+      homeSwiperList: [],
       title: props.title
     };
   }
   componentWillReceiveProps(nextProps) {
     function group(array, subGroupLength) {
       let index = 0;
-      let newArray = [];
-      while(index < array.length) {
-          newArray.push(array.slice(index, index += subGroupLength));
+      let newArray:any = [];
+      while (index < array.length) {
+        newArray.push(array.slice(index, index += subGroupLength));
       }
       return newArray;
-  }
-    this.setState({
-      musicList: group(nextProps.musicList,3)
-    })
+    }
+    if(nextProps.homeSwiperList && nextProps.homeSwiperList.length> 0){
+      this.setState({
+        homeSwiperList: group(nextProps.homeSwiperList, 3)
+      })
+    }
   }
   render() {
     return (
@@ -55,27 +55,30 @@ export default class HomeSwiper extends React.Component<
         <View className='homeSwiper-bottom'>
           <Swiper
             current={1}
+            className='swiper'
           >
-            {this.state.musicList ? this.state.musicList.map((item, index) =>
-              <SwiperItem key={index+1} className='homeSwiper-buttom-swiper' >
+            {this.state.homeSwiperList ? this.state.homeSwiperList.map((item, index) =>
+              <SwiperItem key={index + 1} className='homeSwiper-buttom-swiper' >
                 {item.map((item2) =>
-                  <View className='homeSwiper-buttom-swipe-content' key={item2.id ?item2.id :item2.creativeId}>
+                  <View className='homeSwiper-buttom-swipe-content' key={item2.id ? item2.id : item2.creativeId}>
                     <View className='homeSwiper-buttom-swipe-content-left'>
                       <Image className='homeSwiper-buttom-swipe-content-left-image-te' src={PlayLImg} />
-                      <Image className='homeSwiper-buttom-swipe-content-left-image' src={item2.picUrl?item2.picUrl:item2.uiElement.image.imageUrl} />
+                      <Image className='homeSwiper-buttom-swipe-content-left-image' src={item2.picUrl ? item2.picUrl : item2.uiElement.image.imageUrl} />
                     </View>
-                    <View className='homeSwiper-buttom-swipe-content-center'>
-                      <View className='homeSwiper-buttom-swipe-content-center-top'>
-                        <View className='homeSwiper-buttom-swipe-content-center-top-top'>{item2.name?item2.name :item2.uiElement.labelTexts[0]}</View>
-                        <View className='homeSwiper-buttom-swipe-content-center-top-bottom'>{item2.name ? '- '+ item2.name  : '-' + item2.uiElement.mainTitle.title }</View>
+                    <View className='border'>
+                      <View className='homeSwiper-buttom-swipe-content-center'>
+                        <View className='homeSwiper-buttom-swipe-content-center-top'>
+                          <View className='homeSwiper-buttom-swipe-content-center-top-top'>{item2.name ? item2.name : item2.uiElement.labelTexts[0]}</View>
+                          <View className='homeSwiper-buttom-swipe-content-center-top-bottom'>{item2.name ? '- ' + item2.name : '-' + item2.uiElement.mainTitle.title}</View>
+                        </View>
+                        <View className='homeSwiper-buttom-swipe-content-center-bottom'>{item2.name ? item2.name : item2.uiElement.mainTitle.title}</View>
                       </View>
-                      <View className='homeSwiper-buttom-swipe-content-center-bottom'>{item2.name ? item2.name  : item2.uiElement.mainTitle.title}</View>
+                      <Image className='homeSwiper-buttom-swipe-content-right' src={PlayRImg} />
                     </View>
-                    <Image className='homeSwiper-buttom-swipe-content-right' src={PlayRImg} />
                   </View>
                 )}
               </SwiperItem>
-            ): ''}
+            ) : ''}
           </Swiper>
 
 

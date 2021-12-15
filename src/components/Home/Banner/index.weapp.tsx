@@ -6,7 +6,8 @@ import "./index.scss";
 
 export interface SearchProps {}
 export interface SearchState {
-  bannerList: any;
+  bannerList: any,
+  currentIndex: number
 }
 
 export default class BannerRn extends React.Component<
@@ -18,6 +19,7 @@ export default class BannerRn extends React.Component<
     this.state = {
       // eslint-disable-next-line react/no-unused-state
       bannerList: [],
+      currentIndex: 0
     };
   }
   componentDidMount() {
@@ -35,17 +37,20 @@ export default class BannerRn extends React.Component<
       });
     });
   }
+  onChange(e){
+    this.setState({currentIndex:e.detail.current})
+  }
   render() {
     return (
       <View className='banner'>
         <Swiper
           indicatorColor='#999'
           indicatorActiveColor='#333'
-          // vertical='true'
-          // autoplay
-          // interval={3000}
+          autoplay
+          interval={3000}
           circular
-          indicatorDots
+          current={this.state.currentIndex}
+          onChange={this.onChange.bind(this)}
         >
           {this.state.bannerList.map((item) => (
             <SwiperItem key={item.imageUrl}>
@@ -53,6 +58,12 @@ export default class BannerRn extends React.Component<
             </SwiperItem>
           ))}
         </Swiper>
+          <View className='spot-pagination'>
+            {this.state.bannerList.map((item,index) => (
+              <View key={item.imageUrl} className={'spot-pagination-bullet ' + ((this.state.currentIndex === index)? 'spot-pagination-bullet-active': '')}>
+              </View>
+            ))}
+          </View>
       </View>
     );
   }

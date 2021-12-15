@@ -1,8 +1,8 @@
 import * as React from "react";
 import Taro from "@tarojs/taro";
-import { View, Image } from '@tarojs/components';
-import Carousel from "../../../../node_modules/@ant-design/react-native/lib/carousel";
-
+// import { Image} from '@tarojs/components';
+import {View,Image} from 'react-native'
+import  Carousel  from '../../../../node_modules/@ant-design/react-native/lib/carousel';
 import "./index.scss";
 import SearchImg from '../../../assert/images/cvy.png'
 
@@ -29,6 +29,9 @@ export default class BannerRn extends React.Component<SearchProps, IsndexState> 
       method: "GET",
       data,
     }).then((params) => {
+      params.data.banners.map((item) => {
+        item.newImageUrl = 'https' + item.imageUrl.split('http')[1]
+      })
       this.setState({
         // eslint-disable-next-line react/no-unused-state
         bannerList: params.data.banners,
@@ -38,15 +41,24 @@ export default class BannerRn extends React.Component<SearchProps, IsndexState> 
 
   render() {
     return (
-      <View className='banner'>
-        <Carousel autoplay  dots >
-        {/* <View className='te'> */}
-        <Image src={SearchImg} className='image' />
-        {/* </View>
-        <Text className='demo'>
-          222
-        </Text> */}
-      </Carousel>
+      <View className='banner' >
+        <Carousel
+          style={{ marginLeft:20,marginRight:20, height:150,flexGrow:1}}
+          infinite
+          autoplay
+          dotActiveStyle={{
+            background: 'rgba(222, 224, 230, 0.5)'
+          }}
+          dotStyle={{
+            width: 20,
+            height: 2,
+            background: 'rgba(66, 80, 107, 0.5)',
+          }}
+        >
+          {this.state.bannerList ? this.state.bannerList.map((item,index) => (
+            <Image className='banner-image' key={index+1} source={{uri: item.newImageUrl}} />
+          )) : ''}
+        </Carousel>
       </View>
     );
   }

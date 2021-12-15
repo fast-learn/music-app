@@ -8,8 +8,8 @@ import PlayImg from '../../../assert/img/play.png'
 import moreImg from '../../../assert/img/more.png'
 import huanImg from '../../../assert/img/huan.png'
 
-export interface RecommendedProps {}
-export interface RecommendedState {
+export interface homeCardProps {}
+export interface homeCardState {
   title: string,
   moreContent?: string,
   moreFlag?: boolean,
@@ -19,8 +19,8 @@ export interface RecommendedState {
 
 
 
-export default class Recommended extends React.Component<
-HomeCardProps,RecommendedState
+export default class homeCard extends React.Component<
+HomeCardProps,homeCardState
 >  {
   constructor(props:HomeCardProps){
     super(props)
@@ -42,34 +42,51 @@ HomeCardProps,RecommendedState
 
   render () {
     return (
-      <View className='recommended'>
-        <View className='recommended-top'>
-          <View className='recommended-top-left'>{this.state.title}</View>
+      <View className='homeCard'>
+        <View className='homeCard-top'>
+          <View className='homeCard-top-left'>{this.state.title}</View>
           {this.state.changeBatchFlag ?
-            <View className='recommended-top-right'>
-              <Image  className='recommended-top-right-image' src={huanImg} />
-              <View className='recommended-top-right-center'>{this.state.moreContent}</View>
+            <View className='homeCard-top-right'>
+              <Image  className='homeCard-top-right-image' src={huanImg} />
+              <View className='homeCard-top-right-center'>{this.state.moreContent}</View>
             </View>: ''}
             {this.state.moreFlag ?
-            <View className='recommended-top-right te'>
-              <View className='recommended-top-right-center'>{this.state.moreContent}</View>
-              <Image  className='recommended-top-right-image' src={moreImg} />
+            <View className='homeCard-top-right te'>
+              <View className='homeCard-top-right-center'>{this.state.moreContent}</View>
+              <Image  className='homeCard-top-right-image' src={moreImg} />
             </View>: ''}
           </View>
-        <View className='recommended-bottom'>
+          {/* 滚动条处理 */}
+          <View className='homeCard-scroll'>
+          <View className='homeCard-bottom'>
+        {
+        this.state.HomeCardList?  this.state.HomeCardList.map((item) =>
+          <View key={item.id ? item.id : item.creativeId} className='homeCard-bottom-category-center'>
+            <Image className='homeCard-bottom-category-center-image'  src={item.picUrl ? item.picUrl: (item.resources ? item.resources[0].uiElement.image.imageUrl: '')}  />
+            <View className='homeCard-bottom-category-center-play'>
+              <Image className='homeCard-bottom-category-center-play-image' src={PlayImg} />
+              <View className='homeCard-bottom-category-center-play-playCount'>{item.playCount? item.playCount: (item.resources? item.resources[0].resourceExtInfo.playCount: '')}</View>
+            </View>
+            <View className='homeCard-bottom-category-center-name'>{item.name ? item.name :  item.resources[0].uiElement.mainTitle.title}</View>
+          </View>
+          )
+        : ''}
+        </View>
+          </View>
+        {/* <View className='homeCard-bottom'>
         {
           this.state.HomeCardList.map((item) =>
-          <View key={item.id ? item.id : item.creativeId} className='category-center'>
-            <Image className='category-center-image'  src={item.picUrl ? item.picUrl: (item.resources ? item.resources[0].uiElement.image.imageUrl: '')}  />
-            <View className='category-center-play'>
-              <Image className='category-center-play-image' src={PlayImg} />
-              <View className='category-center-play-playCount'>{item.playCount? item.playCount: (item.resources? item.resources[0].resourceExtInfo.playCount: '')}</View>
+          <View key={item.id ? item.id : item.creativeId} className='homeCard-bottom-category-center'>
+            <Image className='homeCard-bottom-category-center-image'  src={item.picUrl ? item.picUrl: (item.resources ? item.resources[0].uiElement.image.imageUrl: '')}  />
+            <View className='homeCard-bottom-category-center-play'>
+              <Image className='homeCard-bottom-category-center-play-image' src={PlayImg} />
+              <View className='homeCard-bottom-category-center-play-playCount'>{item.playCount? item.playCount: (item.resources? item.resources[0].resourceExtInfo.playCount: '')}</View>
             </View>
-            <View className='category-center-name'>{item.name ? item.name :  item.resources[0].uiElement.mainTitle.title}</View>
+            <View className='homeCard-bottom-category-center-name'>{item.name ? item.name :  item.resources[0].uiElement.mainTitle.title}</View>
           </View>
           )
         }
-        </View>
+        </View> */}
       </View>
     )
   }

@@ -1,6 +1,6 @@
 import React from 'react'
 import Taro from '@tarojs/taro'
-import { View} from '@tarojs/components'
+import { View} from 'react-native'
 import HomeCard from '@/components/base/HomeCard'
 import './index.scss'
 
