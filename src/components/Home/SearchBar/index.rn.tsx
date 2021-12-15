@@ -1,13 +1,9 @@
 import React from 'react'
 import { View, Image, Text } from '@tarojs/components';
 // import  Icon from '@ant-design/react-native/lib/icon';
-
-// import  Input from '@ant-design/react-native/lib/input-item';
-// import '@ant-design/icons-react-native/fonts/antfill.ttf'
-// import '@ant-design/icons-react-native/fonts/antoutline.ttf'
-import SearchImg from '../../../assert/images/cvy.png'
-import MenuImg from '../../../assert/images/dof.png'
-import MicrophoneImg from '../../../assert/images/c402.png'
+import SearchImg from '@/img/cvy.png'
+import MenuImg from '@/img/dof.png'
+import MicrophoneImg from '@/img/c402.png'
 
 // dof
 import './index.scss'

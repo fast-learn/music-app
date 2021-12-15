@@ -1,7 +1,7 @@
 import React from 'react'
 import Taro from '@tarojs/taro'
 import { View} from '@tarojs/components'
-import HomeSwiper from '../../base/HomeSwiper'
+import HomeSwiper from '@/components/base/HomeSwiper'
 
 
 import './index.scss'
@@ -39,7 +39,7 @@ export default class NewMusic extends React.Component<NewMusicProps,NewMusicStat
       <View className='newMusic'>
         <HomeSwiper
           title='听过最爱的华语音乐'
-          musicList={this.state.musicList}
+          homeSwiperList={this.state.musicList}
         />
       </View>
     )

@@ -1,3 +1,6 @@
+// eslint-disable-next-line import/no-commonjs
+const path = require('path')
+
 const config = {
   projectName: 'taro-demo4',
   date: '2021-12-10',
@@ -41,6 +44,12 @@ const config = {
         }
       }
     }
+  },
+  alias: {
+    "@/src": path.resolve(__dirname, '..', "src"),
+    "@/components": path.resolve(__dirname, '..', "src/components"),
+    "@/img": path.resolve(__dirname, '..', "src/assert/img"),
+    "@/images": path.resolve(__dirname, '..', "src/assert/images"),
   },
   h5: {
     publicPath: '/',

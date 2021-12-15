@@ -1,5 +1,6 @@
 import { Component } from 'react'
-import { View, Image} from '@tarojs/components'
+// import { View, Image} from '@tarojs/components'
+import { View, Image } from 'react-native'
 import './index.scss'
 import Mimg from '@/img/m.png'
 import Simg from '@/img/s.png'
@@ -28,7 +29,7 @@ export default class Category extends Component {
           {
             categoryList.map((item) =>
             <View key={item.id} className='category-center'>
-              <Image className='image'  src={item.imageUrl} />
+              <Image className='image'  source={item.imageUrl} />
             </View>
             )
           }
