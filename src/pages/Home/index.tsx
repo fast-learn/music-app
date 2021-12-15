@@ -1,5 +1,5 @@
 import React from 'react'
-import { View } from '@tarojs/components'
+import {View} from '@tarojs/components'
 import Taro from '@tarojs/taro';
 
 import Search from '@/components/Home/SearchBar'
@@ -21,20 +21,21 @@ export interface IndexProps {
 export interface IndexState {
   homeList: any;
 }
-export default class Index extends React.Component<IndexProps,IndexState> {
 
-  constructor(props:IndexProps){
+export default class Index extends React.Component<IndexProps, IndexState> {
+
+  constructor(props: IndexProps) {
     super(props)
-    this.state={
+    this.state = {
       // eslint-disable-next-line react/no-unused-state
-      homeList:''
+      homeList: ''
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     Taro.request({
-      url:'https://fast-learn.youbaobao.xyz:8001/homepage/block/page',
-      method:'GET'
+      url: 'https://fast-learn.youbaobao.xyz:8001/homepage/block/page',
+      method: 'GET'
     }).then((params) => {
       this.setState({
         // eslint-disable-next-line react/no-unused-state
@@ -42,9 +43,10 @@ export default class Index extends React.Component<IndexProps,IndexState> {
       })
     })
   }
-  render () {
+
+  render() {
     return (
-      <View className='index'>
+      <View className="index">
         {/* 搜索栏 */}
         <Search />
         {/* banner 图 */}
@@ -56,7 +58,7 @@ export default class Index extends React.Component<IndexProps,IndexState> {
         {/* 清雅古风--> 替换为推荐新歌 */}
         {/* <NewMusic /> */}
         {/* 精选音乐视频 */}
-          {/* <RecommendVideo /> */}
+        {/* <RecommendVideo /> */}
         {/* 雷达歌单 */}
         {/* <Radar
           radarList={this.state.homeList ? this.state.homeList[6].creatives: []}

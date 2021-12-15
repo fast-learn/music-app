@@ -6,7 +6,6 @@ import { ComponentOptions } from "@tarojs/taro";
 import  '@ant-design/icons-react-native/fonts/antfill.ttf'
 import  '@ant-design/icons-react-native/fonts/antoutline.ttf'
 
-
 import "./index.scss";
 
 import { TaroSearchProps } from "./type";
@@ -19,10 +18,10 @@ const TaroModal: FunctionComponent<TaroSearchProps> & {
 
   return (
     <SearchBar
-      placeholder='大家都在搜 护花使者'
+      placeholder="大家都在搜 护花使者"
       onSearch={onSearch}
       enterButton
-    > </SearchBar>
+    />
   );
 };
 
