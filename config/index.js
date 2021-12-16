@@ -49,8 +49,8 @@ const config = {
     "@/src": path.resolve(__dirname, '..', "src"),
     "@/components": path.resolve(__dirname, '..', "src/components"),
     "@/pages": path.resolve(__dirname, '..', "src/pages"),
-    "@/img": path.resolve(__dirname, '..', "src/assert/img"),
-    "@/images": path.resolve(__dirname, '..', "src/assert/images"),
+    "@/img": path.resolve(__dirname, '..', "src/asserts/img"),
+    "@/images": path.resolve(__dirname, '..', "src/asserts/images"),
   },
   h5: {
     publicPath: '/',

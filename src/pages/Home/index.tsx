@@ -1,47 +1,45 @@
-import React from 'react'
-import {View} from '@tarojs/components'
+import React from'react';
+import { View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 
-import Search from '@/components/Home/SearchBar'
-import Banner from '@/components/Home/Banner'
-import Category from '@/components/Home/Category'
-import Recommended from '@/components/Home/Recommended'
-// import RecommendVideo from '@/components/Home/RecommendVideo'
-// import NewMusic from '@/components/Home/NewMusic'
-// import Radar from '@/components/Home/Radar'
-// import PopularBlog from '@/components/Home/PopularBlog'
-// import Exclusivec from '@/components/Home/Exclusivec'
-// import VideoCollection from '@/components/Home/VideoCollection'
+import Search from '@/pages/Home/components/SearchBar';
+import Banner from '@/pages/Home/components/Banner';
+import Category from '@/pages/Home/components/Category';
+import Recommended from '@/pages/Home/components/Recommended';
+// import RecommendVideo from '@/pages/Home/components/RecommendVideo'
+// import NewMusic from '@/pages/Home/components/NewMusic'
+// import Radar from '@/pages/Home/components/Radar'
+// import PopularBlog from '@/pages/Home/components/PopularBlog'
+// import Exclusivec from '@/pages/Home/components/Exclusivec'
+// import VideoCollection from '@/pages/Home/components/VideoCollection'
 
-import './index.scss'
+import './index.scss';
 
-export interface IndexProps {
-}
+export interface IndexProps {}
 
 export interface IndexState {
   homeList: any;
 }
 
 export default class Index extends React.Component<IndexProps, IndexState> {
-
   constructor(props: IndexProps) {
-    super(props)
+    super(props);
     this.state = {
       // eslint-disable-next-line react/no-unused-state
       homeList: ''
-    }
+    };
   }
 
   componentDidMount() {
     Taro.request({
       url: 'https://fast-learn.youbaobao.xyz:8001/homepage/block/page',
-      method: 'GET'
+      method: 'GET',
     }).then((params) => {
       this.setState({
         // eslint-disable-next-line react/no-unused-state
-        homeList: params.data.data.blocks
-      })
-    })
+        homeList: params.data.data.blocks,
+      });
+    });
   }
 
   render() {
@@ -76,6 +74,6 @@ export default class Index extends React.Component<IndexProps, IndexState> {
           videoCollectionList={this.state.homeList ? this.state.homeList[10].creatives: []}
         /> */}
       </View>
-    )
+    );
   }
 }
