@@ -13,7 +13,7 @@
   background-color: rgb(238, 238, 238);
   padding: 0 20px;
   box-sizing: border-box;
-  &__active {
+  &--active {
     background-color: #fff;
   }
   &__cancel-text {
@@ -22,12 +22,12 @@
     margin-left: 18px;
   }
   &__input {
-    &__active {
+    &--active {
       background-color: #eee;
       justify-content: flex-start!important;
       padding-left: 24px;
       box-sizing: border-box;
-      .at-input__input {
+      & .at-input__input {
         background-color: #eee;
         input::-webkit-input-placeholder{
           color: #ccc;

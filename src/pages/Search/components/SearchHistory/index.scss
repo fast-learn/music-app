@@ -14,8 +14,11 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: flex-start;
     margin-left: 20px;
     flex: 1;
+    max-width: 80%;
+    overflow: hidden;
     &__text {
       margin: 0 10px;
       background: #eee;

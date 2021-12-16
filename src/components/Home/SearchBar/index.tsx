@@ -1,10 +1,10 @@
-import * as React from "react";
-import {View, Image, Text} from '@tarojs/components';
+import * as React from 'react';
+import { View, Image, Text } from '@tarojs/components';
 import { AtInput, AtIcon } from 'taro-ui';
 
-import MenuIng from '@/img/menu.png'
-import MicrophoneImg from '@/img/microphone.png'
-import "./index.scss";
+import MenuIng from '@/img/menu.png';
+import MicrophoneImg from '@/img/microphone.png';
+import './index.scss';
 
 export interface SearchProps {
   status: string, // 搜索框状态：normal-正常，active-可交互
@@ -17,22 +17,22 @@ export interface IsndexState {
 
 export default class SearchBar extends React.Component<SearchProps, IsndexState> {
   constructor(props: SearchProps) {
-    super(props)
+    super(props);
     this.state = {
       value: '',
       message: 1,
-    }
+    };
   }
 
   handleChange(value) {
     this.setState({
-      value
-    })
-    return value
+      value,
+    });
+    return value;
   }
 
   render() {
-    const {status} = this.props;
+    const { status } = this.props;
     return status === 'normal' ? (
       <View className="search">
         {/* 菜单 */}
@@ -61,8 +61,8 @@ export default class SearchBar extends React.Component<SearchProps, IsndexState>
         </View>
       </View>
     ) : (
-      <View className="search search__active">
-        <View className="searchInput search__input__active">
+      <View className="search search--active">
+        <View className="searchInput search__input--active">
           <AtIcon value="search" color="#aaa" />
           <AtInput
             name="value"

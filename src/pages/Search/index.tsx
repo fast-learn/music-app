@@ -7,7 +7,7 @@ export default function Index() {
   return (
     <View className="search-page">
       <SearchBar status="active" />
-      <SearchHistory data={['特别的人', '给你给我', '位置']} />
+      <SearchHistory />
     </View>
   );
 }
