@@ -1,34 +1,35 @@
 import * as React from 'react';
 import Taro from '@tarojs/taro';
-import { View,Image, Swiper, SwiperItem } from '@tarojs/components';
+import { View, Image, Swiper, SwiperItem } from '@tarojs/components';
 
 import './index.scss';
 
-export interface SearchProps {}
+export interface SearchProps {
+}
+
 export interface SearchState {
   bannerList: any,
   currentIndex: number
 }
 
-export default class BannerRn extends React.Component<
-  SearchProps,
-  SearchState
-> {
+export default class BannerRn extends React.Component<SearchProps,
+  SearchState> {
   constructor(props: SearchProps) {
     super(props);
     this.state = {
       // eslint-disable-next-line react/no-unused-state
       bannerList: [],
-      currentIndex: 0
+      currentIndex: 0,
     };
   }
+
   componentDidMount() {
     const data = {
       type: 0,
     };
     Taro.request({
-      url: "https://fast-learn.youbaobao.xyz:8001/banner?type=0",
-      method: "GET",
+      url: 'https://fast-learn.youbaobao.xyz:8001/banner?type=0',
+      method: 'GET',
       data,
     }).then((params) => {
       this.setState({
@@ -37,9 +38,11 @@ export default class BannerRn extends React.Component<
       });
     });
   }
-  onChange = (e) =>{
-    this.setState({currentIndex:e.detail.current})
-  }
+
+  onChange = (e) => {
+    this.setState({ currentIndex: e.detail.current });
+  };
+
   render() {
     return (
       <View className="banner">
@@ -54,16 +57,18 @@ export default class BannerRn extends React.Component<
         >
           {this.state.bannerList.map((item) => (
             <SwiperItem key={item.imageUrl}>
-              <Image  className="banner--image" src={item.imageUrl} />
+              <Image className="banner--image" src={item.imageUrl} />
             </SwiperItem>
           ))}
         </Swiper>
-          <View className="spot-pagination">
-            {this.state.bannerList.map((item,index) => (
-              <View key={item.imageUrl} className={'spot-pagination-bullet ' + ((this.state.currentIndex === index)? 'spot-pagination-bullet-active': '')}>
-              </View>
-            ))}
-          </View>
+        <View className="spot-pagination">
+          {this.state.bannerList.map((item, index) => (
+            <View key={item.imageUrl}
+                  className={'spot-pagination-bullet ' + ((this.state.currentIndex === index) ? 'spot-pagination-bullet-active' : '')}
+            >
+            </View>
+          ))}
+        </View>
       </View>
     );
   }

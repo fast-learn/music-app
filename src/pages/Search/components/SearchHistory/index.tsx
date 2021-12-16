@@ -4,7 +4,7 @@ import useSearchHistory from '@/pages/Search/components/SearchHistory/useSearchH
 
 import './index.scss';
 
-export default function Index() {
+export default function SearchHistory() {
   const { data, clear } = useSearchHistory();
 
   return data.length > 0 && (
@@ -13,7 +13,7 @@ export default function Index() {
       <View className="search-history__tag">
         {
           data.map(text => (
-            <View className="search-history__tag__text">{text}</View>
+            <View className="search-history__tag__text" key={text}>{text}</View>
           ))
         }
       </View>
