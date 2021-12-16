@@ -1,108 +1,107 @@
-.homeCard {
+.home-card {
   background-color: #fff;
   padding: 30px;
+  &__top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 60px;
+    align-items: center;
+    &--left{
+      font-size: 40px;
+      line-height: 60px;
+    }
+    &--right{
+      height: 60px;
+      border: 1px solid rgb(139, 137, 137);
+      border-radius: 30px;
+      text-align: center;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 0 15px;
+      width: 150px;
+      &--image {
+        width: 40px;
+        height: 40px;
+        margin-top: -5px;
+      }
+      &--center {
+        font-size: 30px;
+        line-height: 40px;
+        text-align: center;
+        margin-right: -10px;
+        margin-left: 10px;
+      }
+    }
+    &--te{
+      width: 100px !important;
+    }
+  }
+  &__bottom{
+    height: 305px;
+    box-sizing: border-box;
+    overflow: hidden;
+    &__scroll{
+      height: 300px;
+      display: flex;
+      margin-top: 20px;
+      flex-direction: row;
+      justify-content: flex-start;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      &--center{
+        margin-right: 40px;
+        padding-top: 10px;
+        position: relative;
+        &--image{
+          width: 200px;
+          height: 200px;
+          box-shadow: 2px -10px 2px 0 rgb(114, 113, 113);
+          border: 1px solid #fff;
+          border-radius: 20px;
+          box-sizing: border-box;
+        }
+        &--play {
+          position: absolute;
+          right: 10px;
+          top: 20px;
+          display: flex;
+          flex-direction: row;
+          border: 1px solid rgb(198, 205, 226);
+          border-radius: 20px;
+          background-color: rgba(198, 205, 226, .4);
+          padding: 0 5px;
+          align-items: center;
+          height: 40px;
+          box-sizing: border-box;
+          &--image {
+            width: 30px;
+            height: 30px;
+          }
+          &--playCount {
+            margin-left: 5px;
+            font-size: 20px;
+            color: #fff;
+            font-size: 10px;
+          }
+        }
+        &--name{
+          font-size: 20px;
+          width: 200px;
+          height: 60px;
+          line-height: 30px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+        }
+      }
+      &--center:last-child{
+        margin-right: 0 !important;
+      }
+    }
+  }
 }
-.homeCard-top {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  height: 60px;
-  align-items: center;
-}
-.homeCard-top-left {
-  font-size: 40px;
-  line-height: 60px;
 
-}
-.homeCard-top-right {
-  height: 60px;
-  border: 1px solid rgb(139, 137, 137);
-  border-radius: 30px;
-  text-align: center;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 0 15px;
-  width: 150px;
-}
-.homeCard-top-right-center {
-  font-size: 30px;
-  line-height: 40px;
-  text-align: center;
-  margin-right: -10px;
-  margin-left: 10px;
-}
-.homeCard-top-right-image {
-  width: 40px;
-  height: 40px;
-  margin-top: -5px;
-}
-.te{
-  width: 100px !important;
-}
-.homeCard-bottom {
-  height: 300px;
-  display: flex;
-  margin-top: 20px;
-  flex-direction: row;
-  justify-content: flex-start;
-  overflow-x: scroll;
-  overflow-y: hidden;
-}
-.homeCard-bottom-category-center {
-  margin-right: 40px;
-  padding-top: 10px;
-  position: relative;
-}
-.homeCard-bottom-category-center-image {
-  width: 200px;
-  height: 200px;
-  box-shadow: 2px -10px 2px 0 rgb(114, 113, 113);
-  border: 1px solid #fff;
-  border-radius: 20px;
-  box-sizing: border-box;
-}
-.homeCard-bottom-category-center-play {
-  position: absolute;
-  right: 10px;
-  top: 20px;
-  display: flex;
-  flex-direction: row;
-  border: 1px solid rgb(198, 205, 226);
-  border-radius: 20px;
-  background-color: rgba(198, 205, 226, .4);
-  padding: 0 5px;
-  align-items: center;
-  height: 40px;
-  box-sizing: border-box;
-}
-.homeCard-bottom-category-center-play-image {
-  width: 30px;
-  height: 30px;
-}
-.homeCard-bottom-category-center-play-playCount {
-  margin-left: 5px;
-  font-size: 20px;
-  color: #fff;
-  font-size: 10px;
-}
-.homeCard-bottom-category-center-name {
-  font-size: 20px;
-  width: 200px;
-  height: 60px;
-  line-height: 30px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-.homeCard-bottom-category-center:last-child{
-  margin-right: 0 !important;
-}
-// 滚动条样式
-.homeCard-scroll{
-  height: 305px;
-  box-sizing: border-box;
-  overflow: hidden;
-}

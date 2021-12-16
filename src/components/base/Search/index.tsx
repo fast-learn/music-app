@@ -1,16 +1,16 @@
 import * as React from "react";
 import { View } from "@tarojs/components";
-import { AtInput, AtIcon } from 'taro-ui'
+import { AtInput, AtIcon } from 'taro-ui';
 
 import "./index.scss";
 
 export interface SearchProps{}
-export interface IsndexState{
+export interface SearchState{
   value: string
 }
 
 
-export default class Index extends  React.Component<SearchProps,IsndexState>  {
+export default class Index extends  React.Component<SearchProps,SearchState>  {
   constructor(props:SearchProps) {
     super(props)
     this.state = {
@@ -18,7 +18,7 @@ export default class Index extends  React.Component<SearchProps,IsndexState>  {
     }
   }
 
-  handleChange (value) {
+  handleChange =(value)=> {
     this.setState({
       value
     })
@@ -26,14 +26,14 @@ export default class Index extends  React.Component<SearchProps,IsndexState>  {
   };
   render() {
     return (
-      <View className='search'>
-        <AtIcon  value='search' size='10' color='f6f6f6' />
+      <View className="search">
+        <AtIcon  value="search" size="10" color="#f6f6f6" />
         <AtInput
-          name='value'
-          type='text'
-          placeholder='大家都在搜 护花使者'
+          name="value"
+          type="text"
+          placeholder="大家都在搜 护花使者"
           value={this.state.value}
-          onChange={this.handleChange.bind(this)}
+          onChange={this.handleChange}
         />
       </View>
     );

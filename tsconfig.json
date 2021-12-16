@@ -29,10 +29,13 @@
         "src/"
       ],
       "@/img": [
-        "src/assert/img/"
+        "src/asserts/img/"
       ],
       "@/images": [
-        "src/assert/images/"
+        "src/asserts/images/"
+      ],
+      "@/pages": [
+        "src/pages/"
       ],
     },
   },

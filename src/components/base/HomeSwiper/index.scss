@@ -1,9 +1,9 @@
 @import './indes.rn.scss';
-.homeSwiper{
+.home-swiper{
   background-color: #fff;
   margin-top:20px;
   padding: 0 20px;
-  .homeSwiper-top{
+  &__top{
     height: 60px;
     display: flex;
     flex-direction: row;
@@ -11,91 +11,79 @@
     width: 100%;
     padding-top:20px;
     align-items: center;
-    .homeSwiper-top-left{
+    &--left{
       display: flex;
       flex-direction: row;
       justify-content: flex-start;
-      .homeSwiper-top-left-img{
+      &--img{
         width: 40px;
         height: 40px;
         align-self: center;
         margin-right: 10px;
       }
-      .homeSwiper-top-left-content{
+      &--content{
         font-size: 40px;
         line-height: 60px;
         margin-right: 10px;
       }
     }
-    .homeSwiper-top-right{
+    &--right{
       display: flex;
       flex-direction: row;
-      justify-content: start;
+      // justify-content: start;
       align-items: center;
       border: 1px solid rgb(109, 108, 108);
       border-radius: 40px;
       padding: 0 15px;
-      .homeSwiper-top-right-img{
+      &--img{
         width: 40px;
         height: 40px;
         align-self: center;
       }
-      .homeSwiper-top-right-content{
+      &--content{
         font-size: 30px;
         line-height: 60px;
       }
     }
   }
-  .homeSwiper-bottom{
+  &__bottom{
     margin-top: 20px;
     width: 100%;
-    taro-swiper-core{
-      height: 410px;
-      padding-bottom: 10px;
-    }
-    swiper{
-      height: 410px;
-      padding-bottom: 20px;
-      .homeSwiper-buttom-swiper{
-        width: 96% !important;
-      }
-    }
-    .swiper-container{
-      width: 96%
-    }
-    .homeSwiper-buttom-swiper{
+    height: 430px;
+    &__swiper{
       height: 120px;
       padding-right:30px;
       box-sizing: border-box;
       margin-bottom:10px;
-      .homeSwiper-buttom-swipe-content{
+      &--content{
         display: flex;
         margin-bottom: 10px;
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
-        .homeSwiper-buttom-swipe-content-left{
-          width:100px;
+        width: 100%;
+        &--left{
+          width:100px !important;
           position: relative;
-          .homeSwiper-buttom-swipe-content-left-image{
-            width:100px;
-            height:120px;
+          &--image{
+            width:100px !important;
+            height:120px !important;
             border: 1px solid #fff;
             border-radius: 20px;
           }
-          .homeSwiper-buttom-swipe-content-left-image-te{
+          &--image-te{
             position: absolute;
             left: 0 ;
             right: 0;
             top: 0;
             bottom: 0;
-            width: 40px;
-            height:40px;
+            width: 40px !important;
+            height:40px !important;
             margin: auto;
             z-index: 10;
           }
         }
-        .border{
+        &--border{
           flex:1;
           border-bottom: 1px solid rgb(110, 109, 109);
           margin-left: 20px;
@@ -104,19 +92,19 @@
           align-items: center;
           justify-content: space-between;
           overflow: hidden;
-          .homeSwiper-buttom-swipe-content-center{
+          &--center{
             margin-left: 20px;
             display: flex;
             flex: 1 ;
             flex-direction: column;
             justify-content: flex-end;
             overflow: hidden;
-            .homeSwiper-buttom-swipe-content-center-top{
+            &--top{
               display: flex;
               flex-direction: row;
               justify-content: flex-start;
               align-items: center;
-              .homeSwiper-buttom-swipe-content-center-top-top{
+              &--top{
                 font-size: 35px;
                 width: 200px;
                 max-width: 800px ;
@@ -126,7 +114,7 @@
                 text-overflow:ellipsis;
                 box-sizing: border-box;
               }
-              .homeSwiper-buttom-swipe-content-center-top-bottom{
+              &--bottom{
                 font-size: 20px;
                 line-height: 60px;
                 max-width: 500px;
@@ -136,7 +124,7 @@
                 box-sizing: border-box;
               }
             }
-            .homeSwiper-buttom-swipe-content-center-bottom{
+            &--bottom{
               font-size: 30px;
               max-width: 500px;
               overflow: hidden;
@@ -145,13 +133,27 @@
               box-sizing: border-box;
             }
           }
-          .homeSwiper-buttom-swipe-content-right{
-            width: 40px;
-            height:40px;
-            margin-right: 10px;
-          }
+        }
+        &--right{
+          width: 40px !important;
+          height:40px !important;
+          margin-right: 10px;
         }
       }
     }
+    &__swiper{
+      width: 96% !important;
+    }
+    .swiper-container{
+      width: 96%
+    }
   }
+}
+taro-swiper-core{
+  height: 100% !important;
+  padding-bottom: 10px;
+}
+swiper{
+  height: 100%;
+  padding-bottom: 20px;
 }
