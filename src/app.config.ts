@@ -1,6 +1,7 @@
 export default {
   pages: [
     'pages/Home2/index',
+    'pages/Player/index',
     'pages/Home/index',
     'pages/Search/index',
   ],

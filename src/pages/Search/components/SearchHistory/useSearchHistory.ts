@@ -14,7 +14,7 @@ export default function useSearchHistory() {
   function put(v) {
     const _data = [...data];
     _data.push(v);
-    console.log(_data);
+    // console.log(_data);
     setData(_data);
   }
 
