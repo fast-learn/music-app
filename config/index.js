@@ -2,7 +2,7 @@
 const path = require('path')
 
 const config = {
-  projectName: 'taro-demo4',
+  projectName: 'music-app',
   date: '2021-12-10',
   designWidth: 750,
   deviceRatio: {
