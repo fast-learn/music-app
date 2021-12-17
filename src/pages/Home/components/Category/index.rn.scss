@@ -1,7 +1,6 @@
 .category {
   height: 150px;
   overflow: hidden;
-  // box-sizing: border-box;
   border: 1px solid rgb(214, 214, 214);
   border-top: none;
   border-left: none;
@@ -33,6 +32,11 @@
       }
     }
   }
+}
+.category-rn{
+  margin-top: 20px;
+  padding: 20px;
+  height: 120px;
 }
 
 

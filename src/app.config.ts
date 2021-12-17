@@ -1,5 +1,6 @@
 export default {
   pages: [
+    'pages/Player/index',
     'pages/Home/index',
     'pages/Search/index'
   ],
@@ -8,5 +9,5 @@ export default {
     navigationBarBackgroundColor: '#fff',
     navigationBarTitleText: 'WeChat',
     navigationBarTextStyle: 'black'
-  }
+  },
 }
