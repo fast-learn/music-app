@@ -7,7 +7,7 @@ import Banner from '@/pages/Home/components/Banner';
 import Category from '@/pages/Home/components/Category';
 import Recommended from '@/pages/Home/components/Recommended';
 // import RecommendVideo from '@/pages/Home/components/RecommendVideo'
-// import NewMusic from '@/pages/Home/components/NewMusic'
+import NewMusic from '@/pages/Home/components/NewMusic'
 // import Radar from '@/pages/Home/components/Radar'
 // import PopularBlog from '@/pages/Home/components/PopularBlog'
 // import Exclusivec from '@/pages/Home/components/Exclusivec'
@@ -54,7 +54,7 @@ export default class Index extends React.Component<IndexProps, IndexState> {
         {/* 推荐歌单 */}
         <Recommended />
         {/* 清雅古风--> 替换为推荐新歌 */}
-        {/* <NewMusic /> */}
+        <NewMusic />
         {/* 精选音乐视频 */}
         {/* <RecommendVideo /> */}
         {/* 雷达歌单 */}

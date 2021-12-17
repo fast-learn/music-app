@@ -1,10 +1,12 @@
 @import './indes.rn.scss';
+
 .home-swiper{
   background-color: #fff;
   margin-top:20px;
   padding: 0 20px;
   &__top{
-    height: 60px;
+    // height: 60px;
+    height: 80px; // rn
     display: flex;
     flex-direction: row;
     justify-content: space-between;
