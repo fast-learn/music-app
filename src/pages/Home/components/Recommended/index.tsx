@@ -1,21 +1,16 @@
 import React from 'react';
 import Taro from '@tarojs/taro';
 import { View} from '@tarojs/components';
-import HomeCard from '@/components/base/HomeCard';
+import HomeCard from '@/components/Base/HomeCard';
 
 import './index.scss';
-
 
 export interface RecommendedProps {}
 export interface RecommendedState {
   homeCardList: any;
 }
 
-
-export default class Recommended extends React.Component<
-RecommendedProps,
-RecommendedState
->  {
+export default class Recommended extends React.Component<RecommendedProps, RecommendedState>  {
   constructor(props:RecommendedProps){
     super(props)
     this.state = {
