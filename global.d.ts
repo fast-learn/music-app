@@ -17,3 +17,8 @@ declare namespace NodeJS {
     TARO_ENV: 'weapp' | 'swan' | 'alipay' | 'h5' | 'rn' | 'tt' | 'quickapp' | 'qq' | 'jd'
   }
 }
+
+declare const IS_RN: any;
+declare const IS_H5: any;
+declare const IS_WEAPP: any;
+

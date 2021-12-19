@@ -1,6 +1,3 @@
-import * as React from 'react';
-import Taro from '@tarojs/taro';
-// import { Image} from '@tarojs/components';
 import { View, Image } from 'react-native';
 import Carousel from '../../../../node_modules/@ant-design/react-native/lib/carousel';
 import useBannerList from './useBannerList';
@@ -29,7 +26,7 @@ export default function Banner() {
           background: 'rgba(66, 80, 107, 0.5)',
         }}
       >
-        {bannerList.map((item, index) => (
+        {bannerList.map((item: any, index) => (
           <Image className="banner--image" key={index + 1} source={{ uri: item.newImageUrl }} />
         ))}
       </Carousel>

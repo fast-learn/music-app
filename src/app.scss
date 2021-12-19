@@ -1,15 +1,10 @@
 @import "~taro-ui/dist/style/index.scss";
+@import "./app.rn.scss";
 
-$primary-color: #d43c33;
-@mixin text-ellipsis {
-  overflow: hidden;
-  /*文本不会换行*/
-  white-space: nowrap;
-  /*当文本溢出包含元素时，以省略号表示超出的文本*/
+@mixin text-ellipsis2 {
   text-overflow: ellipsis;
-}
-
-.app {
-  height: 100%;
-  background: #d43c33;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
 }

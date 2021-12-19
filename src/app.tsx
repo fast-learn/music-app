@@ -1,7 +1,10 @@
 import { Component } from 'react';
-import { View } from '@tarojs/components';
+import { Provider } from 'react-redux';
+import configStore from './stores';
 
 import './app.scss';
+
+const store = configStore();
 
 class App extends Component {
 
@@ -19,7 +22,11 @@ class App extends Component {
 
   // this.props.children 是将要会渲染的页面
   render() {
-    return <View className="app">this.props.children</View>;
+    return (
+      <Provider store={store}>
+        {this.props.children}
+      </Provider>
+    );
   }
 }
 

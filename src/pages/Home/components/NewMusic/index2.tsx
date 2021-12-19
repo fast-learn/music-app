@@ -2,7 +2,6 @@ import * as React from 'react';
 import Taro from '@tarojs/taro';
 import {View, ScrollView} from 'react-native';
 import {Image} from '@tarojs/components'
-import useCategoryList from './useCategoryList';
 
 import './index.scss';
 
@@ -47,7 +46,7 @@ export default class newMusic extends React.Component<SearchProps, IsndexState> 
           showsHorizontalScrollIndicator={false}
           // scrollEnabled={false}//是否允许滚动
         >
-          {this.state.bannerList ? this.state.bannerList.map((item,index) => (
+          {this.state.bannerList ? this.state.bannerList.map((item) => (
             <View key={item.id} className="category__scroll--center">
             <Image className="category__scroll--center--image"  src={item.imageUrl} />
           </View>

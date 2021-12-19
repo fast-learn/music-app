@@ -1,11 +1,61 @@
-import { View } from '@tarojs/components';
+import { useEffect, useState } from 'react';
+import { View, ScrollView } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import SearchBar from '@/components/SearchBar';
+import Layout from '@/components/Layout';
+import Banner from '@/pages/Home2/components/Banner';
+import Category from '@/pages/Home2/components/Category';
+import Recommend from '@/pages/Home2/components/Recommend';
+import NewSong from '@/pages/Home2/components/NewSong';
 
 import './index.scss';
 
-export default function Index() {
+export default function Home() {
+  const [isScrolling, setIsScrolling] = useState(false);
+
+  useEffect(() => {
+    if (IS_H5) {
+      window.document.addEventListener('scroll', onScroll);
+    }
+    return () => {
+      if (IS_H5)
+        window.document.removeEventListener('scroll', onScroll);
+    };
+  }, []);
+
+  function onScroll(e) {
+    let scrollTop;
+    if (IS_H5) {
+      scrollTop = document.documentElement.scrollTop;
+    } else {
+      scrollTop = e.detail.scrollTop;
+    }
+    // console.log(scrollTop);
+    if (scrollTop > 0) {
+      setTimeout(() => {
+        setIsScrolling(true);
+      }, 50);
+    } else {
+      setTimeout(() => {
+        setIsScrolling(false);
+      }, 50);
+    }
+  }
+
   return (
-    <View className="home">
-      111
-    </View>
+    <Layout outerStyle={{ backgroundColor: '#fff' }}>
+      <SearchBar isScrolling={isScrolling} />
+      <ScrollView
+        scrollY
+        style={{ backgroundColor: '#eee' }}
+        onScroll={onScroll}
+      >
+        <Banner />
+        <Category />
+        <Recommend />
+        <NewSong />
+        <View style={{ height: Taro.pxTransform(1000), backgroundColor: 'red' }} />
+      </ScrollView>
+    </Layout>
   );
 }

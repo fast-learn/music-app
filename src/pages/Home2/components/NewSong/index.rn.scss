@@ -1,0 +1,123 @@
+@import '../../../../app.rn';
+
+.new-song {
+  padding-bottom: 20px;
+  &__title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 80px;
+    padding: 20px 20px 10px;
+    box-sizing: border-box;
+    background-color: #fff;
+    &__text {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      &__img {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+      }
+      flex: 1;
+      font-size: 36px;
+      font-weight: bold;
+    }
+    &__btn {
+      @include row-center;
+      width: 120px;
+      height: 50px;
+      font-size: 24px;
+      color: #333;
+      border-radius: 100px;
+      border-width: 1px;
+      border-color: #ccc;
+      border-style: solid;
+      background-color: transparent;
+      &__img {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+  &__list {
+    box-sizing: border-box;
+    padding: 10px 0 50px;
+    background-color: #fff;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    &__swiper {
+      height: 400px;
+      &__item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 33.33%;
+        padding: 0 20px;
+        &__img {
+          width: 80px;
+          height: 80px;
+          border-radius: 20px;
+        }
+        &__content {
+          height: 100%;
+          flex: 1;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          border-bottom-color: #eee;
+          border-bottom-style: solid;
+          border-bottom-width: 1px;
+          &--last {
+            border-bottom-color: transparent;
+            border-bottom-style: none;
+            border-bottom-width: 0;
+          }
+          &__left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            margin-left: 20px;
+            &__top {
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              justify-content: flex-start;
+              @include text-ellipsis;
+              height: 30px;
+              &__name {
+                color: #333;
+                font-size: 28px;
+              }
+              &__artist {
+                color: #999;
+                font-size: 22px;
+                margin-left: 10px;
+              }
+            }
+            &__bottom {
+              color: #999;
+              font-size: 22px;
+              margin-top: 10px;
+            }
+          }
+          &__right {
+            @include row-center;
+            width: 40px;
+            height: 40px;
+            border-radius: 15px;
+            border-width: 1px;
+            border-style: solid;
+            border-color: #ccc;
+            &__play {
+              width: 20px;
+              height: 20px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

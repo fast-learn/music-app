@@ -19,7 +19,7 @@ export default function Banner() {
         circular
         indicatorDots
       >
-        {bannerList.map((item) => (
+        {bannerList.map((item: any) => (
           <SwiperItem key={item.imageUrl}>
             <Image className="banner--image" src={item.imageUrl} />
           </SwiperItem>

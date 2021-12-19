@@ -1,0 +1,6 @@
+@import './index.rn';
+@import '../../../../app';
+
+.recommend__list__scroll__item__name {
+  @include text-ellipsis2;
+}

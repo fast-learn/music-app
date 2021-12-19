@@ -10,7 +10,7 @@ export default function Category(){
     <View className="category">
       <View className="category__scroll">
         {
-          categoryList.map((item) =>
+          categoryList.map((item: any) =>
           <View key={item.id} className="category__scroll--center">
             <Image className="category__scroll--center--image"  src={item.imageUrl} />
           </View>

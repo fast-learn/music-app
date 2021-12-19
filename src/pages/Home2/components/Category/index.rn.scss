@@ -1,0 +1,51 @@
+@import "../../../../app.rn";
+
+.category {
+  padding: 40px 0 0 0;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: #ddd;
+  height: 200px;
+  box-sizing: border-box;
+  overflow: hidden;
+  background-color: #fff;
+  &__scroll {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    &__item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      min-width: 100px;
+      height: 100%;
+      margin: 0 20px;
+      &--first {
+        margin-left: 20px;
+      }
+      &--last {
+        margin-right: 20px;
+      }
+      &__bg {
+        @include row-center;
+        width: 80px;
+        height: 80px;
+        border-radius: 100px;
+        background-color: #ece1e1;
+        &__img {
+          width: 56px;
+          height: 56px;
+        }
+      }
+      &__text {
+        flex: 1;
+        margin-top: 10px;
+        font-size: 22px;
+        color: #666;
+      }
+    }
+  }
+}
