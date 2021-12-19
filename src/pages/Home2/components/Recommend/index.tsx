@@ -13,8 +13,8 @@ export default function Recommend() {
     getPersonalized().then(response => {
       console.log('getPersonalized', response);
       // 获取第10条以后的数据作为初始数组
-      const _first = response.slice(10);
-      const _other = response.slice(0, 10);
+      const _first = response.slice(5);
+      const _other = response.slice(0, 5);
       const _data: any = [_first, ..._other];
       console.log('getPersonalized', _data);
       setData(_data);

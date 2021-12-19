@@ -22,6 +22,10 @@
     width: 48px;
     height: 48px;
   }
+  &__voice {
+    width: 32px;
+    height: 40px;
+  }
   &__input-bg {
     flex: 1;
     display: flex;
@@ -36,8 +40,8 @@
       background-color: #eee;
     }
     &__icon {
-      width: 48px;
-      height: 48px;
+      width: 30px;
+      height: 30px;
     }
     &__text {
       font-size: 30px;

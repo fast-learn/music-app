@@ -48,12 +48,12 @@ export function getRecommendResource() {
  * 获取推荐歌单（无需登录）
  */
 export async function getPersonalized() {
-  return get('/personalized', { limit: 13 }).then(response => response.data.result);
+  return get('/personalized', { limit: 10 }).then(response => response.data.result);
 }
 
 /**
  * 获取推荐歌曲（无需登录）
  */
-export async function getPersonalizedNewsong(limit = 9) {
+export async function getPersonalizedNewsong(limit = 6) {
   return get('/personalized/newsong', { limit }).then(response => wrapper(response.data.result));
 }

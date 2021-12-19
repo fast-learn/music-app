@@ -33,11 +33,9 @@
         @include row-center;
         width: 80px;
         height: 80px;
-        border-radius: 100px;
-        background-color: #ece1e1;
         &__img {
-          width: 56px;
-          height: 56px;
+          width: 80px;
+          height: 80px;
         }
       }
       &__text {

@@ -31,12 +31,12 @@ export default function SearchBar(props) {
         <Image src="https://fast-learn-oss.youbaobao.xyz/music/icon_menu.png" className="search-bar__icon" />
         <View className={`search-bar__input-bg${!isScrolling ? '' : ' search-bar__input-bg--scrolling'}`}>
           <Image
-            src="https://fast-learn-oss.youbaobao.xyz/music/icon_search.png"
+            src="https://fast-learn-oss.youbaobao.xyz/music/icon_search_gray.png"
             className="search-bar__input-bg__icon"
           />
           <View className="search-bar__input-bg__text">你的名字 最近很火哦</View>
         </View>
-        <Image src="https://fast-learn-oss.youbaobao.xyz/music/icon_headset.png" className="search-bar__icon" />
+        <Image src="https://fast-learn-oss.youbaobao.xyz/music/icon_voice.png" className="search-bar__voice" />
       </View>
     </>
   ) : (
