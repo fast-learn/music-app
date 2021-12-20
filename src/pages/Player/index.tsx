@@ -1,95 +1,91 @@
+import { View,Image } from "@tarojs/components";
 
-import { View } from '@tarojs/components';
-import Taro from '@tarojs/taro'
-import {useState,useEffect} from 'react'
-// import {AtModal } from 'taro-ui'
-import { AtRange } from 'taro-ui'
+import Demo from '@/img/p.png'
 
-import './index.scss';
+import './index.scss'
 
-export default function Player() {
-  const [innerAudioContext, setInnerAudioContext] = useState(Taro.createInnerAudioContext())
-  const [volumes, setVolumes] = useState(0)
-  const [duration, setDuration] = useState(0)
-  const [playbackRate,setPlaybackRate] = useState(0)
-  const [currentTime, setCurrentTime] = useState(innerAudioContext.currentTime)
-  const [nextFlag, setNextFlag] = useState(false) // pause 是只读状态无法修改，只能通过添加开关来判断是否暂停（上一曲、下一曲）歌曲
-  const [innerAudioContextSrc, setInnerAudioContextSrc] = useState('https://music.163.com/song/media/outer/url?id=415792881.mp3')
-
-  useEffect(() => {
-    innerAudioContext.src = innerAudioContextSrc
-  },['innerAudioContextSrc'])
-  useEffect(() => {
-    console.log(currentTime,1222)
-  },['currentTime'])
-  const continuePlay  = () => {
-    if(innerAudioContext.src === 'https://music.163.com/song/media/outer/url?id=415792881.mp3'){
-      setInnerAudioContextSrc('https://music.163.com/song/media/outer/url?id=1829057624.mp3')
-      innerAudioContext.src = 'https://music.163.com/song/media/outer/url?id=1829057624.mp3'
-    }else{
-      setInnerAudioContextSrc('https://music.163.com/song/media/outer/url?id=415792881.mp3')
-      innerAudioContext.src = 'https://music.163.com/song/media/outer/url?id=415792881.mp3'
-    }
-    innerAudioContext.play()
-    setNextFlag(true)
-  }
-  // innerAudioContext.autoplay = true
-  // innerAudioContext.src = 'https://storage.360buyimg.com/jdrd-blog/27.mp3'
-  // innerAudioContext.onError((res) => {
-  //   console.log(res.errMsg)
-  //   console.log(res.errCode)
-  // })
-  // InnerAudioContext.onEnded(function callback)// 监听音频播放完毕事件-> 移除计时器
-  const taroAudioPlay =async () =>{
-    if(innerAudioContext.paused && !nextFlag){
-      await innerAudioContext.play()
-      setDuration(innerAudioContext.duration)
-      if(innerAudioContext.duration && innerAudioContext.currentTime < innerAudioContext.duration){
-        setInterval((params) => {
-          setCurrentTime(innerAudioContext.currentTime)
-        },100)
-      }
-    }else{
-      innerAudioContext.pause()
-      setNextFlag(false)
-    }
-  }
-  const handleMusic = () => {
-    setPlaybackRate(playbackRate+0.5)
-    console.log(innerAudioContext.playbackRate)
-    innerAudioContext.playbackRate = playbackRate
-  }
-  const handleVolume = () => {
-    setVolumes(volumes+0.1)
-    innerAudioContext.volume = volumes
-  }
-  const stom = (data) => {
-    return  (data / 60).toFixed(2)
-  }
+export default function Palyer() {
   return (
     <View className="player">
-      {/* <AtModal
-        isOpened={false}
-        title="标题"
-        cancelText="取消"
-        confirmText="确认"
-        onClose={ this.handleClose }
-        // onCancel={ this.handleCancel }
-        // onConfirm={ this.handleConfirm }
-        content="欢迎加入京东凹凸实验室\n\r欢迎加入京东凹凸实验室"
-      /> */}
-      {/* <Audio
-				src={audioSrc}
-				ref={audio}
-				// onTimeUpdate={updateTime}
-			></Audio> */}
-      <View onClick={taroAudioPlay}>播放/暂停</View>
-      {/* <View onClick={StopPlay}>上一曲</View> */}
-      <View onClick={continuePlay}>下一曲</View>
-      <View onClick={handleMusic}>快进</View>
-      <View onClick={handleVolume} >音量</View>
-      <View style={{width:'100%',height:30,border:'1px solid pink'}}>{innerAudioContext.duration? stom(innerAudioContext.duration) :0}</View>
-      <View style={{width: (currentTime && innerAudioContext.duration) ? ((currentTime / innerAudioContext.duration ) * 100  + '%'):'',height: 20, border:'1px solid yellow',borderRaduis:'10'}}>{stom(currentTime)}</View>
+      <View className="playe__top">
+        <View className="player__top__top">
+          {/* <View className="player__top__top__left"> */}
+          {/* 点击隐藏该页面，动画效果 */}
+            <Image src={Demo}  className="player__top__top__left" />
+          {/* </View> */}
+          <View className="player__top__top__conter">
+            <View className="player__top__top__conter__main">
+              王娅-半吨兄弟-爱情错觉
+              {/* 字幕滚动效果 */}
+            </View>
+            <View className="player__top__top__conter__vice">
+              <View className="player__top__top__conter__vice__message">
+                筷子兄弟
+              </View>
+              <View className="player__top__top__conter__vice__add">
+                <Image src={Demo}  className="player__top__top__conter__vice__add__image" />
+              </View>
+            </View>
+          </View>
+          <View className="player__top__top__right">
+            {/* <View className="player__top__top__right__cover"></View> */}
+            <Image src={Demo}  className="player__top__top__right__cover" />
+            {/*  头像涟漪效果 */}
+            {/* <View className="player__top__top__right__share"></View> */}
+            <Image src={Demo}  className="player__top__top__right__share" />
+          </View>
+        </View>
+        {/* 音量添加减少效果 */}
+        <View className="player__top__bottom">
+          {/* <View className="player__top__bottom__volume"></View> */}
+          <Image src={Demo}  className="player__top__bottom__volume" />
+          <View className="player__top__bottom__progress"></View>
+          {/* <View className="player__top__bottom__radar"></View> */}
+          <Image src={Demo}  className="player__top__bottom__radar" />
+
+        </View>
+      </View>
+      {/* 播放页面头部开发 */}
+      {/* 歌词滚动效果、拖动歌词会跟着进行播放，拖动时会有线条和时间显示 */}
+      <View className="player__conter">滚动歌词</View>
+
+      {/* 播放组件底部开发 --> 抽离成组件 */}
+      <View className="player__bottom">
+        <View className="player__bottom__top">
+          <View className="player__bottom__top__left">
+          {/* <View className="player__bottom__top__left__play"></View> */}
+          <Image src={Demo}  className="player__bottom__top__left__play" />
+          {/* <View className="player__bottom__top__left__stars"></View> */}
+          <Image src={Demo}  className="player__bottom__top__left__stars" />
+          </View>
+          <View className="player__bottom__top__right">
+          {/* <View className="player__bottom__top__right__sing"></View> */}
+          <Image src={Demo}  className="player__bottom__top__right__sing" />
+          {/* <View className="player__bottom__top__right__more"></View> */}
+          <Image src={Demo}  className="player__bottom__top__right__more" />
+          </View>
+        </View>
+        <View className="player__bottom__conter">
+          {/* 播放时间的移动 */}
+        <View className="player__bottom__conter__start_time">00:00</View>
+        {/* <View className="player__bottom__conter__progress"></View> */}
+        <Image src={Demo}  className="player__bottom__conter__progress" />
+        <View className="player__bottom__conter__end_time">02:34</View>
+        </View>
+        <View className="player__bottom__bottom">
+          {/* <View className="player__bottom__bottom__play-order"></View> */}
+          {/* 顺序切换 */}
+          <Image src={Demo}  className="player__bottom__bottom__play-order" />
+          {/* <View className="player__bottom__bottom__last-song"></View> */}
+          <Image src={Demo}  className="player__bottom__bottom__last-song" />
+          {/* <View className="player__bottom__bottom__play"></View> */}
+          <Image src={Demo}  className="player__bottom__bottom__play" />
+          {/* <View className="player__bottom__bottom__nest-song"></View> */}
+          <Image src={Demo}  className="player__bottom__bottom__nest-song" />
+          {/* <View className="player__bottom__bottom__play-list"></View> */}
+          <Image src={Demo}  className="player__bottom__bottom__play-list" />
+        </View>
+      </View>
     </View>
   );
 }

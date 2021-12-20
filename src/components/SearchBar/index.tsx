@@ -15,7 +15,6 @@ if (IS_RN) {
 
 export default function SearchBar(props) {
   const { status = 'normal', isScrolling } = props;
-
   return status === 'normal' ? (
     <>
       {!IS_RN && (

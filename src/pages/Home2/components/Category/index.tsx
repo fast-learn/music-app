@@ -2,6 +2,12 @@ import { View, Image, Text, ScrollView } from '@tarojs/components';
 import useCategoryList from './useCategoryList';
 
 import './index.scss';
+// if (IS_WEAPP) {
+//   require('./index.weapp.scss')
+// } else {
+//   require('./index.scss')
+// }
+
 
 export default function Category() {
   const { categoryList } = useCategoryList();
@@ -10,6 +16,7 @@ export default function Category() {
       <ScrollView
         className="category__scroll"
         scrollX
+        enableFlex={IS_WEAPP} // 兼容微信小程序
         // @ts-ignore
         showsHorizontalScrollIndicator={false}
       >
