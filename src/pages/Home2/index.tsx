@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { ScrollView } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import { ScrollView} from '@tarojs/components';
 import SearchBar from '@/components/SearchBar';
 import Layout from '@/components/Layout';
 import Banner from '@/pages/Home2/components/Banner';
@@ -29,7 +30,6 @@ export default function Home() {
     } else {
       scrollTop = e.detail.scrollTop;
     }
-    // console.log(scrollTop);
     if (scrollTop > 0) {
       setTimeout(() => {
         setIsScrolling(true);
@@ -40,13 +40,14 @@ export default function Home() {
       }, 50);
     }
   }
-
+  const info = Taro.getSystemInfoSync()
+  const { windowHeight } = info
   return (
     <Layout outerStyle={{ backgroundColor: '#fff' }}>
       <SearchBar isScrolling={isScrolling} />
       <ScrollView
         scrollY
-        style={{ backgroundColor: '#eee' }}
+        style={{ backgroundColor: '#eee' ,height: IS_WEAPP ? windowHeight : '100%'}}
         onScroll={onScroll}
       >
         <Banner />

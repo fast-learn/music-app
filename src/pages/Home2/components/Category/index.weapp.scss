@@ -1,0 +1,17 @@
+@import './index.rn.scss';
+
+.category {
+  &__scroll {
+    // white-space: nowrap; // 兼容微信小程序
+    &__item {
+      // display: inline-block; // 兼容微信小程序
+      padding-top: 20px; // 兼容微信小程序
+    }
+  }
+}
+// 兼容微信小程序， 隐藏滚动条
+// ::-webkit-scrollbar {
+//   width: 0;
+//   height: 0;
+//   color: transparent;
+// }
