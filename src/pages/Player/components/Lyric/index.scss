@@ -1,0 +1,18 @@
+.lyric{
+  width: 100%;
+  margin: 10px 0 ;
+  padding: 0 20px;
+  box-sizing: border-box;
+  &__scroll{
+    max-height: 730px; // 暂时充起元素
+    &__content{
+      text-align: center;
+      opacity: 0.7;
+      font-family: PingFangSC-Regular;
+      font-size: 30px;
+      color: #FFFFFF;
+      letter-spacing: 0;
+      line-height: 66px;
+    }
+  }
+}
