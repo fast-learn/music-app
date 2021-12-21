@@ -18,7 +18,7 @@
     &__btn {
       @include row-center;
       width: 120px;
-      height: 50px;
+      height: 48px;
       font-size: 24px;
       color: #333;
       border-radius: 100px;
@@ -58,7 +58,7 @@
           margin-left: 20px;
         }
         &--last {
-          margin-right: 20px;
+          padding-right: 20px;
         }
         &__swiper {
           width: 220px;
@@ -69,6 +69,7 @@
           color: #333;
           overflow: hidden;
           margin-top: 10px;
+          line-height: 26px;
         }
       }
     }

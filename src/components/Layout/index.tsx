@@ -34,7 +34,14 @@ if (IS_RN) {
     zIndex: 999,
   };
 } else {
-  const BOTTOM_HEIGHT = Taro.pxTransform(120);
+  let BOTTOM_HEIGHT = Taro.pxTransform(120);
+  let paddingBottom = 0;
+  // 微信小程序需要实现独立的padding-bottom逻辑
+  if (IS_WEAPP) {
+    const systemInfo = Taro.getSystemInfoSync();
+    const { safeArea } = systemInfo;
+    paddingBottom = safeArea.bottom - safeArea.height;
+  }
   outerStyle = {
     flex: 1,
   };
@@ -47,7 +54,9 @@ if (IS_RN) {
     left: 0,
     width: '100%',
     height: BOTTOM_HEIGHT,
+    paddingBottom,
     zIndex: 999,
+    backgroundColor: '#fff',
   };
 }
 

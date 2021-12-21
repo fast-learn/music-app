@@ -2,12 +2,6 @@ import { View, Image, Text, ScrollView } from '@tarojs/components';
 import useCategoryList from './useCategoryList';
 
 import './index.scss';
-// if (IS_WEAPP) {
-//   require('./index.weapp.scss')
-// } else {
-//   require('./index.scss')
-// }
-
 
 export default function Category() {
   const { categoryList } = useCategoryList();
@@ -26,7 +20,12 @@ export default function Category() {
               key={item.id}
               className={`category__scroll__item category__scroll__item--${index === 0 ? 'first' : (index === categoryList.length - 1 ? 'last' : index)}`}
             >
-              <View className="category__scroll__item__bg">
+              <View
+                className="category__scroll__item__bg"
+                style={{
+                  paddingTop: IS_WEAPP ? '20rpx' : 0,
+                }}
+              >
                 <Image className="category__scroll__item__bg__img" src={item.imageUrl} />
               </View>
               <Text className="category__scroll__item__text">{item.name}</Text>

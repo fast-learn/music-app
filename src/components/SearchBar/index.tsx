@@ -18,13 +18,17 @@ export default function SearchBar(props) {
   return status === 'normal' ? (
     <>
       {!IS_RN && (
-        <View className="search-bar--block" style={{ height }} />
+        <View
+          className="search-bar--block"
+          style={{ height }}
+        />
       )}
       <View
         className={`search-bar${IS_RN ? '' : ' search-bar--fixed'}${!isScrolling ? '' : ' search-bar--scrolling'}`}
         style={{
           height,
           paddingTop: barHeight,
+          boxSizing: 'border-box',
         }}
       >
         <Image src="https://fast-learn-oss.youbaobao.xyz/music/icon_menu.png" className="search-bar__icon" />

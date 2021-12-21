@@ -26,7 +26,7 @@
     &__btn {
       @include row-center;
       width: 120px;
-      height: 50px;
+      height: 48px;
       font-size: 24px;
       color: #333;
       border-radius: 100px;
@@ -107,7 +107,7 @@
           &__right {
             @include row-center;
             width: 40px;
-            height: 40px;
+            height: 38px;
             border-radius: 15px;
             border-width: 1px;
             border-style: solid;

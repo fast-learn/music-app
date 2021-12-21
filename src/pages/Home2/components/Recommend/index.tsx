@@ -6,14 +6,6 @@ import moreImg from '@/img/more.png';
 
 import './index.scss';
 
-// if (IS_WEAPP) {
-//   require('./index.weapp.scss')
-// } else {
-//   require('./index.scss')
-// }
-
-
-
 export default function Recommend() {
   const [data, setData] = useState([]);
 
