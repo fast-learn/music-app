@@ -1,10 +1,10 @@
 export default {
   pages: [
-    'pages/Home2/index',
     'pages/Player/index',
-    'pages/Home/index',
-    'pages/Search/index',
-    'pages/Test/index',
+    // 'pages/Home2/index',
+    // 'pages/Home/index',
+    // 'pages/Search/index',
+    // 'pages/Test/index',
   ],
   window: {
     backgroundTextStyle: 'light',

@@ -1,32 +1,15 @@
 export default function lyricParser(lrc) {
-    if(lrc && lrc.lrc.lyric && lrc.tlyric){
-        return {
-            lyric: parseLyric(lrc.lrc.lyric || ''),
-            tlyric: parseLyric(lrc.tlyric.lyric || ''),
-            lyricuser: lrc.lyricUser,
-            transuser: lrc.transUser
-        };
+    if(lrc){
+        const lrcData = []
+        var medises = lrc.split("\n");    // 用换行符拆分获取到的歌词
+        medises.map((item,index) => {
+        const newlrc = item.split(']')
+        lrcData[index] = {
+            time: newlrc[0].split('[')[1],
+            content: newlrc[1]
+        }
+        })
+        return lrcData
     }
 }
 
-export function parseLyric(lrc) {
-    const lyrics = lrc.split('\n');
-    const lrcObj = [];
-    for (let i = 0; i < lyrics.length; i++) {
-        const lyric = decodeURIComponent(lyrics[i]);
-        const timeReg = /\[\d*:\d*((\.|:)\d*)*\]/g;
-        const timeRegExpArr = lyric.match(timeReg);
-        if (!timeRegExpArr) continue;
-        const content = lyric.replace(timeReg, '');
-        for (let k = 0, h = timeRegExpArr.length; k < h; k++) {
-            const t = timeRegExpArr[k];
-            const min = Number(String(t.match(/\[\d*/i)).slice(1));
-            const sec = Number(String(t.match(/:\d*/i)).slice(1));
-            const time = min * 60 + sec;
-            if (content !== '') {
-                lrcObj.push({ time: time, content });
-            }
-        }
-    }
-    return lrcObj;
-}
