@@ -1,6 +1,6 @@
-import { View, Text } from '@tarojs/components';
-import { AtIcon } from 'taro-ui';
-import useSearchHistory from '@/pages/Search/components/SearchHistory/useSearchHistory';
+import { View, Text, Image, ScrollView } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import useSearchHistory from './useSearchHistory';
 
 import './index.scss';
 
@@ -11,13 +11,35 @@ export default function SearchHistory() {
     <View className="search-history">
       <Text className="search-history__label">历史</Text>
       <View className="search-history__tag">
-        {
-          data.map(text => (
-            <View className="search-history__tag__text" key={text}>{text}</View>
-          ))
-        }
+        <ScrollView
+          className="search-history__tag__scroll"
+          scrollX
+          // @ts-ignore
+          showsHorizontalScrollIndicator={false}
+        >
+          {
+            data.map((text, index) => (
+              <View
+                className="search-history__tag__scroll__item"
+                key={text + index}
+                style={{
+                  minWidth: IS_H5 || IS_WEAPP ?
+                    Taro.pxTransform(text.length * 25 + 48) : 'auto',
+                  width: IS_H5 || IS_WEAPP ?
+                    Taro.pxTransform(text.length * 25 + 48) : 'auto',
+                }}
+              >
+                {text}
+              </View>
+            ))
+          }
+        </ScrollView>
       </View>
-      <AtIcon value="trash" color="#ccc" size={48} onClick={clear} />
+      <Image
+        src="https://fast-learn-oss.youbaobao.xyz/music/icon_trash.png"
+        className="search-history__clear"
+        onClick={clear}
+      />
     </View>
   );
 }

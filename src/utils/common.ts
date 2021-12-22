@@ -29,5 +29,16 @@ export const fomatFloat = (num: number | string, n: number) => {
 };
 
 export const wrapperClassName = (className, index, length) => {
-  return `${className}${index === length - 1 ? ` ${className}--last` : (index === 0 ? ` ${className}--first` : ` ${className}--${index}`)}`
-}
+  return `${className}${index === length - 1 ? ` ${className}--last` : (index === 0 ? ` ${className}--first` : ` ${className}--${index}`)}`;
+};
+
+export const showAlert = (msg) => {
+  if (IS_WEAPP) {
+    Taro.showModal({
+      title: '提示',
+      content: msg,
+    });
+  } else {
+    alert(msg);
+  }
+};

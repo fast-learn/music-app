@@ -1,9 +1,9 @@
 export default {
   pages: [
+    'pages/Search/index',
     'pages/Home2/index',
     'pages/Player/index',
     'pages/Home/index',
-    'pages/Search/index',
     'pages/Test/index',
   ],
   window: {

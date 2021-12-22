@@ -7,25 +7,36 @@
   background-color: #eee;
   padding: 0 20px;
   box-sizing: border-box;
+
   &--scrolling {
     background-color: #fff;
   }
+
+  &--active {
+    background-color: #fff;
+    padding: 0 31px 0 28px;
+  }
+
   &--block {
   }
+
   &--fixed {
     position: fixed;
     top: 0;
     left: 0;
     z-index: 999;
   }
+
   &__icon {
     width: 36px;
     height: 28px;
   }
+
   &__voice {
     width: 32px;
     height: 40px;
   }
+
   &__input-bg {
     flex: 1;
     display: flex;
@@ -34,19 +45,67 @@
     align-items: center;
     background-color: #fff;
     border-radius: 100px;
-    height: 60px;
+    height: 64px;
     margin: 0 20px;
+
+    &--active {
+      background-color: #f5f5f5;
+      justify-content: flex-start;
+      padding: 0 10px 0 30px;
+      margin: 0 27px 0 0;
+    }
+
     &--scrolling {
       background-color: #eee;
     }
+
     &__icon {
-      width: 30px;
-      height: 30px;
+      width: 25px;
+      height: 25px;
     }
+
+    &__input {
+      flex: 1;
+      margin: 0 7px;
+      font-size: 26px;
+      color: #333;
+      &__placeholder {
+        font-size: 26px;
+        color: #C6CDD6;
+      }
+      input {
+        &::-webkit-input-placeholder { // 兼容H5 placeholder样式修改
+          font-size: 26px;
+          color: #C6CDD6;
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+
+    &__close {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      width: 60px;
+      height: 100%;
+      z-index: 1000;
+      &__icon {
+        width: 40px;
+        height: 40px;
+      }
+    }
+
     &__text {
       font-size: 30px;
       margin-left: 20px;
-      color: #ccc;
+      color: #C6CDD6;
     }
+  }
+
+  &__cancel-text {
+    font-size: 32px;
+    color: #272828;
   }
 }

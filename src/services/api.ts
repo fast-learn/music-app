@@ -47,13 +47,55 @@ export function getRecommendResource() {
 /**
  * 获取推荐歌单（无需登录）
  */
-export async function getPersonalized() {
+export function getPersonalized() {
   return get('/personalized', { limit: 10 }).then(response => response.data.result);
 }
 
 /**
  * 获取推荐歌曲（无需登录）
  */
-export async function getPersonalizedNewsong(limit = 6) {
+export function getPersonalizedNewsong(limit = 6) {
   return get('/personalized/newsong', { limit }).then(response => wrapper(response.data.result));
+}
+
+/**
+ * 获取默认搜索关键词
+ *
+ */
+export function getSearchDefault() {
+  return get('/search/default').then(response => response.data.data);
+}
+
+/**
+ * 搜索词联想
+ */
+export function getSearchSuggest(keywords) {
+  return get('/search/suggest', {
+    keywords,
+    type: 'mobile',
+  }).then(response => response.data.result);
+}
+
+/**
+ * 搜索接口
+ *
+ * 必选参数 :
+ *  keywords : 关键词
+ * 可选参数 :
+ *  limit : 返回数量 , 默认为 30
+ *  offset : 偏移数量，用于分页 , 默认为 0
+ *  type: 搜索类型；默认为 1 即单曲 , 取值意义 :
+ *    1: 单曲,
+ *    10: 专辑,
+ *    100: 歌手,
+ *    1000: 歌单,
+ *    1002: 用户,
+ *    1004: MV,
+ *    1006: 歌词,
+ *    1009: 电台,
+ *    1014: 视频,
+ *    1018: 综合
+ */
+export function search(keywords, { type = 1, limit = 20, offset = 0 }) {
+  return get('/search', { keywords, type, limit, offset }).then(response => response.data.result);
 }

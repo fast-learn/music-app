@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { ScrollView } from '@tarojs/components';
-import Taro from '@tarojs/taro';
 import SearchBar from '@/components/SearchBar';
 import Layout from '@/components/Layout';
 import Banner from '@/pages/Home2/components/Banner';
