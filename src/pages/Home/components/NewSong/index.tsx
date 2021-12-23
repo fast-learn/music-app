@@ -8,7 +8,7 @@ import playImg2 from '@/img/play_fill2.png';
 
 import './index.scss';
 
-export default function NewSong() {
+export default function NewSong(): any {
   const [data, setData] = useState([]);
 
   useEffect(() => {

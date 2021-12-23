@@ -1,15 +1,15 @@
-
 import { View } from '@tarojs/components';
 import Taro from '@tarojs/taro'
 import {useState,useEffect} from 'react'
 // import {AtModal } from 'taro-ui'
-import { AtRange } from 'taro-ui'
 
 import './index.scss';
 
 export default function Player() {
+  // @ts-ignore
   const [innerAudioContext, setInnerAudioContext] = useState(Taro.createInnerAudioContext())
   const [volumes, setVolumes] = useState(0)
+  // @ts-ignore
   const [duration, setDuration] = useState(0)
   const [playbackRate,setPlaybackRate] = useState(0)
   const [currentTime, setCurrentTime] = useState(innerAudioContext.currentTime)
@@ -45,7 +45,7 @@ export default function Player() {
       await innerAudioContext.play()
       setDuration(innerAudioContext.duration)
       if(innerAudioContext.duration && innerAudioContext.currentTime < innerAudioContext.duration){
-        setInterval((params) => {
+        setInterval(() => {
           setCurrentTime(innerAudioContext.currentTime)
         },100)
       }
@@ -89,7 +89,7 @@ export default function Player() {
       <View onClick={handleMusic}>快进</View>
       <View onClick={handleVolume} >音量</View>
       <View style={{width:'100%',height:30,border:'1px solid pink'}}>{innerAudioContext.duration? stom(innerAudioContext.duration) :0}</View>
-      <View style={{width: (currentTime && innerAudioContext.duration) ? ((currentTime / innerAudioContext.duration ) * 100  + '%'):'',height: 20, border:'1px solid yellow',borderRaduis:'10'}}>{stom(currentTime)}</View>
+      <View style={{width: (currentTime && innerAudioContext.duration) ? ((currentTime / innerAudioContext.duration ) * 100  + '%'):'',height: 20, border:'1px solid yellow',borderRadius:'10'}}>{stom(currentTime)}</View>
     </View>
   );
 }

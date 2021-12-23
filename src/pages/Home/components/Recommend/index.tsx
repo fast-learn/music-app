@@ -6,7 +6,7 @@ import moreImg from '@/img/more.png';
 
 import './index.scss';
 
-export default function Recommend() {
+export default function Recommend(): any {
   const [data, setData] = useState([]);
 
   useEffect(() => {

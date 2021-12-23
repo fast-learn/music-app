@@ -1,13 +1,20 @@
 import { useEffect, useState } from 'react';
+import { getSearchHot } from '@/services/api';
 
 export default function useSearchRecommend() {
   const [data, setData] = useState<Array<string>>([]);
 
   useEffect(() => {
-    setData(['特别的人', '给你给我', '位置']);
+    getSearchHot().then(res => {
+      if (res && res.length > 0) {
+        setData(res.map(_ => _.first));
+      } else {
+        setData([]);
+      }
+    });
   }, []);
 
   return {
     data,
-  }
+  };
 }

@@ -31,7 +31,7 @@
       flex-wrap: nowrap;
       &__item {
         @include row-center;
-        @include text-ellipsis;
+        white-space: nowrap;
         height: 54px;
         box-sizing: border-box;
         margin-left: 16px;

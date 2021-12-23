@@ -24,14 +24,17 @@ export default function Play(props) {
   const dispatch = useDispatch();
   const {songListIndex}  = useSelector((state: any) => state.player)
   const [playingFlag, setPalyingFlag] = useState(false) //播放状态
+  // @ts-ignore
   const [songList, setSongList] = useState(props.demoSongList)
   var [songOrder, setSongOrder] = useState(1)
+  // @ts-ignore
   const [innerAudioContext, setInnerAudioContext] = useState(Taro.createInnerAudioContext())
   var [songIndex,setsongIndex] = useState(songListIndex ? songListIndex : 0)
+  // @ts-ignore
   const [duration, setDuration] = useState(0)
   const [currentTime, setCurrentTime] = useState(innerAudioContext.currentTime)
 
-  // 监听播放时间 
+  // 监听播放时间
   useEffect(() => {
     props.changeCurrentTime(currentTime)
     // console.log(currentTime)
@@ -90,6 +93,7 @@ export default function Play(props) {
   const hanleSongList = () => {
 
   }
+  // @ts-ignore
   const handleSeek = () =>{
     console.log('跳转到指定位置')
     innerAudioContext.seek(1.35) // 单位 s

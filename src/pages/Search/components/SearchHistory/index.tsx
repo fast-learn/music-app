@@ -1,24 +1,22 @@
 import { View, Text, Image, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import useSearchHistory from './useSearchHistory';
 
 import './index.scss';
 
-export default function SearchHistory() {
-  const { data, clear } = useSearchHistory();
-
-  return data.length > 0 && (
+export default function SearchHistory(props): any {
+  return props.data.length > 0 && (
     <View className="search-history">
       <Text className="search-history__label">历史</Text>
       <View className="search-history__tag">
         <ScrollView
           className="search-history__tag__scroll"
           scrollX
+          enableFlex={IS_WEAPP}
           // @ts-ignore
           showsHorizontalScrollIndicator={false}
         >
           {
-            data.map((text, index) => (
+            props.data.map((text, index) => (
               <View
                 className="search-history__tag__scroll__item"
                 key={text + index}
@@ -28,6 +26,7 @@ export default function SearchHistory() {
                   width: IS_H5 || IS_WEAPP ?
                     Taro.pxTransform(text.length * 25 + 48) : 'auto',
                 }}
+                onClick={() => props.onSearch(text, { searchFromHistory: true })}
               >
                 {text}
               </View>
@@ -38,7 +37,7 @@ export default function SearchHistory() {
       <Image
         src="https://fast-learn-oss.youbaobao.xyz/music/icon_trash.png"
         className="search-history__clear"
-        onClick={clear}
+        onClick={props.clear}
       />
     </View>
   );

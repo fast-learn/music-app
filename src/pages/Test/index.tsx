@@ -1,5 +1,15 @@
-import { View, ScrollView } from '@tarojs/components';
+import { View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
+import { showAlert } from '@/utils';
+
+let Input, ScrollView;
+if (IS_RN) {
+  Input = require('react-native').TextInput;
+  ScrollView = require('react-native').ScrollView;
+} else {
+  Input = require('@tarojs/components').Input;
+  ScrollView = require('@tarojs/components').ScrollView;
+}
 
 let outerStyle = {}, containerStyle = {}, bottomStyle = {};
 if (IS_RN) {
@@ -50,142 +60,27 @@ if (IS_RN) {
 export default function Test() {
   return (
     <View className="test" style={outerStyle}>
+      <View
+        style={{ height: 200, backgroundColor: 'green' }}
+        onClick={() => showAlert('click!!!')}
+      />
       <View className="test__container" style={containerStyle}>
-        <ScrollView scrollY>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Main Content Here</View>
-          <View> Bottom Content Here</View>
+        <ScrollView
+          scrollY
+          // @ts-ignore
+          keyboardShouldPersistTaps="always"
+          keyboardDismissMode="on-drag"
+        >
+          <View style={{ paddingTop: 100 }}>Input your name:
+          </View>
+          <Input />
+          <View
+            style={{ height: 2000, backgroundColor: 'blue' }}
+            onClick={() => showAlert('click!')}
+          />
         </ScrollView>
       </View>
       <View className="test__bottom" style={bottomStyle}>
-        <View>Bottom View</View>
       </View>
     </View>
   );

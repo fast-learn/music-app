@@ -4,4 +4,5 @@ export default process.env.TARO_ENV === 'weapp' ? {
   navigationBarTextStyle: 'black',
 } : {
   navigationStyle: 'custom',
+  disableScroll: process.env.TARO_ENV === 'rn',
 };

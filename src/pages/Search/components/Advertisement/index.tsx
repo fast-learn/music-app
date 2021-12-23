@@ -3,7 +3,7 @@ import { Image, View } from '@tarojs/components';
 
 import './index.scss';
 
-export default function Advertisement(props) {
+export default function Advertisement(props): any {
   const [hide, setHide] = useState(false);
   return !hide && (
     <View className="adv" style={{ ...props.style }}>

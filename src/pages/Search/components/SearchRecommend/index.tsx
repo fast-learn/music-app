@@ -1,9 +1,9 @@
 import { View, Text } from '@tarojs/components';
-import useSearchRecommend from '@/pages/Search/components/SearchRecommend/useSearchRecommend';
+import useSearchRecommend from './useSearchRecommend';
 
 import './index.scss';
 
-export default function SearchRecommend() {
+export default function SearchRecommend(props): any {
   const { data } = useSearchRecommend();
 
   return data.length > 0 && (
@@ -11,8 +11,12 @@ export default function SearchRecommend() {
       <Text className="search-recommend__label">搜索推荐：</Text>
       <View className="search-recommend__tag">
         {
-          data.map(text => (
-            <View className="search-recommend__tag__text" key={text}>{text}</View>
+          data.slice(0, 3).map((text, index) => (
+            <View
+              className="search-recommend__tag__text"
+              key={text + index}
+              onClick={() => props.onSearch(text)}
+            >{text}</View>
           ))
         }
       </View>

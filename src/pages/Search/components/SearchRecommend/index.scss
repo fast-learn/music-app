@@ -1,28 +1,27 @@
 .search-recommend {
   display: flex;
   flex-direction: row;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
-  height: 88px;
-  padding: 20px;
+  margin-top: 26px;
+  padding: 0 30px;
   box-sizing: border-box;
   &__label {
-    font-size: 24px;
-    color: #333;
+    font-size: 20px;
+    color: #6D6D6D;
   }
   &__tag {
+    flex: 1;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    margin-left: 20px;
-    flex: 1;
-    max-width: 80%;
     overflow: hidden;
     &__text {
-      margin: 0 14px;
-      font-size: 24px;
-      color: royalblue;
+      margin: 0 16px;
+      font-size: 20px;
+      color: #7D99BC;
     }
   }
 }

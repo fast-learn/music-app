@@ -1,25 +1,38 @@
 import { useEffect, useState } from 'react';
+import Taro from '@tarojs/taro';
 
 export default function useSearchHistory() {
   const [data, setData] = useState<Array<string>>([]);
 
   useEffect(() => {
-    setData(['特别的人', '给你给我', '位置', '特别的人', '给你给我', '位置', '特别的人', '给你给我给你给我给你给我', '位置']);
+    init();
   }, []);
+
+  function init() {
+    // 将搜索关键词存入缓存
+    let searchHistory: any;
+    Taro.getStorage({ key: 'search_history' })
+      .then(res => {
+        searchHistory = res.data;
+        if (!searchHistory) {
+          searchHistory = [];
+        }
+        setData(searchHistory);
+      })
+      .catch(() => {
+        searchHistory = [];
+        setData(searchHistory);
+      });
+  }
 
   function clear() {
     setData([]);
-  }
-
-  function put(v) {
-    const _data = [...data];
-    _data.push(v);
-    setData(_data);
+    Taro.clearStorage();
   }
 
   return {
     data,
     clear,
-    put,
-  }
+    init,
+  };
 }

@@ -60,7 +60,6 @@ export function getPersonalizedNewsong(limit = 6) {
 
 /**
  * 获取默认搜索关键词
- *
  */
 export function getSearchDefault() {
   return get('/search/default').then(response => response.data.data);
@@ -74,6 +73,14 @@ export function getSearchSuggest(keywords) {
     keywords,
     type: 'mobile',
   }).then(response => response.data.result);
+}
+
+/**
+ * 获取热门搜索关键词
+ *
+ */
+export function getSearchHot() {
+  return get('/search/hot').then(response => response.data.result.hots);
 }
 
 /**

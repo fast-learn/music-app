@@ -15,7 +15,7 @@ export function get(url, params = {}) {
     method: 'GET',
     data: params,
   }).then(response => {
-    console.log(response);
+    // console.log(response);
     return response;
   });
 }
