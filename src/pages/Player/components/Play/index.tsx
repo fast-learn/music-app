@@ -1,4 +1,4 @@
-import { View,Image } from "@tarojs/components";
+import { View,Image,Slider } from "@tarojs/components";
 import Taro from '@tarojs/taro'
 import {useState,useEffect} from 'react'
 import {useDispatch,useSelector} from 'react-redux'
@@ -32,6 +32,8 @@ export default function Play(props) {
   // @ts-ignore
   const [duration, setDuration] = useState(0)
   const [currentTime, setCurrentTime] = useState(innerAudioContext.currentTime)
+  const [seek, setSeek] = useState(false)
+  const [volumn, setVolumn] = useState(0)
 
   // 监听播放时间
   useEffect(() => {
@@ -40,13 +42,11 @@ export default function Play(props) {
   },[currentTime])
 
   useEffect(() => {
-    console.log(innerAudioContext)
     if(!innerAudioContext.src){
       innerAudioContext.src = songList[songIndex].url
     }
     setDuration(innerAudioContext.duration)
     innerAudioContext.onEnded(() => {
-      console.log(11)
       setPalyingFlag(false)
     })
   },[])
@@ -148,6 +148,20 @@ export default function Play(props) {
       setSongOrder(++songOrder)
     }
   }
+  // 进度拖动时
+  const handleChanging = (data) => {
+    // 拖动进度 data.detail.value
+    console.log(data.detail,12)
+    setVolumn(data.detail.value)
+  }
+  // 拖动结束
+  const handleChange2 = (data) =>{
+    console.log('拖动结束')
+    innerAudioContext.seek(data.detail.value)
+    setCurrentTime(data.detail.value)
+    setVolumn(data.detail.value)
+    // 对应歌词高亮滚动
+  }
 
   return (
     <View className="player__bottom">
@@ -163,10 +177,21 @@ export default function Play(props) {
       </View>
       <View className="player__bottom__conter">
         {/* 播放时间的移动 */}
-        <View className="player__bottom__conter__start_time">{currentTime ? currentTimeformat(currentTime): '00:00'}</View>
-        <View className="player__bottom__conter__progress">
-          <View style={{width:(currentTime && innerAudioContext.duration) ?  (currentTime /innerAudioContext.duration * 100 +'%') : 0 }} className="player__bottom__conter__progress__speed"></View>
-          <View  style={{top: Taro.pxTransform(-7.5),left:(currentTime && innerAudioContext.duration) ?  (currentTime /innerAudioContext.duration * 100 +'%') : 0 }} className="player__bottom__conter__progress__radio"></View>
+        <View className="player__bottom__conter__start_time">{ currentTime ? currentTimeformat(currentTime): '00:00'}</View>
+        <View className="player__bottom__conter__progress"    style={{height:IS_WEAPP && Taro.pxTransform(40)}}>
+          {/* <View style={{width:(currentTime && innerAudioContext.duration) ?  (currentTime /innerAudioContext.duration * 100 +'%') : 0 }} className="player__bottom__conter__progress__speed"></View>
+          <View  style={{top: Taro.pxTransform(-7.5),left:(currentTime && innerAudioContext.duration) ?  (currentTime /innerAudioContext.duration * 100 +'%') : 0 }} className="player__bottom__conter__progress__radio"></View> */}
+          <Slider
+            step={1}
+            value={volumn}
+            backgroundColor="rgba(255,255,255,0.2)"
+            activeColor="rgba(255,255,255,0.5)"
+            blockSize={12}
+            className="player__bottom__conter__progress__Slider"
+            onChanging={handleChanging}
+            onChange={handleChange2}
+            max={innerAudioContext.duration ? innerAudioContext.duration : 100}
+          />
         </View>
         <View className="player__bottom__conter__end_time">{innerAudioContext.duration? currentTimeformat(innerAudioContext.duration) :'00:00'}</View>
       </View>
