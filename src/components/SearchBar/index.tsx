@@ -23,11 +23,13 @@ export default function SearchBar(props) {
     onInput,
     onSearch,
     onClear,
+    autoFocus = true,
+    onBack,
   } = props;
 
   // 生成className
   function createClass(className) {
-    return `${className}${IS_RN ? '' : ` ${className}--fixed`}${!isScrolling ? '' : ` ${className}--scrolling`}${status === 'normal' ? '' : ` ${className}--active`}`;
+    return `${className}${IS_RN ? '' : ` ${className}--fixed`}${!isScrolling ? '' : ` ${className}--scrolling`}${status === 'normal' ? '' : ` ${className}--active`} ${className}--${status}`;
   }
 
   return (
@@ -61,6 +63,11 @@ export default function SearchBar(props) {
             </>
           ) : (
             <>
+              {
+                status === 'list' && (
+                  <Image src="https://fast-learn-oss.youbaobao.xyz/music/icon_back.png" className="search-bar__back" onClick={onBack} />
+                )
+              }
               <View className={createClass('search-bar__input-bg')}>
                 <Image
                   src="https://fast-learn-oss.youbaobao.xyz/music/icon_search_gray.png"
@@ -71,16 +78,17 @@ export default function SearchBar(props) {
                   placeholderClass="search-bar__input-bg__input__placeholder"
                   value={searchWord}
                   placeholder={showKeyword}
-                  focus // 自动获得焦点
+                  focus={autoFocus} // 自动获得焦点
                   holdKeyboard // 点击时hold键盘
                   // @ts-ignore
-                  clearButtonMode="while-editing" // RN环境下启动clear模式
+                  clearButtonMode={status === 'list' ? 'always' : "while-editing"} // RN环境下启动clear模式
                   confirmType="search" // 键盘显示搜索
                   onInput={onInput}
                   onConfirm={() => onSearch()}
+                  disabled={status === 'list'}
                 />
                 {
-                  !isSearchWordEmpty() && !IS_RN && (
+                  (status === 'list' || (isSearchWordEmpty && !isSearchWordEmpty())) && !IS_RN && (
                     <View
                       className="search-bar__input-bg__close"
                       onClick={onClear}
@@ -93,7 +101,11 @@ export default function SearchBar(props) {
                   )
                 }
               </View>
-              <View className="search-bar__cancel-text">取消</View>
+              {
+                status !== 'list' && (
+                  <View className="search-bar__cancel-text">取消</View>
+                )
+              }
             </>
           )
         }

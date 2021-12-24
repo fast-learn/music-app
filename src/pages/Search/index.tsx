@@ -27,7 +27,7 @@ export default function Index() {
   return (
     <Layout hideBottomBar>
       <SearchBar
-        status="active"
+        status="search"
         searchWord={searchWord}
         showKeyword={showKeyword}
         realKeyword={realKeyword}

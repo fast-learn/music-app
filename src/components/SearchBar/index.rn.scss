@@ -32,6 +32,12 @@
     height: 28px;
   }
 
+  &__back {
+    width: 24px;
+    height: 47px;
+    margin-right: 34px;
+  }
+
   &__voice {
     width: 32px;
     height: 40px;
@@ -53,6 +59,9 @@
       justify-content: flex-start;
       padding: 0 10px 0 30px;
       margin: 0 27px 0 0;
+    }
+    &--list {
+      margin: 0;
     }
 
     &--scrolling {
