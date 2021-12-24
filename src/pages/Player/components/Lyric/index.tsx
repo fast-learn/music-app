@@ -1,11 +1,11 @@
 import { View, ScrollView,Image} from "@tarojs/components";
 import { useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react";
-import Taro from '@tarojs/taro';
+import Taro,{getCurrentInstance} from '@tarojs/taro';
 
 import { get } from "@/services";
 import lyricParser from "@/utils/lyric";
-import demoImg from "@/img/add.png";
+// import demoImg from "@/img/add.png";
 
 import "./index.scss";
 
@@ -19,10 +19,11 @@ export default function Lyric(props) {
   // const [scrollFlag, setScrollFlag] = useState(true)
   const { songListIndex,songList } = useSelector((state: any) => state.player);
   const [lyricData, setLyricData] = useState([]); // 歌词数组
-  const [scrollLength,setScrollLength] = useState(0)
+  // const [scrollLength,setScrollLength] = useState(0)
   const scrollRef = useRef(null);
   const lyricRef = useRef(null);
-  // const query = Taro.createSelectorQuery().in(Taro.getCurrentInstance().page)
+  // const query = Taro.createSelectorQuery().in(getCurrentInstance().page)
+  const { page } = getCurrentInstance()
 
 
   useEffect(() => {
@@ -58,7 +59,9 @@ export default function Lyric(props) {
   }, [props.isScroll]);
 
   useEffect(() => {
-    setLyricsContent(props.lyricsContent)
+    if(props.lyricsContent){
+      setLyricsContent(props.lyricsContent)
+    }
     if(props.lyricsContent === songDuration){
       clearInterval(scrollTime)
       setScrollTime(0)
@@ -125,14 +128,13 @@ export default function Lyric(props) {
   //   console.log(lyricRef,12)
   // },[])
   if (lyricData && lyricData.length > 0) {
-    console.log(lyricRef,12)
     return (
       <View className="lyric"  ref={lyricRef}>
         <ScrollView
           scrollY
           className="lyric__scroll"
           scrollTop={scrollTop}
-          style={{height:  IS_RN && Taro.pxTransform(810),paddingTop: IS_WEAPP && 0,paddingBottom: IS_WEAPP && 0}}
+          style={{height:  IS_RN && Taro.pxTransform(800),paddingTop: IS_WEAPP && 0,paddingBottom: IS_WEAPP && 0}}
           // onTouchMove={handleMove}
           // onTouchEnd={handleEnd}
           // onTouchStart={handleScrollStart}

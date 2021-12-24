@@ -1,118 +1,115 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-		<title>LRC</title>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-		<style>
-			div{
-				width:340px;
-				height:500px;
-				margin:0 auto;
-				overflow:hidden;
-			}
-			ul{
-				transition-duration: 600ms;
-			}
-			ul, li{
-				list-style:none;
-				padding: 0;
-				margin: 0;
-			}
-			li.on{
-				color: red;
-			}
-			p{
-				overflow: hidden;
-				text-overflow: ellipsis;
-				height: 16px;
-				line-height: 16px;
-				-webkit-line-clamp: 1;
-				-webkit-box-orient: vertical;
-				display: -webkit-box;
-				text-align: center;
-				margin-top: 0;
-				margin-bottom: 16px;
-			}
-			audio{
-				margin-top: 10px;
-			}
-		</style>
-	</head>
-	<body>
-		<div>
-			<ul id="lrclist" style="transform: translateY(250px);"><!-- 保证歌词在正中间 -->
-			</ul>
-		</div>
-		<audio id="audio" src="./src/pages/Player/mp3/aa.mp3" controls="controls" autoplay="true"></audio>
-		<script>
-		var lrcJSON = "[00:00.000] 作词 : Kevin Penkin\n[00:01.000] 作曲 : Kevin Penkin\n[00:08.87]It's just a tear, that saves me from the darkness\n[00:15.32]Witnessed through a mirror\n[00:17.84]Pain is truth\n[00:20.78]\n[00:21.16]And through your eyes we'll find an endless future\n[00:25.72]I'll continue forward, calling to you\n[00:34.52]\n[00:39.76]This is the edge, but I continue flying\n[00:44.49]Leaving life around me\n[00:47.15]Breakaway the pain\n[00:50.37]\n[00:50.66]I wanna feel my divisions crumble down\n[00:55.15]Look into my eyes, and\n[00:57.87]Heal the world of darkness\n[01:04.40]\n[01:12.53]The voices grow, the silence fills with screams\n[01:22.04]I see the twilight set on the world\n[01:26.93]It's starting to burn, save me, oh save me\n[01:39.79]\n[01:41.32]This is the edge, we keep on falling further\n[01:45.84]Fate intwined between us\n[01:48.51]Breakaway the truth\n[01:51.54]\n[01:51.82]I want to see the system falling down\n[01:56.51]Look into my eyes and\n[01:59.22]Heal the world of darkness\n[02:02.88]\n[02:03.16]This is the fear, it brings us to the end\n[02:07.13]Breaking all around you\n[02:09.82]Feel the lies surround, the broken world that\n[02:15.14]I'll continue forward\n[02:17.82]I'll fight for the future\n[02:20.52]Heal the world of darkness\n[02:25.00]\n[02:25.76]And here I am just standing on the edge\n[02:32.18]Waiting for the final days\n[02:37.06]oh, can you please save me from the end, the end, the end's calling fire raging deep within\n[02:58.45]Please don't leave\n[03:01.52]The reason I fall, take my heart and save me from the end\n[03:12.28]\n[03:25.03]Cause when we fall through dreams\n[03:30.44]I'll feel, the ocean\n[03:35.33]\n[03:35.75]And when the waves rise up\n[03:40.81]We'll move beyond together\n[03:46.08]\n[03:46.47]It's just a tear, that saves me from the darkness\n[03:51.20]Witnessed through a mirror\n[03:53.83]Feel the pain\n[03:56.85]\n[03:57.15]And through your cries we find an endless darkness\n[04:01.83]I'll continue forward, calling to you\n[04:12.71]\n[04:13.36]It's just a tear that saves me from the darkness, please.\n"
-    var medises = lrcJSON.split("\n");    // 用换行符拆分获取到的歌词
-    const newSongArr = []
-    medises.map((item,index) => {
-      const obj = {}
-      const newSOng = item.split(']')
-      newSongArr[index] = {
-        time: newSOng[0].split('[')[1],
-        content: newSOng[1]
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		.content {
+      width: 500px;
+      height: 80px;
+      margin: 100px auto;
+      position: relative;
+    }
+      
+    .bar {
+      width: 500px;
+      height: 12px;
+      border-radius: 10px;
+      background: #e4e7ed;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      cursor: pointer;
+    }
+    .progress {
+      width: 0;
+      height: 12px;
+      border-radius: 10px;
+      background: #409eff;
+    }
+    .dot {
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      border: 1px solid #409eff;
+      position: absolute;
+      bottom: 0;
+      top: 0;
+      margin: auto 0;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+	</style>
+</head>
+<body>
+	<div class="content">
+    <p>0%</p>
+    <div class="bar">
+    <div class="progress"></div>
+    <div class="dot"></div>
+    </div>
+  </div>
+	<script>
+		var content = document.getElementsByClassName('content')[0]
+		var bar = document.getElementsByClassName('bar')[0]
+		var progress = document.getElementsByClassName('progress')[0]
+		var dot = document.getElementsByClassName('dot')[0]
+		var p = document.getElementsByTagName('p')[0]
+  /*
+  * offsetWidth 获取当前节点的宽度 （width + border + padding）
+  **/
+  // 总长度减去原点覆盖的部分
+  var rest = bar.offsetWidth - dot.offsetWidth
+  // 鼠标按下事件
+  dot.onmousedown = function (ev) {
+      let dotL = dot.offsetLeft
+      let e = ev || window.event //兼容性
+      let mouseX = e.clientX //鼠标按下的位置
+      window.onmousemove = function (ev) {
+          let e = ev || window.event
+          let moveL = e.clientX - mouseX //鼠标移动的距离
+          let newL = dotL + moveL //left值
+          if (newL < 0) {
+              newL = 0
+          }
+          if (newL >= rest) {
+              newL = rest
+          }
+          dot.style.left = newL + 'px'
+          let bili = newL / rest * 100
+          p.innerHTML = Math.ceil(bili) + '%'
+          progress.style.width = 500*Math.ceil(bili)/100 + 'px';
+              return false //取消默认事件
+          }
+          window.onmouseup = function () {
+              window.onmousemove = false //解绑移动事件
+              return false
+          }
+          return false
+      };
+      // 点击音量条
+      bar.onclick = function (ev) {
+          let left = ev.clientX - content.offsetLeft - dot.offsetWidth / 2
+          if (left < 0) {
+              left = 0
+          }
+          if (left >= rest) {
+              left = rest
+          }
+            dot.style.left = left + 'px'
+          let bili = left / rest * 100
+          p.innerHTML =Math.ceil(bili) + '%'
+          progress.style.width = 500*Math.ceil(bili)/100 + 'px';
+          return false
       }
-    })
-    console.log(newSongArr)
-  // $.each(medises, function (i, item) {    // 遍历medises，并且将时间和文字拆分开，并push进自己定义的数组，形成一个对象数组
-  //   var t = item.substring(item.indexOf("[") + 1, item.indexOf("]"));
-  //   medisArray.push({
 
-  //     t: (t.split(":")[0] * 60 + parseFloat(t.split(":")[1])).toFixed(3),
-  //     c: item.substring(item.indexOf("]") + 1, item.length)
-  //   });
-  // });
-  // var ul = $("#text");
-  // // 遍历medisArray，并且生成li标签，将数组内的文字放入li标签
-  // $.each(medisArray, function (i, item) {
-  //   var li = $("<li style='list-style: none;'>");
-  //   li.html(item.c);
-  //   ul.append(li);
-  // });
-    var lrcTime = [];//歌词对应的时间数组
-		var ul = $("#lrclist")[0];//获取ul
-		var i = 0;
-		$.each(lrcJSON, function(key, value) {//遍历lrc
-			lrcTime[i++] = parseFloat(key.substr(1,3)) * 60 + parseFloat(key.substring(4,10));//00:00.000转化为00.000格式
-			ul.innerHTML += "<li><p>"+lrcJSON[key]+"</p></li>";//ul里填充歌词
-		});
-		lrcTime[lrcTime.length] = lrcTime[lrcTime.length-1] + 3;//如不另加一个结束时间，到最后歌词滚动不到最后一句
-		var $li = $("#lrclist>li");//获取所有li
-		var currentLine = 0;//当前播放到哪一句了
-		var currentTime;//当前播放的时间
-		var audio = document.getElementById("audio");
-		var ppxx;//保存ul的translateY值
-		audio.ontimeupdate = function() {//audio时间改变事件
-			currentTime = audio.currentTime;
-			for (j=currentLine, len=lrcTime.length; j<len; j++){
-				if (currentTime<lrcTime[j+1] && currentTime>lrcTime[j]){
-					currentLine =  j;
-					ppxx = 250-(currentLine*32);
-					ul.style.transform = "translateY("+ppxx+"px)";
-					$li.get(currentLine-1).className="";
-					console.log("on"+currentLine);
-					$li.get(currentLine).className="on";
-					break;
-				}
-			}
-		};
-		audio.onseeked = function() {//audio进度更改后事件
-			currentTime = audio.currentTime;
-			console.log("  off"+currentLine);
-			$li.get(currentLine).className="";
-			for (k=0, len=lrcTime.length; k<len; k++){
-				if (currentTime<lrcTime[k+1] && currentTime<lrcTime[k]){
-					currentLine =  k;
-					break;
-				}
-			}
-		};
-		
-		</script>
-	</body>
+	</script>
+</body>
 </html>
+
+
