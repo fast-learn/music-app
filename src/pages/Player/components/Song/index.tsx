@@ -8,6 +8,7 @@ import readerImg from '@/img/reader.png'
 import addImg from '@/img/add.png'
 
 import './index.scss'
+import Taro from '@tarojs/taro';
 
 export default function Song(){
   const [sliderData,setSliderData] = useState(20)
@@ -31,7 +32,7 @@ export default function Song(){
                 筷子兄弟
               </View>
               <View className="player__top__top__conter__vice__add">
-                <Image src={addImg}  className="player__top__top__conter__vice__add__image" />
+                <Image src={addImg}  className="player__top__top__conter__vice__add__image"  style={{top:IS_RN && Taro.pxTransform(-9)}} />
               </View>
             </View>
           </View>
@@ -45,7 +46,7 @@ export default function Song(){
         <View className="player__top__bottom">
           <Image src={volumeImg}  className="player__top__bottom__volume" />
           <View className="player__top__bottom__progress">
-            <Slider  step={1} value={sliderData}  backgroundColor="rgba(255,255,255,0.2)" activeColor="rgba(255,255,255,0.5)" blockSize={15}   className="player__top__bottom__progress__slider" onChange={slideScroll} />
+            <Slider  step={1} value={sliderData}  backgroundColor="rgba(255,255,255,0.2)" activeColor="rgba(255,255,255,0.5)" blockSize={12}   className="player__top__bottom__progress__slider" onChange={slideScroll} />
           </View>
           <Image src={readerImg}  className="player__top__bottom__radar" />
         </View>
