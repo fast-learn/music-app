@@ -1,6 +1,6 @@
 
 import { View,Image, Slider } from "@tarojs/components"
-
+import { useState } from "react"
 import bottomImg from '@/img/bottom.png'
 import coverImg from '@/img/cover.png'
 import fengxiangImg from '@/img/fenxiang.png'
@@ -11,8 +11,9 @@ import addImg from '@/img/add.png'
 import './index.scss'
 
 export default function Song(){
-  const slideScroll = ()=>{
-    console.log('拖动音量事件')
+  const [sliderData,setSliderData] = useState(20)
+  const slideScroll = (data)=>{
+    setSliderData(data.detail.value)
   }
   return(
     <View className="player__top">
@@ -45,10 +46,9 @@ export default function Song(){
         <View className="player__top__bottom">
           <Image src={volumeImg}  className="player__top__bottom__volume" />
           <View className="player__top__bottom__progress">
-            <Slider step={1} value={20} backgroundColor="rgba(255,255,255,0.2)" activeColor="rgba(255,255,255,0.5)" blockSize={15}   className="player__top__bottom__progress__slider" onChange={slideScroll} />
+            <Slider  step={1} value={sliderData}  backgroundColor="rgba(255,255,255,0.2)" activeColor="rgba(255,255,255,0.5)" blockSize={15}   className="player__top__bottom__progress__slider" onChange={slideScroll} />
           </View>
           <Image src={readerImg}  className="player__top__bottom__radar" />
-
         </View>
       </View>
   )

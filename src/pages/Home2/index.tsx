@@ -2,12 +2,12 @@ import React from'react';
 import { View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 
-import Search from '@/pages/Home/components/SearchBar';
-import Banner from '@/pages/Home/components/Banner';
-import Category from '@/pages/Home/components/Category';
-import Recommended from '@/pages/Home/components/Recommended';
+// import Search from '@/pages/Home/components/SearchBar';
+// import Banner from '@/pages/Home/components/Banner';
+// import Category from '@/pages/Home/components/Category';
+// import Recommended from '@/pages/Home/components/Recommended';
 // import RecommendVideo from '@/pages/Home/components/RecommendVideo'
-import NewMusic from '@/pages/Home/components/NewMusic'
+// import NewMusic from '@/pages/Home/components/NewMusic'
 // import Radar from '@/pages/Home/components/Radar'
 // import PopularBlog from '@/pages/Home/components/PopularBlog'
 // import Exclusivec from '@/pages/Home/components/Exclusivec'
@@ -46,15 +46,15 @@ export default class Index extends React.Component<IndexProps, IndexState> {
     return (
       <View className="index">
         {/* 搜索栏 */}
-        <Search />
+        {/* <Search /> */}
         {/* banner 图 */}
-        <Banner />
+        {/* <Banner /> */}
         {/* 分类 */}
-        <Category />
+        {/* <Category /> */}
         {/* 推荐歌单 */}
-        <Recommended />
+        {/* <Recommended /> */}
         {/* 清雅古风--> 替换为推荐新歌 */}
-        <NewMusic />
+        {/* <NewMusic /> */}
         {/* 精选音乐视频 */}
         {/* <RecommendVideo /> */}
         {/* 雷达歌单 */}

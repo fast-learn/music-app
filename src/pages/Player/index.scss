@@ -1,5 +1,21 @@
 .player{
   background-color: rgb(50, 57, 64);
-  padding: 10px 36px 104px ;
-  height: 100%;
+  padding: 10px 0 104px ;
+  // height: 100vh;
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+  &__play{
+    height: 265px;
+    padding: 0 36px;
+  }
+  &__lyric{
+    flex: 1;
+    overflow: hidden;
+  }
+  &__song{
+    height: 139px;
+    margin-bottom: 104px;
+    padding:0  36px;
+  }
 }
