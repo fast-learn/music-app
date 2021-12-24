@@ -1,0 +1,15 @@
+.player{
+  &__play{
+    height: 265px;
+    padding: 0 36px;
+  }
+  &__lyric{
+    flex: 1;
+    overflow: hidden;
+  }
+  &__song{
+    height: 139px;
+    margin-bottom: 104px;
+    padding:0  36px;
+  }
+}

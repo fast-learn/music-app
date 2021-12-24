@@ -1,3 +1,4 @@
+
 import { View,Image, Slider } from "@tarojs/components"
 import { useState } from "react"
 import bottomImg from '@/img/bottom.png'

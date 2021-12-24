@@ -1,4 +1,4 @@
-import { SONG_LIST_INDEX, SONG_LIST } from '../constants/bottomBar';
+import { SONG_LIST_INDEX, SONG_LIST } from '../constants';
 
 export const setSongListIndex = (payload) => {
   return {
