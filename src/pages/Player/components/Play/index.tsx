@@ -19,7 +19,6 @@ import xunhuan1Img from '@/img/xunhuan1.png'
 import './index.scss'
 import { SONG_LIST_INDEX } from '../../../../stores/constants/index';
 
-
 export default function Play(props) {
   const dispatch = useDispatch();
   const {songListIndex}  = useSelector((state: any) => state.player)
@@ -37,30 +36,63 @@ export default function Play(props) {
   // 监听播放时间
   useEffect(() => {
     props.changeCurrentTime(currentTime)
-    // console.log(currentTime)
+    setCurrentTime(innerAudioContext.currentTime)
   },[currentTime])
+
+  useEffect(() => {
+    console.log(innerAudioContext)
+    if(!innerAudioContext.src){
+      innerAudioContext.src = songList[songIndex].url
+    }
+    setDuration(innerAudioContext.duration)
+    innerAudioContext.onEnded(() => {
+      console.log(11)
+      setPalyingFlag(false)
+    })
+  },[])
 
   // 播放/暂停
   const handlePlaySong = async() => {
-    // 暂停/播放音乐
+    // if(IS_RN){
+    //   // setInnerAudioContext()
+    //   innerAudioContext.destroy()
+    //   const audio = Taro.createInnerAudioContext();
+    //   audio.src =songList[songIndex].url
+    //   console.log(audio.paused,122222 )
+    //   // audio.paused  一直等于true 需要销毁实例
+    //   if(audio.paused ){
+    //     audio.play()
+    //   }else{
+    //     audio.pause()
+    //   }
+        // = function () {
+        //   if (audio) {
+        //     return newAudio.play();
+        //   }
+        //   audio.destroy();
+        //   // audio.destroyed = true;
+        //   newAudio = Taro.createInnerAudioContext();
+        //   newAudio.src = audio.src;
+        //   newAudio.play();
+        // };
+    // } else {
+      // 暂停/播放音乐
     if(!innerAudioContext.src){
-      // innerAudioContext.src = songList[songIndex].url
-      innerAudioContext.src = 'http://localhost:8091/mp3/1903299149.mp3'
+      innerAudioContext.src = songList[songIndex].url
     }
     if(innerAudioContext.paused ){
       await innerAudioContext.play()
       setPalyingFlag(true)
-      setDuration(innerAudioContext.duration)
       setInterval(() => {
         setCurrentTime(innerAudioContext.currentTime)
       },100)
-      // innerAudioContext.onTimeUpdate()
       props.handlSong(innerAudioContext,true)
     }else{
       innerAudioContext.pause()
       setPalyingFlag(false)
       props.handlSong(innerAudioContext,false)
     }
+    // }
   }
   // 上一曲
   const handleProSong = () => {
@@ -74,6 +106,7 @@ export default function Play(props) {
       payload: songIndex,
     })
     innerAudioContext.src = songList[songIndex].url
+    handlePlaySong()
   }
   // 下一曲
   const handleNextSong = () => {
@@ -130,8 +163,11 @@ export default function Play(props) {
       </View>
       <View className="player__bottom__conter">
         {/* 播放时间的移动 */}
-        <View className="player__bottom__conter__start_time">{currentTime ? currentTimeformat(currentTime)  : '00:00'}</View>
-        <View className="player__bottom__conter__progress"></View>
+        <View className="player__bottom__conter__start_time">{currentTime ? currentTimeformat(currentTime): '00:00'}</View>
+        <View className="player__bottom__conter__progress">
+          <View style={{width:(currentTime && innerAudioContext.duration) ?  (currentTime /innerAudioContext.duration * 100 +'%') : 0 }} className="player__bottom__conter__progress__speed"></View>
+          <View  style={{top: Taro.pxTransform(-7.5),left:(currentTime && innerAudioContext.duration) ?  (currentTime /innerAudioContext.duration * 100 +'%') : 0 }} className="player__bottom__conter__progress__radio"></View>
+        </View>
         <View className="player__bottom__conter__end_time">{innerAudioContext.duration? currentTimeformat(innerAudioContext.duration) :'00:00'}</View>
       </View>
       <View className="player__bottom__bottom">
