@@ -1,0 +1,14 @@
+@import '../../../../app.rn';
+
+.player-lyric {
+  &__empty {
+    height: 100%;
+    box-sizing: border-box;
+    padding: 0 36px;
+    @include row-center;
+    font-size: 30px;
+    color: #fff;
+    opacity: .9;
+    text-align: center;
+  }
+}

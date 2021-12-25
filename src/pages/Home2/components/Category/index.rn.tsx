@@ -15,7 +15,7 @@ export default function Category(){
       showsHorizontalScrollIndicator={false}
       style={{ width: "100%", height: 60 }}
     >
-      {categoryList.map((item) => (
+      {categoryList.map((item: any) => (
         <View
           className="category__scroll--center"
           key={item.id}

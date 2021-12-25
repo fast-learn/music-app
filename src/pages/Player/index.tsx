@@ -24,6 +24,7 @@ import Lyric from './components/Lyric';
 
 export default function Palyer() {
   // const dispatch = useDispatch();
+  // @ts-ignore
   const {songListIndex,songList}  = useSelector((state: any) => state.player) // 当前播放索引
   const [isScroll, setIsScroll] = useState(false)// 是否播放
   const [songDuration,setSongDuration] = useState(0)

@@ -1,0 +1,111 @@
+@import '../../../../app.rn';
+
+.player-bottom {
+  height: 369px;
+  padding-bottom: 104px;
+  box-sizing: border-box;
+  font-size: 24px;
+  color: #fff;
+  text-align: center;
+  @include row-center;
+
+  &__bottom {
+    &__top {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+
+      &__left, &__right {
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: row;
+        align-items: center;
+
+        &__play {
+          width: 42px;
+          height: 42px;
+          margin-right: 35px;
+        }
+
+        &__stars {
+          width: 50px;
+          height: 50px;
+        }
+      }
+
+      &__right {
+        &__sing {
+          width: 51px;
+          height: 36px;
+        }
+
+        &__more {
+          width: 41px;
+          height: 41px;
+          margin-left: 36px;
+        }
+      }
+    }
+
+    &__center {
+      margin-top: 39px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+
+      &__start-time, &__end-time {
+        opacity: 0.5;
+        font-size: 18px;
+        color: #FFFFFF;
+        letter-spacing: 0;
+        line-height: 25px;
+      }
+
+      &__progress {
+        width: 556px;
+        margin: 0 20px;
+
+        &__slider {
+          padding: 0;
+          margin: 0;
+        }
+      }
+    }
+
+    &__bottom {
+      margin-top: 51px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+
+      &__play-order {
+        width: 46px;
+        height: 42px;
+        margin-right: 95px;
+      }
+
+      &__previous-song, &__next-song {
+        width: 37px;
+        height: 38px;
+      }
+
+      &__nest-song {
+      }
+
+      &__play {
+        width: 116px;
+        height: 116px;
+        margin: 0 66px 0 60px;
+      }
+
+      &__play-list {
+        margin-left: 100px;
+        width: 38px;
+        height: 30px;
+      }
+    }
+  }
+}

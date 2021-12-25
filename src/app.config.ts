@@ -1,10 +1,10 @@
 export default {
   pages: [
     'pages/Player2/index',
-    'pages/Player/index',
-    'pages/SearchList/index',
-    'pages/Home/index',
-    'pages/Search/index',
+    // 'pages/Player/index',
+    // 'pages/SearchList/index',
+    // 'pages/Home/index',
+    // 'pages/Search/index',
     // 'pages/Home2/index',
     // 'pages/Test/index',
   ],
