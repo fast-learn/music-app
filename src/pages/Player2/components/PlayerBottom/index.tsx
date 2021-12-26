@@ -42,7 +42,10 @@ export default function PlayerBottom(props) {
         <View className="player-bottom__bottom__center">
           <View className="player-bottom__bottom__center__start-time">{currentTime ? formatTime(currentTime): '00:00'}</View>
           <View className="player-bottom__bottom__center__progress">
-            <Slider />
+            <Slider
+              currentTime={currentTime}
+              duration={duration}
+            />
           </View>
           <View className="player-bottom__bottom__center__end-time">{duration ? formatTime(duration) : '00:00'}</View>
         </View>

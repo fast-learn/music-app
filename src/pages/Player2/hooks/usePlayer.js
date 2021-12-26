@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Taro from '@tarojs/taro';
 
 const ERROR = {
@@ -8,26 +8,29 @@ const ERROR = {
   '10004': '格式错误',
   '-1': '未知错误',
 };
-// 音乐播放实例
-const innerAudioContext = Taro.createInnerAudioContext();
+
+// eslint-disable-next-line no-undef
+const audioContext = IS_RN ? require('./AudioContext').createInnerAudioContext() : Taro.createInnerAudioContext();
+
 export default function usePlay() {
+  // 音乐播放器实例
+  const [innerAudioContext] = useState(audioContext);
   // 歌曲列表
   // eslint-disable-next-line no-unused-vars
   const [songList, setSongList] = useState([
     {
-      // url: 'http://192.168.31.148:8081/music/1903299149.mp3',
-      url: 'http://192.168.31.244:8089/music/1903299149.mp3',
+      url: 'http://192.168.31.148:8089/music/1903299149.mp3',
       // url: 'http://localhost:8089/music/1903299149.mp3',
     },
     {
-      url: 'http://192.168.31.244:8089/music/1897658456.mp3',
+      url: 'http://192.168.31.148:8089/music/1897658456.mp3',
       // url: 'http://localhost:8089/music/1897658456.mp3',
     },
   ]);
+  // 播放器加载状态
+  const [isLoaded, setIsLoaded] = useState(false);
   // 正在播放歌曲的序号
   const [current, setCurrent] = useState(0);
-  // 正在播放的歌曲信息
-  const [playingSong, setPlayingSong] = useState(null);
   // 正在播放歌曲总时长
   const [duration, setDuration] = useState(null);
   // 正在播放歌曲当前时间
@@ -37,70 +40,63 @@ export default function usePlay() {
   // 播放状态
   const [isPlaying, setIsPlaying] = useState(false);
 
-  useEffect(() => {
-    console.log('current updated!', current);
-    if (playingSong) {
-      replay();
-    }
-  }, [current]);
+  function initInnerAudioContext(song) {
+    innerAudioContext.autoplay = true;
+    innerAudioContext.src = song;
+    // 重新监听事件
+    innerAudioContext.onCanplay(onCanPlay);
+    innerAudioContext.onPlay(onPlay);
+    innerAudioContext.onError(onError);
+    innerAudioContext.onTimeUpdate(onTimeUpdate);
+    innerAudioContext.onEnded(onEnd);
+    // 更新状态
+    setIsLoaded(true);
+  }
+
+  // 首次播放
+  function firstPlay() {
+    // 首次播放，设置播放歌曲
+    initInnerAudioContext(songList[0].url);
+  }
 
   // 播放歌曲
   function play() {
-    // 如果正在播放则直接跳过
-    if (isPlaying) {
-      return;
-    }
-    // 如果没有播放，但已经有播放歌曲，则继续播放
-    if (playingSong) {
-      doPlay();
+    // 如果current为-1，则视为首次播放
+    if (!isLoaded && !isPlaying) {
+      firstPlay();
     } else {
-      // 首次播放，设置播放歌曲
-      const song = songList[current].url;
-      innerAudioContext.autoplay = true;
-      innerAudioContext.src = song;
-      // 卸载监听事件
-      innerAudioContext.offPlay();
-      innerAudioContext.offError();
-      innerAudioContext.offTimeUpdate();
-      innerAudioContext.offCanplay();
-      // 重新监听事件
-      innerAudioContext.onCanplay(onCanPlay);
-      innerAudioContext.onPlay(onPlay);
-      innerAudioContext.onError(onError);
-      innerAudioContext.onTimeUpdate(onTimeUpdate);
+      // 如果不是首次播放，说明是暂停后播放，则直接播放
+      doPlay();
     }
   }
 
-  // 重新播放
-  async function replay() {
-    console.log('replay...', innerAudioContext);
+  // 播放指定位置歌曲
+  async function playIndex(index) {
     try {
-      if (!innerAudioContext) {
-        return;
+      if (index >= 0) {
+        const song = songList[index].url;
+        console.log('playIndex', index, song);
+        // eslint-disable-next-line no-undef
+        if (IS_RN) {
+          await innerAudioContext.unload();
+          await innerAudioContext.init();
+          initInnerAudioContext(song);
+        } else {
+          // 更新src属性，注意在RN环境下不会自动执行（@taro/taro-rn库暂不支持）
+          innerAudioContext.src = song;
+        }
+        setCurrent(index);
       }
-      // 暂停前一首播放
-      if (!IS_RN) {
-        await innerAudioContext.stop();
-      }
-      console.log('replay stop...');
-      // 更换下一首链接
-      const nextSong = songList[current].url;
-      innerAudioContext.src = nextSong;
-      console.log('replay', nextSong);
-      // 播放下一首歌曲
-      await doPlay();
     } catch (e) {
-      console.log('replay', e);
+      console.log('playIndex', e);
     }
   }
 
   // 暂停播放
   async function pause() {
-    if (isPlaying) {
-      setIsPlaying(false);
-      await innerAudioContext.pause();
-      console.log('pause', innerAudioContext.paused);
-    }
+    await innerAudioContext.pause();
+    setIsPlaying(false);
+    console.log('pause', innerAudioContext.paused);
   }
 
   // 跳转到指定位置播放
@@ -118,8 +114,8 @@ export default function usePlay() {
     } else {
       nextIndex++;
     }
-    setCurrent(nextIndex);
     console.log('下一首', nextIndex);
+    playIndex(nextIndex);
   }
 
   // 上一首
@@ -133,43 +129,32 @@ export default function usePlay() {
     } else {
       previousIndex--;
     }
-    setCurrent(previousIndex);
+    console.log('上一首', previousIndex);
+    playIndex(previousIndex);
   }
 
   async function doPlay() {
-    if (!innerAudioContext) {
-      onError({ message: '播放器初始化失败' });
-      return;
-    }
     try {
       // h5播放器需要监听Promise异常
       await innerAudioContext.play();
-      // 更新播放状态和歌曲时长
-      setIsPlaying(true);
-      setCurrentTime(innerAudioContext.currentTime);
-      setDuration(innerAudioContext.duration);
-      // 保存歌曲基本信息
-      const song = songList[current].url;
-      const currentSong = {
-        src: song,
-        currentTime: innerAudioContext.currentTime,
-        duration: innerAudioContext.duration,
-      };
-      setPlayingSong(currentSong);
-      console.log('doPlay', currentSong);
+      console.log('doPlay', innerAudioContext);
     } catch (e) {
-      console.log('from playPromise.onError');
+      console.log('doPlay', e);
       onError(e);
     }
   }
 
   function onCanPlay() {
     console.log('onCanPlay');
-    doPlay();
+    // eslint-disable-next-line no-undef
+    if (!IS_RN) {
+      doPlay();
+    }
   }
 
   function onPlay(res) {
     console.log('onPlay', res);
+    setIsPlaying(true);
   }
 
   function onError(e) {
@@ -182,7 +167,6 @@ export default function usePlay() {
     }
     setError({ message: errMsg });
     setIsPlaying(false);
-    setPlayingSong(null);
     Taro.showToast({
       title: '播放失败，失败原因：' + errMsg,
       icon: 'none',
@@ -192,11 +176,25 @@ export default function usePlay() {
   }
 
   function onTimeUpdate() {
-    console.log('onTimeUpdate', innerAudioContext.currentTime);
-    setTimeout(() => setCurrentTime(innerAudioContext.currentTime), 0);
-    if (!duration) {
-      setDuration(innerAudioContext.duration);
-    }
+    console.log('onTimeUpdate', innerAudioContext.currentTime, innerAudioContext.duration);
+    setTimeout(() => {
+      innerAudioContext.currentTime >= 0 && setCurrentTime(innerAudioContext.currentTime);
+      innerAudioContext.duration > 0 && setDuration(innerAudioContext.duration);
+    }, 0);
+  }
+
+  function onEnd() {
+    console.log('onEnd');
+    innerAudioContext.offCanplay();
+    innerAudioContext.offPlay();
+    innerAudioContext.offTimeUpdate();
+    innerAudioContext.offError();
+    innerAudioContext.offEnded();
+    setDuration(null);
+    setCurrentTime(null);
+    setError(null);
+    setIsPlaying(false);
+    setIsLoaded(false);
   }
 
   function formatTime(time) {
@@ -206,15 +204,14 @@ export default function usePlay() {
   }
 
   return {
+    innerAudioContext,
     songList,
     current,
     duration,
     currentTime,
     isPlaying,
     error,
-    playingSong,
     play,
-    replay,
     pause,
     seek,
     next,

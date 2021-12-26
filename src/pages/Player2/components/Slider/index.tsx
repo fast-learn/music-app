@@ -5,14 +5,16 @@ if (IS_RN) {
   SliderRN = require('@miblanchard/react-native-slider').Slider;
 }
 
-export default function PlayerSlider() {
+export default function PlayerSlider(props) {
+  const { duration = 0, currentTime = 0 } = props;
+  console.log('slider', props);
   return IS_RN ? (
     <SliderRN
       step={1}
-      value={20}
+      value={currentTime || 0}
       trackClickable
       minimumValue={0}
-      maximumValue={100}
+      maximumValue={duration || 0}
       minimumTrackTintColor="rgba(255,255,255,0.5)"
       maximumTrackTintColor="rgba(255,255,255,0.2)"
       thumbTintColor="white"
@@ -22,12 +24,13 @@ export default function PlayerSlider() {
   ) : (
     <Slider
       step={1}
-      value={20}
+      value={currentTime}
+      min={0}
+      max={duration}
       backgroundColor="rgba(255,255,255,0.2)"
       activeColor="rgba(255,255,255,0.5)"
       blockSize={10}
       className="player-bottom__bottom__center__progress__Slider"
-      max={100}
     />
-  )
+  );
 }
