@@ -1,7 +1,8 @@
-import { ScrollView, View } from '@tarojs/components';
+// import { ScrollView, View } from '@tarojs/components';
 import Layout from '@/components/Layout';
 import SearchBar from '@/components/SearchBar';
 import useSearchList from './useSearchList';
+import SearchListTabBar from './components/SearchListTabBar'
 
 export default function SearchList() {
   const { searchWord } = useSearchList();
@@ -12,9 +13,10 @@ export default function SearchList() {
         searchWord={searchWord}
         autoFocus={false}
       />
-      <ScrollView scrollY>
+      <SearchListTabBar></SearchListTabBar>
+      {/* <ScrollView scrollY>
         <View>{searchWord}</View>
-      </ScrollView>
+      </ScrollView> */}
     </Layout>
   );
 }
