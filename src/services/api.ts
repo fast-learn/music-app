@@ -116,3 +116,11 @@ export function getSearchList(keywords,type){
     keywords
   }).then(response => response.data.result);
 }
+/**
+ * 搜索推荐
+ */
+ export function getSearchListRecommend(keywords){
+  return get('/search/suggest',{
+    keywords
+  }).then(response => response.data.result);
+}

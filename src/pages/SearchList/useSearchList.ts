@@ -1,5 +1,5 @@
-import { useState, useEffect,useCallback } from 'react';
-import {getSearchList} from '@/services/api.ts';
+import { useState, useEffect } from 'react';
+import {getSearchList,getSearchListRecommend} from '@/services/api.ts';
 
 const SearchList = [
   {id:0,nickname:'comprehensive', name: '综合'},
@@ -18,11 +18,12 @@ const SearchList = [
 
 ]
 export default function useSearchList() {
+  console.log('useSearchList')
   const [searchWord] = useState('try');
   const [searchListData, setSeatchListData] = useState([])  // 全部搜索内容
   const [searchListIndex,setSearchListIndex] = useState(0) // 记录当前tab
   const [searchNowList, setSearchNowList] = useState([]) // 显示的内容
-
+  const [searchListRecommend,setSearchListRecommend] = useState([]) // 综合选项中感兴趣的内容
   // 内容排序
   const OrderLIst  = (data) =>{
     const orderList = []
@@ -37,18 +38,38 @@ export default function useSearchList() {
     orderList.unshift({id:0,nickname:'comprehensive', name: '综合'})
     return orderList
   }
+  const setSearchList = (data) =>{
+    setSearchNowList(data)
+  }
   // tabBar点击时间
   const chandleTabBar = (data) =>{
      // 记录点击事件
     setSearchListIndex(data.id)
+    if(data.id === 0 ){
+      setSearchNowList(searchListData)
+    }
+    else{
+      setSearchNowList(searchListData.find((item) => item.id == data.id))
+    }
   }
-
   useEffect(() => {
-    // if(searchListData.length == 0 ){
-      getSearchList('薛之谦',1018).then((params) => {
+    getSearchList('张三',1018).then((params) => {
+      getSearchList('薛之谦',1014).then((items) => {
+        params.new_mlog.new_mlogs = items.videos.splice(0,5)
         setSeatchListData(OrderLIst(params))
       })
-    // }
+    }).catch(()=>setSeatchListData([]))
+    getSearchListRecommend('张三').then((params) => {
+      // setSearchListRecommend(params)
+      const newList = []
+      params.order.map((item) => {
+        const obj:any ={}
+        obj.name = item
+        obj.data = params[item][0]
+        newList.push(obj)
+      })
+      setSearchListRecommend(newList)
+    }).catch(() => setSearchListRecommend([]))
   },[])
   // useEffect(() => {
   //   setSearchNowList([])
@@ -56,17 +77,17 @@ export default function useSearchList() {
   //     setSearchNowList(searchListData)
   //   }
   //   else{
-  //     console.log([searchListData.find((item) => item.id == searchListIndex)],1233)
   //     setSearchNowList(searchListData.find((item) => item.id == searchListIndex))
   //   }
-  //   // console.log(searchListIndex,searchListData,123)
-  //   // console.log(searchNowList,99)
-  // },[searchListIndex])
+  // },[searchListData])
   return {
     searchWord,
     searchListData,
     searchListIndex,
     searchNowList,
-    chandleTabBar
+    chandleTabBar,
+    setSearchList,
+    setSearchNowList,
+    searchListRecommend
   };
 }
