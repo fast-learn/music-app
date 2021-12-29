@@ -1,4 +1,3 @@
 export default {
-  navigationStyle: 'custom',
-  disableScroll: true,
-};
+  navigationBarTitleText: '播放页面'
+}

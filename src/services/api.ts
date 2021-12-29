@@ -106,3 +106,21 @@ export function getSearchHot() {
 export function search(keywords, { type = 1, limit = 20, offset = 0 }) {
   return get('/search', { keywords, type, limit, offset }).then(response => response.data.result);
 }
+
+/**
+ * 综合搜索
+ */
+export function getSearchList(keywords,type){
+  return get('/search',{
+    type,
+    keywords
+  }).then(response => response.data.result);
+}
+/**
+ * 搜索推荐
+ */
+ export function getSearchListRecommend(keywords){
+  return get('/search/suggest',{
+    keywords
+  }).then(response => response.data.result);
+}

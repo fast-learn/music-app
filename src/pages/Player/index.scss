@@ -1,35 +1,15 @@
-.player {
-  position: relative;
-  width: 100%;
-  background-color: rgb(50, 57, 64);
-  padding: 10px 0 104px;
-  display: flex;
-  box-sizing: border-box;
-  flex-direction: column;
-
-  &__bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  &__play {
+.player{
+  &__play{
     height: 265px;
     padding: 0 36px;
   }
-
-  &__lyric {
+  &__lyric{
     flex: 1;
     overflow: hidden;
   }
-
-  &__song {
+  &__song{
     height: 139px;
     margin-bottom: 104px;
-    padding: 0 36px;
+    padding:0  36px;
   }
 }
