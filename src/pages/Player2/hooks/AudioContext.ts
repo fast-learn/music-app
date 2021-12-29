@@ -106,6 +106,11 @@ class InnerAudioContext {
     return this._volume;
   }
 
+  setVolume(value) {
+    this._volume = value;
+    return this.soundObject.setVolumeAsync(value);
+  }
+
   set loop(value: boolean) {
     this._loop = value;
   }

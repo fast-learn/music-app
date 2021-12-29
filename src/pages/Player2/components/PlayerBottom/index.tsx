@@ -1,4 +1,5 @@
 import { Image, View } from '@tarojs/components';
+import classnames from 'classnames';
 import play1Img from '@/img/play1.png';
 import starsImg from '@/img/stars.png';
 import singImg from '@/img/sing.png';
@@ -25,6 +26,7 @@ export default function PlayerBottom(props) {
     currentTime,
     duration,
     formatTime,
+    isSeeking,
   } = props;
   return (
     <View className="player-bottom">
@@ -40,12 +42,17 @@ export default function PlayerBottom(props) {
           </View>
         </View>
         <View className="player-bottom__bottom__center">
-          <View className="player-bottom__bottom__center__start-time">{currentTime ? formatTime(currentTime): '00:00'}</View>
+          <View
+            className={classnames(
+              'player-bottom__bottom__center__start-time',
+              {
+                'player-bottom__bottom__center__start-time--seeking': isSeeking,
+              })}
+          >
+            {currentTime ? formatTime(currentTime) : '00:00'}
+          </View>
           <View className="player-bottom__bottom__center__progress">
-            <Slider
-              currentTime={currentTime}
-              duration={duration}
-            />
+            <Slider {...props} />
           </View>
           <View className="player-bottom__bottom__center__end-time">{duration ? formatTime(duration) : '00:00'}</View>
         </View>

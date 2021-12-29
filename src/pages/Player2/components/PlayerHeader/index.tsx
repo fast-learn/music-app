@@ -44,7 +44,7 @@ export default function PlayerHeader(props) {
         <View className="player-header__wrapper__bottom">
           <Image src={volumeImg} className="player-header__wrapper__bottom__volume" />
           <View className="player-header__wrapper__bottom__progress">
-            <Slider />
+            <Slider {...props} type="volume" />
           </View>
           <Image src={readerImg} className="player-header__wrapper__bottom__radar" />
         </View>

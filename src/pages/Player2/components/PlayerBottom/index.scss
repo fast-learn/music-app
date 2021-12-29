@@ -63,6 +63,9 @@
         color: #FFFFFF;
         letter-spacing: 0;
         line-height: 25px;
+        &--seeking {
+          opacity: 1;
+        }
       }
 
       &__progress {
