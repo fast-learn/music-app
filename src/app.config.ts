@@ -1,12 +1,12 @@
 export default {
   pages: [
+    // 'pages/Test/index',
     'pages/Player/index',
     // 'pages/SearchList/index',
     // 'pages/Home/index',
     // 'pages/Search/index',
     // 'pages/Player2/index',
     // 'pages/Home2/index',
-    // 'pages/Test/index',
   ],
   window: {
     backgroundTextStyle: 'light',

@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
 import Taro from '@tarojs/taro';
+import lyricParser from '@/utils/lyric';
+import { getLyric } from '@/services/api';
+import clonedeep from 'lodash.clonedeep';
+import { getSongDetail } from '../../../services/api';
 
 const ERROR = {
   '10001': '系统错误',
@@ -12,8 +16,9 @@ const ERROR = {
 // eslint-disable-next-line no-undef
 const audioContext = IS_RN ? require('./AudioContext').createInnerAudioContext() : Taro.createInnerAudioContext();
 
-let onTimeUpdateTask;
+let updateTimeTask;
 let onSeekingTask;
+const events = new Taro.Events();
 export default function usePlay() {
   // 音乐播放器实例
   const [innerAudioContext] = useState(audioContext);
@@ -24,11 +29,13 @@ export default function usePlay() {
       url: 'http://192.168.31.148:8089/music/1903299149.mp3',
       // url: 'http://localhost:8089/music/1903299149.mp3',
       // url: 'http://172.20.10.3:8089/music/1903299149.mp3',
+      id: 1903299149,
     },
     {
       url: 'http://192.168.31.148:8089/music/1897658456.mp3',
       // url: 'http://localhost:8089/music/1897658456.mp3',
       // url: 'http://172.20.10.3:8089/music/1897658456.mp3',
+      id: 1897658456,
     },
   ]);
   // 播放器加载状态
@@ -46,7 +53,49 @@ export default function usePlay() {
   // seeking状态
   const [isSeeking, setIsSeeking] = useState(false);
   // 播放音量
-  const [volume, setVolume] = useState(0.2);
+  const [volume, setVolume] = useState(0.6);
+  // 歌词
+  const [lyric, setLyric] = useState(null);
+  // 歌曲信息
+  const [songDetail, setSongDetail] = useState(null);
+
+  useEffect(() => {
+    events.on('updateTime', updateTime);
+  }, []);
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  useEffect(() => {
+    if (lyric && !!duration) {
+      const lastLyric = lyric[lyric.length - 1];
+      // duration更新后，更新一次歌词最后一位的时间
+      if (!lastLyric.endTime) {
+        const _lyric = clonedeep(lyric);
+        const _lastLyric = _lyric[_lyric.length - 1];
+        _lastLyric.endTime = duration;
+        _lastLyric.duration = Number((_lastLyric.endTime - _lastLyric.startTime).toFixed(2));
+        setLyric(_lyric);
+      }
+    }
+  }, [duration]);
+
+  useEffect(() => {
+    console.log(lyric);
+  }, [lyric]);
+
+  async function init() {
+    const id = songList[current ? current : 0].id;
+    // 处理歌词信息
+    let lyricData = await getLyric(id);
+    lyricData = lyricParser(lyricData);
+    // 获取歌曲详情
+    const songDetailData = await getSongDetail(id);
+    setLyric(lyricData);
+    setSongDetail(songDetailData);
+    console.log(songDetailData);
+  }
 
   function initInnerAudioContext(song) {
     innerAudioContext.autoplay = true;
@@ -110,8 +159,9 @@ export default function usePlay() {
 
   // 跳转到指定位置播放
   async function seek(seekValue) {
-    onSeekingTask && clearInterval(onSeekingTask);
-    onTimeUpdateTask && clearTimeout(onTimeUpdateTask);
+    if (!currentTime) return;
+    clearInterval(onSeekingTask);
+    clearTimeout(updateTimeTask);
     let value;
     // eslint-disable-next-line no-undef
     if (IS_RN) {
@@ -119,7 +169,6 @@ export default function usePlay() {
     } else {
       value = seekValue.detail.value;
     }
-    // console.log('seek', value, currentTime);
     await innerAudioContext.seek(value);
     setCurrentTime(value);
     setIsSeeking(false);
@@ -127,8 +176,12 @@ export default function usePlay() {
 
   // 处理拖动过程事件
   async function seeking(seekValue) {
-    onSeekingTask && clearInterval(onSeekingTask);
-    setInterval(() => onTimeUpdateTask && clearTimeout(onTimeUpdateTask), 10);
+    if (!currentTime) return;
+    clearInterval(onSeekingTask);
+    clearTimeout(updateTimeTask);
+    onSeekingTask = setInterval(() => {
+      clearTimeout(updateTimeTask);
+    }, 10);
     let value;
     // eslint-disable-next-line no-undef
     if (IS_RN) {
@@ -136,35 +189,38 @@ export default function usePlay() {
     } else {
       value = seekValue.detail.value;
     }
-    // console.log('seeking', value, currentTime, isSeeking);
     setCurrentTime(value);
     setIsSeeking(true);
   }
 
   async function volumeChange(volumeValue) {
-    await setVolumeValue(volumeValue);
+    setTimeout(() => setVolumeValue(volumeValue), 0);
   }
 
   async function volumeChanging(volumeValue) {
-    await setVolumeValue(volumeValue);
+    setTimeout(() => setVolumeValue(volumeValue), 0);
   }
 
-  async function setVolumeValue(volumeValue) {
+  function setVolumeValue(volumeValue) {
     let value;
     // eslint-disable-next-line no-undef
     if (IS_RN) {
       try {
         value = volumeValue;
-        await innerAudioContext.setVolume(value[0]);
       } catch (e) {
         console.log(e);
       }
     } else {
       value = volumeValue.detail.value;
+    }
+    setVolume(value);
+    // eslint-disable-next-line no-undef
+    if (IS_RN) {
+      return innerAudioContext.setVolume(value[0]);
+    } else {
       innerAudioContext.volume = value;
     }
-    // console.log('seeking', value);
-    setVolume(value);
+    // console.log('volumeChange', value);
   }
 
   // 下一首
@@ -213,6 +269,8 @@ export default function usePlay() {
     // eslint-disable-next-line no-undef
     if (!IS_RN) {
       doPlay();
+    } else {
+      innerAudioContext.setVolume(volume);
     }
   }
 
@@ -239,12 +297,23 @@ export default function usePlay() {
     });
   }
 
+  function updateTime(_currentTime, _duration) {
+    // console.log('onTimeUpdateTask', isSeeking, _currentTime, _duration);
+    if (isSeeking) {
+      return;
+    }
+    _currentTime >= 0 && setCurrentTime(_currentTime);
+    if (!duration && _duration > 0) {
+      setDuration(_duration);
+    }
+  }
+
   function onTimeUpdate() {
     // console.log('onTimeUpdate', innerAudioContext.currentTime, innerAudioContext.duration);
-    onTimeUpdateTask = setTimeout(() => {
-      innerAudioContext.currentTime >= 0 && setCurrentTime(innerAudioContext.currentTime);
-      innerAudioContext.duration > 0 && setDuration(innerAudioContext.duration);
-    }, 50);
+    clearTimeout(updateTimeTask);
+    updateTimeTask = setTimeout(() => {
+      events.trigger('updateTime', innerAudioContext.currentTime, innerAudioContext.duration);
+    }, 100);
   }
 
   function onEnd() {
@@ -276,6 +345,8 @@ export default function usePlay() {
     isPlaying,
     isSeeking,
     volume,
+    lyric,
+    songDetail,
     error,
     play,
     pause,

@@ -110,17 +110,36 @@ export function search(keywords, { type = 1, limit = 20, offset = 0 }) {
 /**
  * 综合搜索
  */
-export function getSearchList(keywords,type){
-  return get('/search',{
+export function getSearchList(keywords, type) {
+  return get('/search', {
     type,
-    keywords
+    keywords,
   }).then(response => response.data.result);
 }
+
 /**
  * 搜索推荐
  */
- export function getSearchListRecommend(keywords){
-  return get('/search/suggest',{
-    keywords
+export function getSearchListRecommend(keywords) {
+  return get('/search/suggest', {
+    keywords,
   }).then(response => response.data.result);
+}
+
+/**
+ * 歌曲详情
+ */
+export function getSongDetail(ids) {
+  return get('/song/detail', {
+    ids,
+  }).then(response => response?.data);
+}
+
+/**
+ * 歌词详情
+ */
+export function getLyric(id) {
+  return get('/lyric', {
+    id,
+  }).then(response => response?.data?.lrc?.lyric);
 }

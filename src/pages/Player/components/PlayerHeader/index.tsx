@@ -1,7 +1,7 @@
+import { useEffect, useState } from 'react';
 import { View, Image } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import bottomImg from '@/img/bottom.png';
-import coverImg from '@/img/cover.png';
 import fengxiangImg from '@/img/fenxiang.png';
 import volumeImg from '@/img/volume.png';
 import readerImg from '@/img/reader.png';
@@ -12,6 +12,15 @@ import './index.scss';
 
 // @ts-ignore
 export default function PlayerHeader(props) {
+  const { songDetail } = props;
+  const [songName, setSongName] = useState('');
+  const [artist, setArtist] = useState('');
+  const [pic, setPic] = useState('');
+  useEffect(() => {
+    setSongName(songDetail?.songs[0]?.name || '');
+    setArtist(songDetail?.songs[0]?.ar[0]?.name || '');
+    setPic(songDetail?.songs[0]?.al?.picUrl || '');
+  }, [songDetail]);
   return (
     <View
       className="player-header"
@@ -25,22 +34,20 @@ export default function PlayerHeader(props) {
           <Image src={bottomImg} className="player-header__wrapper__top__back" />
           <View className="player-header__wrapper__top__content">
             <View className="player-header__wrapper__top__content__main">
-              王娅-半吨兄弟-爱情错觉
+              {songName}
             </View>
             <View className="player-header__wrapper__top__content__artist">
               <View className="player-header__wrapper__top__content__artist__message">
-                筷子兄弟
+                {artist}
               </View>
               <Image src={addImg} className="player-header__wrapper__top__content__artist__add" />
             </View>
           </View>
           <View className="player-header__wrapper__top__right">
-            <Image src={coverImg} className="player-header__wrapper__top__right__cover" />
-            {/*  头像涟漪效果 */}
+            <Image src={pic} className="player-header__wrapper__top__right__cover" />
             <Image src={fengxiangImg} className="player-header__wrapper__top__right__share" />
           </View>
         </View>
-        {/* 音量添加减少效果 */}
         <View className="player-header__wrapper__bottom">
           <Image src={volumeImg} className="player-header__wrapper__bottom__volume" />
           <View className="player-header__wrapper__bottom__progress">

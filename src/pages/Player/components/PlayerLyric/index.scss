@@ -1,6 +1,8 @@
 @import '../../../../app.rn';
 
 .player-lyric {
+  margin: 0 0 40px 0;
+  // 隐藏滚动条
   &__empty {
     height: 100%;
     box-sizing: border-box;
@@ -11,4 +13,23 @@
     opacity: .9;
     text-align: center;
   }
+  &__list {
+    padding: 50% 36px 0;
+    &__item {
+      @include row-center;
+      opacity: 0.5;
+      font-size: 30px;
+      height: 70px;
+      color: #FFFFFF;
+      &--active {
+        opacity: 0.9;
+      }
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
 }

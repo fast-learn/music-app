@@ -1,6 +1,5 @@
 // import { ScrollView, View } from '@tarojs/components';
 import Layout from '@/components/Layout';
-import {useCallback} from 'react'
 import SearchBar from '@/components/SearchBar';
 import useSearchList from './useSearchList';
 import SearchListTabBar from './components/SearchListTabBar'
