@@ -1,3 +1,5 @@
+import { Dimensions } from 'react-native';
+import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { View, Image, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import classnames from 'classnames';
@@ -7,20 +9,26 @@ import './index.scss';
 
 let lyricHeight: any = '100%';
 // 计算歌词的高度，用于控制ScrollView的高度
-if (IS_WEAPP) {
-  const systemInfo = Taro.getSystemInfoSync();
-  const { safeArea, statusBarHeight } = systemInfo;
-  const HEIGHT = safeArea.height;
-  // const BOTTOM_SPACE = safeArea.bottom - safeArea.height;
-  const STATUS_BAR = statusBarHeight;
-  const PLAYER_HEADER_HEIGHT = 169 / 2;
-  const PLAYER_BOTTOM_HEIGHT = 369 / 2;
-  lyricHeight = (HEIGHT - STATUS_BAR - PLAYER_HEADER_HEIGHT - PLAYER_BOTTOM_HEIGHT) + 'PX';
-}
+const HEIGHT = Dimensions.get('window').height;
+const BOTTOM_SPACE = getBottomSpace();
+const STATUS_BAR = getStatusBarHeight();
+const PLAYER_HEADER_HEIGHT = +Taro.pxTransform(199);
+const PLAYER_BOTTOM_HEIGHT = +Taro.pxTransform(369);
+lyricHeight = HEIGHT - BOTTOM_SPACE - STATUS_BAR - PLAYER_HEADER_HEIGHT - PLAYER_BOTTOM_HEIGHT;
+
 export default function PlayerLyric(props) {
   const { error, lyric, formatTime, isLoaded } = props;
-  // @ts-ignore
-  const { scrollRef, listRef, lyricIndex, onScroll, onScrollBeginDrag, onScrollEndDrag, isManualScroll, seekTo, scrollTop } = useLyric(props);
+  const {
+    scrollRef,
+    listRef,
+    lyricIndex,
+    onScroll,
+    onTouchStart,
+    onTouchEnd,
+    isManualScroll,
+    seekTo,
+    scrollTop,
+  } = useLyric(props);
 
   return (
     <ScrollView
@@ -28,12 +36,14 @@ export default function PlayerLyric(props) {
       style={{ height: lyricHeight, flex: 1 }} // 手动计算滚动条高度
       ref={scrollRef} // 绑定ref
       scrollY // 开启y轴滚动
-      enableFlex={IS_WEAPP} // 兼容微信小程序
-      enhanced // 微信小程序scroll-view开启增强模式，以获得scrollTo API
+      // @ts-ignore
+      showsVerticalScrollIndicator={false} // RN隐藏y轴滚动条
+      scrollWithAnimation // RN显示滚动动画
       scrollTop={scrollTop}
       onScroll={onScroll}
-      // onScrollBeginDrag={onScrollBeginDrag}
-      // onScrollEndDrag={onScrollEndDrag}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      scrollEventThrottle={20} // onScroll事件节流
     >
       {lyric && lyric.length > 0 ? (
         <View className="player-lyric__list" ref={listRef}>

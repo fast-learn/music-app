@@ -1,13 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Taro from '@tarojs/taro';
 import animateScrollTo from 'animated-scroll-to';
+import { lte, lt, formatNumber } from '@/utils';
 
+let dragEndTask;
 export default function useLyric(props) {
-  const { lyric, isPlaying, duration, currentTime } = props;
+  const { lyric, isPlaying, currentTime, doSeek } = props;
   // 歌词项的高度
   const [lyricItemHeight, setLyricItemHeight] = useState(0);
   // 歌词当前位置
   const [lyricIndex, setLyricIndex] = useState(0);
+  // 是否为手动滚动
+  // @ts-ignore
+  const isManualScroll = useRef(false);
+  const [scrollTop, setScrollTop] = useState(0);
 
   const scrollRef = useRef(null);
   const listRef = useCallback(node => {
@@ -18,7 +24,7 @@ export default function useLyric(props) {
       const { UIManager, findNodeHandle } = require('react-native');
       const handle = findNodeHandle(node);
       // 只有歌曲时长初始化成功后，再进行DOM渲染和计算
-      if (handle && duration && duration > 0) {
+      if (handle) {
         // @ts-ignore
         UIManager.measure(handle, (x, y, width, height, pageX, pageY) => {
           // console.log('UIManager', x, y, width, height, pageX, pageY);
@@ -26,17 +32,19 @@ export default function useLyric(props) {
           const size = lyric.length;
           // 歌词DOM距离上方和下方的距离
           const marginBottom = +Taro.pxTransform(40);
+          const padding = +Taro.pxTransform(800);
+          // @ts-ignore
+          const scrollHeight = scrollRef?.current?._scrollMetrics?.contentLength || 0;
           // 计算歌词DOM的真实高度
-          const realLyricListHeight = Number((height - marginBottom - pageY).toFixed(2));
+          const realLyricListHeight = scrollHeight - marginBottom - padding; //
           // 计算每一段歌词的真实高度
-          const itemHeight = Number((realLyricListHeight / size).toFixed(2));
+          const itemHeight = +(realLyricListHeight / size).toFixed(2);
           setLyricItemHeight(itemHeight);
-          // console.log('lyric', 'height=' + realLyricListHeight, 'size=' + size, 'itemHeight=' + itemHeight, duration);
+          // console.log('lyric', 'height=' + realLyricListHeight, 'size=' + size, 'itemHeight=' + itemHeight);
         });
       }
     }
   }, [lyric]);
-  let task;
   useEffect(() => {
     if (lyric) {
       // H5和小程序在歌词更新后再计算DOM
@@ -63,44 +71,108 @@ export default function useLyric(props) {
     }
   }, [lyric]);
   useEffect(() => {
-    clearTimeout(task);
-    if (isPlaying) {
-      // 1. 计算当前时间对应的歌词位置
-      const _lyricIndex = lyric.findIndex(lyricItem => lyricItem.startTime <= currentTime && currentTime <= lyricItem.endTime);
-      // 2. 计算scroll距离
-      const scrollDistance = _lyricIndex * lyricItemHeight;
-      setLyricIndex(_lyricIndex);
-      // console.log(scrollDistance, _lyricIndex, lyricItemHeight);
-      if (IS_RN) {
-        // RN下使用scrollToOffset进行歌词滚动
-        // @ts-ignore
-        scrollRef?.current?.scrollToOffset(0, scrollDistance);
-      } else if (IS_H5) {
-        // @ts-ignore
-        animateScrollTo(scrollDistance, {
-          elementToScroll: scrollRef.current,
-        });
-      } else if (IS_WEAPP) {
-        Taro.createSelectorQuery()
-          .select('.player-lyric')
-          .node()
-          .exec(res => {
-            const scrollView = res[0].node;
-            scrollView.scrollTo({
-              top: scrollDistance,
-              animated: true,
-            });
-          });
+    if (isPlaying && !isManualScroll.current && currentTime) {
+      // 计算当前时间对应的歌词位置
+      const _currentTime = formatNumber(currentTime);
+      let _lyricIndex = lyric.findIndex(lyricItem => {
+        return lte(lyricItem.startTime, _currentTime) && lt(_currentTime, lyricItem.endTime);
+      });
+      // 处理边界问题
+      if (!_lyricIndex) {
+        if (currentTime >= lyric[lyric.length - 1].endTime) {
+          _lyricIndex = lyric.length - 1;
+        }
       }
-    } else {
-      clearTimeout(task);
+      // console.log('updateTask', currentTime, _lyricIndex);
+      setLyricIndex(_lyricIndex);
+      // 滚动到歌词位置
+      scrollToIndex(_lyricIndex);
     }
   }, [currentTime]);
+
+  function scrollToIndex(index) {
+    // 计算scroll距离
+    const scrollDistance = +(index * lyricItemHeight).toFixed(2);
+    // console.log('scrollToIndex', currentTime, index);
+    setScrollTop(scrollDistance);
+    scrollTo(scrollDistance);
+  }
+
+  function scrollTo(scrollDistance) {
+    if (IS_RN) {
+      // RN下使用scrollToOffset进行歌词滚动
+      // @ts-ignore
+      scrollRef?.current?.scrollToOffset(0, scrollDistance);
+    } else if (IS_H5) {
+      // @ts-ignore
+      animateScrollTo(scrollDistance, { elementToScroll: scrollRef.current });
+    } else if (IS_WEAPP) {
+      Taro.createSelectorQuery()
+        .select('.player-lyric')
+        .node()
+        .exec(res => {
+          const scrollView = res[0].node;
+          scrollView.scrollTo({
+            top: scrollDistance,
+            animated: true,
+          });
+        });
+    }
+  }
+
+  function onScroll(e) {
+    // console.log('onScroll', isManualScroll);
+    if (lyricItemHeight > 0 && isManualScroll.current) {
+      // 获取当前滚动位置距顶部距离
+      const currentScrollTop = e.detail.scrollTop;
+      // 动态计算出当前滚动位置应该高亮的歌词位置
+      let index = Math.ceil(currentScrollTop / lyricItemHeight);
+      // 处理边界问题
+      if (index < 0) {
+        index = 0;
+      } else if (index > lyric.length - 1) {
+        index = lyric.length - 1;
+      }
+      // 更新高亮歌词
+      setLyricIndex(index);
+      setScrollTop(currentScrollTop);
+      // console.log('onScroll', currentTime, index, currentScrollTop);
+    }
+  }
+
+  function onScrollEnd() {
+    isManualScroll.current = false;
+  }
+
+  function onTouchStart() {
+    // console.log('onTouchStart');
+    isManualScroll.current = true;
+  }
+
+  function onTouchEnd() {
+    console.log('onTouchEnd');
+    clearTimeout(dragEndTask);
+    dragEndTask = setTimeout(() => {
+      onScrollEnd();
+    }, 2000);
+  }
+
+  function seekTo() {
+    onScrollEnd();
+    // console.log('seekTo', Math.ceil(lyric[lyricIndex].startTime));
+    doSeek(Math.ceil(lyric[lyricIndex].startTime));
+  }
 
   return {
     lyricItemHeight, // 每个歌词项高度
     lyricIndex, // 当前歌词位置
     scrollRef, // 滚动DOM
     listRef, // 歌词列表DOM
+    scrollTop, // 歌词距顶部距离
+    onScroll, // 监听歌词滚动事件
+    onTouchStart, // 处理屏幕开始触摸事件
+    onTouchEnd, // 处理屏幕停止触摸事件
+    isManualScroll: isManualScroll.current, // 是否为手动触发滚动
+    seekTo, // 跳转到指定位置
   };
 }

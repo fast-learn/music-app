@@ -14,6 +14,7 @@ export function get(url, params = {}) {
     url: createUrl(url),
     method: 'GET',
     data: params,
+    timeout: 10000,
   }).then(response => {
     // console.log(response);
     return response;

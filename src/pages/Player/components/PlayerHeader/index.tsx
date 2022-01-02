@@ -44,7 +44,7 @@ export default function PlayerHeader(props) {
             </View>
           </View>
           <View className="player-header__wrapper__top__right">
-            <Image src={pic} className="player-header__wrapper__top__right__cover" />
+            {pic && <Image src={pic} className="player-header__wrapper__top__right__cover" />}
             <Image src={fengxiangImg} className="player-header__wrapper__top__right__share" />
           </View>
         </View>

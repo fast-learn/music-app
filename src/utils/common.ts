@@ -42,3 +42,24 @@ export const showAlert = (msg) => {
     alert(msg);
   }
 };
+
+export const omit = (obj = {}, fields = []) => {
+  const shallowCopy = Object.assign({}, obj);
+  fields.forEach((key) => {
+    delete shallowCopy[key];
+  });
+  return shallowCopy;
+};
+
+// @ts-ignore
+export const noop = (...args) => {
+};
+
+export const formatNumber = (n, l = 0) => +(Number(n).toFixed(l));
+
+export const equal = (a, b) => formatNumber(a, 2) === formatNumber(b, 2);
+
+export const lt = (a, b) => formatNumber(a, 2) < formatNumber(b, 2);
+export const lte = (a, b) => formatNumber(a, 2) <= formatNumber(b, 2);
+export const gt = (a, b) => formatNumber(a, 2) > formatNumber(b, 2);
+export const gte = (a, b) => formatNumber(a, 2) >= formatNumber(b, 2);

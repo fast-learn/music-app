@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Taro from '@tarojs/taro';
 import lyricParser from '@/utils/lyric';
 import { getLyric } from '@/services/api';
@@ -16,8 +16,6 @@ const ERROR = {
 // eslint-disable-next-line no-undef
 const audioContext = IS_RN ? require('./AudioContext').createInnerAudioContext() : Taro.createInnerAudioContext();
 
-let updateTimeTask;
-let onSeekingTask;
 const events = new Taro.Events();
 export default function usePlay() {
   // 音乐播放器实例
@@ -26,16 +24,16 @@ export default function usePlay() {
   // eslint-disable-next-line no-unused-vars
   const [songList, setSongList] = useState([
     {
-      url: 'http://192.168.31.148:8089/music/1903299149.mp3',
-      // url: 'http://localhost:8089/music/1903299149.mp3',
-      // url: 'http://172.20.10.3:8089/music/1903299149.mp3',
-      id: 1903299149,
-    },
-    {
       url: 'http://192.168.31.148:8089/music/1897658456.mp3',
       // url: 'http://localhost:8089/music/1897658456.mp3',
       // url: 'http://172.20.10.3:8089/music/1897658456.mp3',
       id: 1897658456,
+    },
+    {
+      url: 'http://192.168.31.148:8089/music/1903299149.mp3',
+      // url: 'http://localhost:8089/music/1903299149.mp3',
+      // url: 'http://172.20.10.3:8089/music/1903299149.mp3',
+      id: 1903299149,
     },
   ]);
   // 播放器加载状态
@@ -51,7 +49,7 @@ export default function usePlay() {
   // 播放状态
   const [isPlaying, setIsPlaying] = useState(false);
   // seeking状态
-  const [isSeeking, setIsSeeking] = useState(false);
+  const isSeeking = useRef(false);
   // 播放音量
   const [volume, setVolume] = useState(0.6);
   // 歌词
@@ -124,7 +122,7 @@ export default function usePlay() {
       firstPlay();
     } else {
       // 如果不是首次播放，说明是暂停后播放，则直接播放
-      doPlay();
+      return doPlay();
     }
   }
 
@@ -160,8 +158,6 @@ export default function usePlay() {
   // 跳转到指定位置播放
   async function seek(seekValue) {
     if (!currentTime) return;
-    clearInterval(onSeekingTask);
-    clearTimeout(updateTimeTask);
     let value;
     // eslint-disable-next-line no-undef
     if (IS_RN) {
@@ -170,18 +166,18 @@ export default function usePlay() {
       value = seekValue.detail.value;
     }
     await innerAudioContext.seek(value);
+    // eslint-disable-next-line no-undef
+    if (IS_WEAPP) {
+      await pause();
+    }
+    // console.log('seek', value, currentTime);
     setCurrentTime(value);
-    setIsSeeking(false);
+    isSeeking.current = false;
   }
 
   // 处理拖动过程事件
-  async function seeking(seekValue) {
+  function seeking(seekValue) {
     if (!currentTime) return;
-    clearInterval(onSeekingTask);
-    clearTimeout(updateTimeTask);
-    onSeekingTask = setInterval(() => {
-      clearTimeout(updateTimeTask);
-    }, 10);
     let value;
     // eslint-disable-next-line no-undef
     if (IS_RN) {
@@ -189,16 +185,19 @@ export default function usePlay() {
     } else {
       value = seekValue.detail.value;
     }
+    // console.log('seeking', value, isSeeking.current);
     setCurrentTime(value);
-    setIsSeeking(true);
+    isSeeking.current = true;
   }
 
-  async function volumeChange(volumeValue) {
-    setTimeout(() => setVolumeValue(volumeValue), 0);
+  function volumeChange(volumeValue) {
+    isSeeking.current = false;
+    return setVolumeValue(volumeValue);
   }
 
-  async function volumeChanging(volumeValue) {
-    setTimeout(() => setVolumeValue(volumeValue), 0);
+  function volumeChanging(volumeValue) {
+    isSeeking.current = true;
+    return setVolumeValue(volumeValue);
   }
 
   function setVolumeValue(volumeValue) {
@@ -264,6 +263,17 @@ export default function usePlay() {
     }
   }
 
+  async function doSeek(value) {
+    await innerAudioContext.seek(value);
+    // eslint-disable-next-line no-undef
+    if (IS_WEAPP) {
+      await pause();
+    }
+    if (!isPlaying) {
+      await play();
+    }
+  }
+
   function onCanPlay() {
     console.log('onCanPlay');
     // eslint-disable-next-line no-undef
@@ -298,10 +308,7 @@ export default function usePlay() {
   }
 
   function updateTime(_currentTime, _duration) {
-    // console.log('onTimeUpdateTask', isSeeking, _currentTime, _duration);
-    if (isSeeking) {
-      return;
-    }
+    // console.log('onTimeUpdateTask', _currentTime, _duration);
     _currentTime >= 0 && setCurrentTime(_currentTime);
     if (!duration && _duration > 0) {
       setDuration(_duration);
@@ -309,11 +316,11 @@ export default function usePlay() {
   }
 
   function onTimeUpdate() {
-    // console.log('onTimeUpdate', innerAudioContext.currentTime, innerAudioContext.duration);
-    clearTimeout(updateTimeTask);
-    updateTimeTask = setTimeout(() => {
-      events.trigger('updateTime', innerAudioContext.currentTime, innerAudioContext.duration);
-    }, 100);
+    // console.log('onTimeUpdate', innerAudioContext.currentTime, innerAudioContext.duration, isSeeking.current);
+    if (isSeeking.current) {
+      return;
+    }
+    events.trigger('updateTime', innerAudioContext.currentTime, innerAudioContext.duration);
   }
 
   function onEnd() {
@@ -338,12 +345,13 @@ export default function usePlay() {
 
   return {
     innerAudioContext,
+    isLoaded,
     songList,
     current,
     duration,
     currentTime,
     isPlaying,
-    isSeeking,
+    isSeeking: isSeeking.current,
     volume,
     lyric,
     songDetail,
@@ -352,6 +360,7 @@ export default function usePlay() {
     pause,
     seek,
     seeking,
+    doSeek,
     volumeChange,
     volumeChanging,
     next,

@@ -1,3 +1,5 @@
+import { formatNumber } from './common';
+
 export default function lyricParser(lrc) {
   if (lrc) {
     const lrcData: any = [];
@@ -27,13 +29,14 @@ export default function lyricParser(lrc) {
     });
     for (let i = 0; i < lrcData.length - 1; i++) {
       const currentItem = lrcData[i];
+      currentItem.startTime = formatNumber(currentItem.startTime);
       if (i === lrcData.length - 1) {
         currentItem.endTime = 0;
         currentItem.duration = 0;
       } else {
         const nextItem = lrcData[i + 1];
-        currentItem.endTime = nextItem.startTime;
-        currentItem.duration = Number((currentItem.endTime - currentItem.startTime).toFixed(2));
+        currentItem.endTime = formatNumber(nextItem.startTime);
+        currentItem.duration = formatNumber(currentItem.endTime - currentItem.startTime);
       }
     }
     return lrcData;
