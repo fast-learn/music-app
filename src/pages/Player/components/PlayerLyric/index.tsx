@@ -31,6 +31,7 @@ export default function PlayerLyric(props) {
       scrollY // 开启y轴滚动
       enableFlex={IS_WEAPP} // 兼容微信小程序
       enhanced // 微信小程序scroll-view开启增强模式，以获得scrollTo API
+      show-scrollbar={false} // 微信小程序隐藏滚动条
       scrollTop={scrollTop}
       onScroll={onScroll}
       onTouchStart={onTouchStart}

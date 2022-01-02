@@ -43,7 +43,7 @@ export default function PlayerLyric(props) {
       onScroll={onScroll}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
-      scrollEventThrottle={20} // onScroll事件节流
+      scrollEventThrottle={0} // onScroll事件节流
     >
       {lyric && lyric.length > 0 ? (
         <View className="player-lyric__list" ref={listRef}>
