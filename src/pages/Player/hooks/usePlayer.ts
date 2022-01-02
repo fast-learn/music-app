@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import Taro from '@tarojs/taro';
 import clonedeep from 'lodash.clonedeep';
 import { getLyric, getSongDetail } from '@/services/api';
-import { PLAYER_MODE, lyricParser } from '@/utils';
-
+import { PLAYER_MODE, lyricParser, isNumber } from '@/utils';
 
 const ERROR = {
   '10001': '系统错误',
@@ -19,28 +19,31 @@ const audioContext = IS_RN ? require('./AudioContext').createInnerAudioContext()
 // @ts-ignore
 const events = new Taro.Events();
 export default function usePlay() {
+  // @ts-ignore
+  // const testSong = [
+  //   {
+  //     playUrl: 'http://192.168.31.148:8089/music/1897658456.mp3',
+  //     // url: 'http://localhost:8089/music/1897658456.mp3',
+  //     // url: 'http://172.20.10.3:8089/music/1897658456.mp3',
+  //     id: 1897658456,
+  //   },
+  //   {
+  //     playUrl: 'http://192.168.31.148:8089/music/1903299149.mp3',
+  //     // url: 'http://localhost:8089/music/1903299149.mp3',
+  //     // url: 'http://172.20.10.3:8089/music/1903299149.mp3',
+  //     id: 1903299149,
+  //   },
+  // ];
+  // 从Redux获取播放列表和序号
+  const songList = useSelector((state: any) => state.player.songList);
+  const songIndex = useSelector((state: any) => state.player.songIndex);
+  // console.log('usePlay', songList, songIndex);
   // 音乐播放器实例
   const [innerAudioContext] = useState(audioContext);
-  // 歌曲列表
-  // @ts-ignore
-  const [songList, setSongList] = useState([
-    {
-      url: 'http://192.168.31.148:8089/music/1897658456.mp3',
-      // url: 'http://localhost:8089/music/1897658456.mp3',
-      // url: 'http://172.20.10.3:8089/music/1897658456.mp3',
-      id: 1897658456,
-    },
-    {
-      url: 'http://192.168.31.148:8089/music/1903299149.mp3',
-      // url: 'http://localhost:8089/music/1903299149.mp3',
-      // url: 'http://172.20.10.3:8089/music/1903299149.mp3',
-      id: 1903299149,
-    },
-  ]);
   // 播放器加载状态
   const [isLoaded, setIsLoaded] = useState(false);
   // 正在播放歌曲的序号
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent]: any = useState(null);
   // 正在播放歌曲总时长
   const [duration, setDuration] = useState(null);
   // 正在播放歌曲当前时间
@@ -60,9 +63,15 @@ export default function usePlay() {
   // 播放模式：1-循环，2-单曲循环，3-随机
   const [mode, setMode] = useState(PLAYER_MODE.LOOP);
 
-  // 注册事件
+  // 如果播放列表为空，直接跳转回首页
+  if (!songList || songList.length === 0) {
+    Taro.navigateTo({ url: 'pages/Home/index' });
+  }
+
+  // 注册事件+更新歌曲列表
   useEffect(() => {
     events.on('updateTime', updateTime);
+    setCurrent(songIndex);
   }, []);
 
   // 更新歌词方法
@@ -82,19 +91,24 @@ export default function usePlay() {
 
   // 更新歌曲编号后，重新加载歌词和歌曲信息
   useEffect(() => {
-    init();
+    console.log('useEffect', current, songList);
+    if (isNumber(current) && current >= 0) {
+      init();
+    }
   }, [current]);
 
   async function init() {
-    const id = songList[current ? current : 0].id;
-    // 处理歌词信息
-    let lyricData = await getLyric(id);
-    lyricData = lyricParser(lyricData);
-    // 获取歌曲详情
-    const songDetailData = await getSongDetail(id);
-    setLyric(lyricData);
-    setSongDetail(songDetailData);
-    console.log(songDetailData, lyricData);
+    if (songList && songList.length > 0) {
+      const id = songList[current ? current : 0].id;
+      // 处理歌词信息
+      let lyricData = await getLyric(id);
+      lyricData = lyricParser(lyricData);
+      // 获取歌曲详情
+      const songDetailData = await getSongDetail(id);
+      setLyric(lyricData);
+      setSongDetail(songDetailData);
+      console.log(songDetailData, lyricData);
+    }
   }
 
   function initInnerAudioContext(song) {
@@ -132,7 +146,7 @@ export default function usePlay() {
   // 首次播放
   function firstPlay() {
     // 首次播放，设置播放歌曲
-    initInnerAudioContext(songList[0].url);
+    initInnerAudioContext(songList[0].playUrl);
   }
 
   // 播放歌曲
@@ -158,7 +172,7 @@ export default function usePlay() {
     try {
       if (index >= 0) {
         await reset();
-        const song = songList[index].url;
+        const song = songList[index].playUrl;
         console.log('playIndex', index, song);
         // eslint-disable-next-line no-undef
         if (IS_RN) {
@@ -254,7 +268,7 @@ export default function usePlay() {
     if (songList.length === 0) {
       return;
     }
-    let nextIndex = current;
+    let nextIndex: any = current;
     if (nextIndex === songList.length - 1) {
       nextIndex = 0;
     } else {
@@ -270,7 +284,7 @@ export default function usePlay() {
     if (songList.length === 0) {
       return;
     }
-    let previousIndex = current;
+    let previousIndex: any = current;
     if (previousIndex === 0) {
       previousIndex = songList.length - 1;
     } else {

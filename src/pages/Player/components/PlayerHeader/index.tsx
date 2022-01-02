@@ -6,6 +6,7 @@ import fengxiangImg from '@/img/fenxiang.png';
 import volumeImg from '@/img/volume.png';
 import readerImg from '@/img/reader.png';
 import addImg from '@/img/add.png';
+import { genImgUrl } from '@/utils';
 import Slider from '../Slider';
 
 import './index.scss';
@@ -31,7 +32,10 @@ export default function PlayerHeader(props) {
     >
       <View className="player-header__wrapper">
         <View className="player-header__wrapper__top">
-          <Image src={bottomImg} className="player-header__wrapper__top__back" />
+          <Image
+            src={bottomImg} className="player-header__wrapper__top__back"
+            onClick={() => Taro.navigateBack()}
+          />
           <View className="player-header__wrapper__top__content">
             <View className="player-header__wrapper__top__content__main">
               {songName}
@@ -44,7 +48,7 @@ export default function PlayerHeader(props) {
             </View>
           </View>
           <View className="player-header__wrapper__top__right">
-            {pic && <Image src={pic} className="player-header__wrapper__top__right__cover" />}
+            {pic && <Image src={genImgUrl(pic, 30, 30)} className="player-header__wrapper__top__right__cover" />}
             <Image src={fengxiangImg} className="player-header__wrapper__top__right__share" />
           </View>
         </View>

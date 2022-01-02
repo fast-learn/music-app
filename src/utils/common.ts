@@ -63,3 +63,11 @@ export const lt = (a, b) => formatNumber(a, 2) < formatNumber(b, 2);
 export const lte = (a, b) => formatNumber(a, 2) <= formatNumber(b, 2);
 export const gt = (a, b) => formatNumber(a, 2) > formatNumber(b, 2);
 export const gte = (a, b) => formatNumber(a, 2) >= formatNumber(b, 2);
+
+export function genImgUrl(url, w, h) {
+  if (!h) {
+    h = w;
+  }
+  url += `?param=${w}y${h}`;
+  return url;
+}

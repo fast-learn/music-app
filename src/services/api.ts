@@ -54,7 +54,7 @@ export function getPersonalized() {
 /**
  * 获取推荐歌曲（无需登录）
  */
-export function getPersonalizedNewsong(limit = 6) {
+export function getPersonalizedNewsong(limit = 12) {
   return get('/personalized/newsong', { limit }).then(response => wrapper(response.data.result));
 }
 
@@ -142,4 +142,13 @@ export function getLyric(id) {
   return get('/lyric', {
     id,
   }).then(response => response?.data?.lrc?.lyric);
+}
+
+/**
+ * 获取歌曲播放URL
+ *
+ * @param id 歌曲ID
+ */
+export function generateSongPlayUrl(id) {
+  return `https://music.163.com/song/media/outer/url?id=${id}.mp3`
 }

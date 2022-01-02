@@ -1,8 +1,8 @@
-import { SONG_LIST_INDEX, SONG_LIST } from '../constants';
+import { SONG_INDEX, SONG_LIST } from '../constants';
 
-export const setSongListIndex = (payload) => {
+export const setSongIndex = (payload) => {
   return {
-    type: SONG_LIST_INDEX,
+    type: SONG_INDEX,
     payload
   };
 };

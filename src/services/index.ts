@@ -1,6 +1,7 @@
 import Taro from '@tarojs/taro';
 
 const BASE_URL = 'https://fast-learn.youbaobao.xyz:8001';
+// const BASE_URL = 'https://netease-music-api.fe-mm.com';
 
 function createUrl(url) {
   if (!url.startsWith('/')) {

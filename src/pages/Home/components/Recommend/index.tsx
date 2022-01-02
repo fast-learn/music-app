@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { View, Text, Image, ScrollView, Swiper, SwiperItem } from '@tarojs/components';
 import ImageWithPlayCount from '@/components/ImageWithPlayCount';
 import { getPersonalized } from '@/services/api';
-import moreImg from '@/img/more.png';
 
 import './index.scss';
 
@@ -27,7 +26,8 @@ export default function Recommend(): any {
     <View className="recommend">
       <View className="recommend__title">
         <View className="recommend__title__text">推荐歌单</View>
-        <View className="recommend__title__btn">更多<Image src={moreImg} className="recommend__title__btn__img" />
+        <View className="recommend__title__btn">
+          更多<Image src="https://fast-learn-oss.youbaobao.xyz/music/more.png" className="recommend__title__btn__img" />
         </View>
       </View>
       <View className="recommend__list">

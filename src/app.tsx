@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { Provider } from 'react-redux';
+import 'default-passive-events';
 import configStore from './stores';
 
 import './app.scss';
