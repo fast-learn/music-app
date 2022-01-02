@@ -150,7 +150,7 @@ export default function useLyric(props) {
   }
 
   function onTouchEnd() {
-    console.log('onTouchEnd');
+    // console.log('onTouchEnd');
     clearTimeout(dragEndTask);
     dragEndTask = setTimeout(() => {
       onScrollEnd();

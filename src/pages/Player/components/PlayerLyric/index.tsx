@@ -1,5 +1,6 @@
-import { View, Image, ScrollView } from '@tarojs/components';
+import { View, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
+import { AtIcon } from 'taro-ui'
 import classnames from 'classnames';
 import useLyric from '../../hooks/useLyric';
 
@@ -20,7 +21,7 @@ if (IS_WEAPP) {
 export default function PlayerLyric(props) {
   const { error, lyric, formatTime, isLoaded } = props;
   // @ts-ignore
-  const { scrollRef, listRef, lyricIndex, onScroll, onScrollBeginDrag, onScrollEndDrag, isManualScroll, seekTo, scrollTop } = useLyric(props);
+  const { scrollRef, listRef, lyricIndex, onScroll, onTouchStart, onTouchEnd, isManualScroll, seekTo, scrollTop } = useLyric(props);
 
   return (
     <ScrollView
@@ -32,8 +33,8 @@ export default function PlayerLyric(props) {
       enhanced // 微信小程序scroll-view开启增强模式，以获得scrollTo API
       scrollTop={scrollTop}
       onScroll={onScroll}
-      // onScrollBeginDrag={onScrollBeginDrag}
-      // onScrollEndDrag={onScrollEndDrag}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
     >
       {lyric && lyric.length > 0 ? (
         <View className="player-lyric__list" ref={listRef}>
@@ -63,10 +64,7 @@ export default function PlayerLyric(props) {
                     className="player-lyric__list__item__assistant"
                     onClick={seekTo}
                   >
-                    <Image
-                      src="https://fast-learn-oss.youbaobao.xyz/music/icon_play.png"
-                      className="player-lyric__list__item__assistant__play"
-                    />
+                    <AtIcon value="play" color="rgba(255,255,255,.5)" size="24" />
                     <View className="player-lyric__list__item__assistant__line" />
                     <View className="player-lyric__list__item__assistant__current-time">{item.startTime ? formatTime(item.startTime) : '00:00'}</View>
                   </View>
