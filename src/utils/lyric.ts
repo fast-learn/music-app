@@ -1,6 +1,6 @@
 import { formatNumber } from './common';
 
-export default function lyricParser(lrc) {
+export function lyricParser(lrc) {
   if (lrc) {
     const lrcData: any = [];
     const lrcDataArr = lrc.split('\n');    // 用换行符拆分获取到的歌词

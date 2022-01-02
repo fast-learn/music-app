@@ -11,3 +11,5 @@ export * from './global-data';
 export * from './common';
 export * from './px2rem';
 export * from './calc-play-count';
+export * from './constant';
+export * from './lyric';

@@ -4,14 +4,13 @@ import play1Img from '@/img/play1.png';
 import starsImg from '@/img/stars.png';
 import singImg from '@/img/sing.png';
 import moreImg from '@/img/more2.png';
-import xunhuanImg from '@/img/xunhuan.png';
 import nextImg from '@/img/next.png';
 import proImg from '@/img/pro.png';
 import playImg from '@/img/bofang-4.png';
 import ListImg from '@/img/list.png';
 import playingImg from '@/img/palying.png';
-// import suijiImg from '@/img/suiji.png';
-// import xunhuan1Img from '@/img/xunhuan1.png';
+import { PLAYER_MODE } from '@/utils';
+
 import Slider from '../Slider';
 
 import './index.scss';
@@ -27,7 +26,23 @@ export default function PlayerBottom(props) {
     duration,
     formatTime,
     isSeeking,
+    mode,
+    nextPlayerMode,
   } = props;
+
+  function getPlayerModeImgUr() {
+    switch (mode) {
+      case PLAYER_MODE.LOOP:
+        return 'https://fast-learn-oss.youbaobao.xyz/music/loop.png';
+      case PLAYER_MODE.LOOP_ONE:
+        return 'https://fast-learn-oss.youbaobao.xyz/music/loop_one.png';
+      case PLAYER_MODE.RANDOM:
+        return 'https://fast-learn-oss.youbaobao.xyz/music/random.png';
+      default:
+        return 'https://fast-learn-oss.youbaobao.xyz/music/loop.png';
+    }
+  }
+
   return (
     <View className="player-bottom">
       <View className="player-bottom__bottom">
@@ -58,7 +73,8 @@ export default function PlayerBottom(props) {
         </View>
         <View className="player-bottom__bottom__bottom">
           <Image
-            src={xunhuanImg}
+            src={getPlayerModeImgUr()}
+            onClick={nextPlayerMode}
             className="player-bottom__bottom__bottom__play-order"
           />
           <Image

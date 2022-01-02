@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from 'react';
 import Taro from '@tarojs/taro';
-import lyricParser from '@/utils/lyric';
-import { getLyric } from '@/services/api';
 import clonedeep from 'lodash.clonedeep';
-import { getSongDetail } from '../../../services/api';
+import { getLyric, getSongDetail } from '@/services/api';
+import { PLAYER_MODE, lyricParser } from '@/utils';
+
 
 const ERROR = {
   '10001': '系统错误',
@@ -16,12 +16,13 @@ const ERROR = {
 // eslint-disable-next-line no-undef
 const audioContext = IS_RN ? require('./AudioContext').createInnerAudioContext() : Taro.createInnerAudioContext();
 
+// @ts-ignore
 const events = new Taro.Events();
 export default function usePlay() {
   // 音乐播放器实例
   const [innerAudioContext] = useState(audioContext);
   // 歌曲列表
-  // eslint-disable-next-line no-unused-vars
+  // @ts-ignore
   const [songList, setSongList] = useState([
     {
       url: 'http://192.168.31.148:8089/music/1897658456.mp3',
@@ -43,9 +44,9 @@ export default function usePlay() {
   // 正在播放歌曲总时长
   const [duration, setDuration] = useState(null);
   // 正在播放歌曲当前时间
-  const [currentTime, setCurrentTime] = useState(null);
+  const [currentTime, setCurrentTime]: any = useState(null);
   // 播放错误信息
-  const [error, setError] = useState(null);
+  const [error, setError]: any = useState(null);
   // 播放状态
   const [isPlaying, setIsPlaying] = useState(false);
   // seeking状态
@@ -53,21 +54,21 @@ export default function usePlay() {
   // 播放音量
   const [volume, setVolume] = useState(0.6);
   // 歌词
-  const [lyric, setLyric] = useState(null);
+  const [lyric, setLyric]: any = useState(null);
   // 歌曲信息
   const [songDetail, setSongDetail] = useState(null);
+  // 播放模式：1-循环，2-单曲循环，3-随机
+  const [mode, setMode] = useState(PLAYER_MODE.LOOP);
 
+  // 注册事件
   useEffect(() => {
     events.on('updateTime', updateTime);
   }, []);
 
-  useEffect(() => {
-    init();
-  }, []);
-
+  // 更新歌词方法
   useEffect(() => {
     if (lyric && !!duration) {
-      const lastLyric = lyric[lyric.length - 1];
+      const lastLyric: any = lyric[lyric.length - 1];
       // duration更新后，更新一次歌词最后一位的时间
       if (!lastLyric.endTime) {
         const _lyric = clonedeep(lyric);
@@ -79,9 +80,10 @@ export default function usePlay() {
     }
   }, [duration]);
 
+  // 更新歌曲编号后，重新加载歌词和歌曲信息
   useEffect(() => {
-    console.log(lyric);
-  }, [lyric]);
+    init();
+  }, [current]);
 
   async function init() {
     const id = songList[current ? current : 0].id;
@@ -92,7 +94,7 @@ export default function usePlay() {
     const songDetailData = await getSongDetail(id);
     setLyric(lyricData);
     setSongDetail(songDetailData);
-    console.log(songDetailData);
+    console.log(songDetailData, lyricData);
   }
 
   function initInnerAudioContext(song) {
@@ -107,6 +109,24 @@ export default function usePlay() {
     innerAudioContext.onEnded(onEnd);
     // 更新状态
     setIsLoaded(true);
+  }
+
+  // 更换播放模式
+  function nextPlayerMode() {
+    switch (mode) {
+      case PLAYER_MODE.LOOP:
+        setMode(PLAYER_MODE.LOOP_ONE);
+        break;
+      case PLAYER_MODE.LOOP_ONE:
+        setMode(PLAYER_MODE.RANDOM);
+        break;
+      case PLAYER_MODE.RANDOM:
+        setMode(PLAYER_MODE.LOOP);
+        break;
+      default:
+        setMode(PLAYER_MODE.LOOP);
+        break;
+    }
   }
 
   // 首次播放
@@ -126,10 +146,18 @@ export default function usePlay() {
     }
   }
 
+  async function reset() {
+    await pause();
+    events.trigger('stopPlay');
+    setCurrentTime(null);
+    setDuration(null);
+  }
+
   // 播放指定位置歌曲
   async function playIndex(index) {
     try {
       if (index >= 0) {
+        await reset();
         const song = songList[index].url;
         console.log('playIndex', index, song);
         // eslint-disable-next-line no-undef
@@ -141,7 +169,6 @@ export default function usePlay() {
           // 更新src属性，注意在RN环境下不会自动执行（@taro/taro-rn库暂不支持）
           innerAudioContext.src = song;
         }
-        setCurrent(index);
       }
     } catch (e) {
       console.log('playIndex', e);
@@ -234,7 +261,8 @@ export default function usePlay() {
       nextIndex++;
     }
     console.log('下一首', nextIndex);
-    playIndex(nextIndex);
+    setCurrent(nextIndex);
+    setTimeout(() => playIndex(nextIndex), 1000);
   }
 
   // 上一首
@@ -249,7 +277,8 @@ export default function usePlay() {
       previousIndex--;
     }
     console.log('上一首', previousIndex);
-    playIndex(previousIndex);
+    setCurrent(previousIndex);
+    setTimeout(() => playIndex(previousIndex), 1000);
   }
 
   async function doPlay() {
@@ -344,27 +373,29 @@ export default function usePlay() {
   }
 
   return {
-    innerAudioContext,
-    isLoaded,
-    songList,
-    current,
-    duration,
-    currentTime,
-    isPlaying,
-    isSeeking: isSeeking.current,
-    volume,
-    lyric,
-    songDetail,
-    error,
-    play,
-    pause,
-    seek,
-    seeking,
-    doSeek,
-    volumeChange,
-    volumeChanging,
-    next,
-    previous,
-    formatTime,
+    innerAudioContext, // 播放器实例
+    isLoaded, // 是否已经加载
+    songList, // 播放列表歌曲
+    current, // 当前歌曲在播放列表中的位置
+    duration, // 当前歌曲时长
+    currentTime, // 当前播放位置
+    isPlaying, // 是否在播放
+    isSeeking: isSeeking.current, // 是否在拖动播放位置
+    volume, // 音量
+    lyric, // 歌词信息
+    songDetail, // 播放歌曲信息
+    error, // 异常
+    play, // 播放
+    pause, // 暂停
+    seek, // 改变播放位置事件
+    seeking, // 拖动播放位置事件
+    doSeek, // 播放指定位置
+    volumeChange, // 改变音量事件
+    volumeChanging, // 拖动音量事件
+    next, // 播放下一首
+    previous, // 播放上一首
+    formatTime, // 格式化事件
+    mode, // 播放模式
+    nextPlayerMode, // 设置播放模式
   };
 }

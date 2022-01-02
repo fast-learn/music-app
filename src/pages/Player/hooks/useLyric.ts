@@ -5,8 +5,10 @@ import { lte, lt, formatNumber } from '@/utils';
 
 let dragEndTask;
 let updateTask;
+// @ts-ignore
+const events = new Taro.Events();
 export default function useLyric(props) {
-  const { lyric, isPlaying, currentTime, doSeek } = props;
+  const { lyric, currentTime, doSeek } = props;
   // 歌词项的高度
   const [lyricItemHeight, setLyricItemHeight] = useState(0);
   // 歌词当前位置
@@ -15,6 +17,7 @@ export default function useLyric(props) {
   // @ts-ignore
   const isManualScroll = useRef(false);
   const [scrollTop, setScrollTop] = useState(0);
+  const [refresh, setRefresh] = useState(false);
 
   const scrollRef = useRef(null);
   const listRef = useCallback(node => {
@@ -47,6 +50,12 @@ export default function useLyric(props) {
     }
   }, [lyric]);
   useEffect(() => {
+    events.on('stopPlay', () => {
+      onScrollEnd();
+      setScrollTop(0);
+    });
+  }, []);
+  useEffect(() => {
     if (lyric) {
       // H5和小程序在歌词更新后再计算DOM
       if (IS_H5) {
@@ -76,8 +85,7 @@ export default function useLyric(props) {
   }, [currentTime]);
 
   function updateScrollTop() {
-    if (isPlaying && !isManualScroll.current && currentTime) {
-      // console.log('updateScrollTop', currentTime);
+    if (lyric && !isManualScroll.current && currentTime >= 0) {
       clearTimeout(updateTask); // 事件节流
       updateTask = setTimeout(() => {
         // 计算当前时间对应的歌词位置
@@ -130,7 +138,7 @@ export default function useLyric(props) {
   }
 
   function onScroll(e) {
-    console.log('onScroll', isManualScroll.current);
+    // console.log('onScroll', isManualScroll.current);
     if (lyricItemHeight > 0 && isManualScroll.current) {
       clearTimeout(updateTask);
       // 获取当前滚动位置距顶部距离
@@ -152,22 +160,24 @@ export default function useLyric(props) {
 
   function onScrollEnd() {
     clearTimeout(updateTask);
+    clearTimeout(dragEndTask);
     isManualScroll.current = false;
+    setRefresh(!refresh);
   }
 
   function onTouchStart() {
-    console.log('onTouchStart');
+    // console.log('onTouchStart');
     clearTimeout(updateTask);
     isManualScroll.current = true;
   }
 
   function onTouchEnd() {
-    console.log('onTouchEnd');
+    // console.log('onTouchEnd');
     clearTimeout(dragEndTask);
     clearTimeout(updateTask);
     dragEndTask = setTimeout(() => {
       onScrollEnd();
-    }, 2000);
+    }, 3000);
   }
 
   function seekTo() {
