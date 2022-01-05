@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ScrollView } from '@tarojs/components';
+import { useSong } from '@/hooks';
 import SearchBar from '@/components/SearchBar';
 import Layout from '@/components/Layout';
 import Banner from './components/Banner';
@@ -11,6 +12,7 @@ import './index.scss';
 
 export default function Home() {
   const [isScrolling, setIsScrolling] = useState(false);
+  const playerSong = useSong();
 
   useEffect(() => {
     if (IS_H5) {
@@ -51,7 +53,7 @@ export default function Home() {
         <Banner />
         <Category />
         <Recommend />
-        <NewSong />
+        <NewSong {...playerSong} />
       </ScrollView>
     </Layout>
   );

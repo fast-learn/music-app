@@ -108,7 +108,7 @@ class InnerAudioContext {
 
   setVolume(value) {
     this._volume = value;
-    return this.soundObject.setVolumeAsync(value);
+    return this.soundObject.setVolumeAsync(Number(value));
   }
 
   set loop(value: boolean) {
@@ -130,13 +130,18 @@ class InnerAudioContext {
   private async _firstPlay() {
     if (!this._src) return { errMsg: 'src is undefined' };
     const source = isUrl(this._src) ? { uri: this._src } : this._src;
-    await this.soundObject.loadAsync(source as any, {}, true);
-    this.onCanplayCallback && this.onCanplayCallback();
-    await this.soundObject.playAsync();
-    if (this._startTime) {
-      await this.soundObject.playFromPositionAsync(this._startTime * 1000);
+    console.log(source);
+    try {
+      await this.soundObject.loadAsync(source as any, {}, true);
+      this.onCanplayCallback && this.onCanplayCallback();
+      await this.soundObject.playAsync();
+      if (this._startTime) {
+        await this.soundObject.playFromPositionAsync(this._startTime * 1000);
+      }
+      this.onPlayCallback && this.onPlayCallback();
+    } catch (e) {
+      this.onErrorCallback && this.onErrorCallback(e);
     }
-    this.onPlayCallback && this.onPlayCallback();
   }
 
   async unload() {

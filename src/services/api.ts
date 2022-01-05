@@ -16,6 +16,13 @@ function wrapper(data) {
   });
 }
 
+function wrapperPlayUrl(songList) {
+  return songList.map(item => {
+    item.playUrl = generateSongPlayUrl(item.id);
+    return item;
+  });
+}
+
 /**
  * 获取首页Banner数据
  *
@@ -48,14 +55,14 @@ export function getRecommendResource() {
  * 获取推荐歌单（无需登录）
  */
 export function getPersonalized() {
-  return get('/personalized', { limit: 10 }).then(response => response.data.result);
+  return get('/personalized', { limit: 10 }).then(response => wrapperPlayUrl(response.data.result));
 }
 
 /**
  * 获取推荐歌曲（无需登录）
  */
 export function getPersonalizedNewsong(limit = 12) {
-  return get('/personalized/newsong', { limit }).then(response => wrapper(response.data.result));
+  return get('/personalized/newsong', { limit }).then(response => wrapperPlayUrl(wrapper(response.data.result)));
 }
 
 /**
@@ -150,5 +157,14 @@ export function getLyric(id) {
  * @param id 歌曲ID
  */
 export function generateSongPlayUrl(id) {
-  return `https://music.163.com/song/media/outer/url?id=${id}.mp3`
+  return `https://music.163.com/song/media/outer/url?id=${id}.mp3`;
+}
+
+/**
+ * 获取歌曲的真实播放链接
+ *
+ * @param url：歌曲链接
+ */
+export async function readSongRealUrl(id) {
+  return get('/song/url', { id }).then(response => response.data.data[0].url);
 }

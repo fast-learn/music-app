@@ -7,21 +7,32 @@ let dragEndTask;
 let updateTask;
 // @ts-ignore
 const events = new Taro.Events();
-export default function useLyric(props) {
-  const { lyric, currentTime, doSeek } = props;
-  // 歌词项的高度
+
+/**
+ * hooks：歌词管理
+ *
+ * 属性：
+ * ✔ lyricItemHeight：一段歌词高度
+ * ✔ lyricIndex：歌词位置
+ * ✔ scrollTop：歌词距顶部高度
+ * ✔ refresh：刷新属性，更改后刷新页面
+ *
+ * API：
+ * ✔ onTouchStart：触摸开始事件
+ * ✔ onTouchEnd：触摸结束事件
+ * ✔ onScroll：滚动事件
+ * ✔ seekTo：跳转到指定位置
+ */
+export function useLyric(props) {
+  const { getPlayingLyric, currentTime, seek } = props;
   const [lyricItemHeight, setLyricItemHeight] = useState(0);
-  // 歌词当前位置
   const [lyricIndex, setLyricIndex] = useState(0);
-  // 是否为手动滚动
-  // @ts-ignore
-  const isManualScroll = useRef(false);
   const [scrollTop, setScrollTop] = useState(0);
   const [refresh, setRefresh] = useState(false);
-
+  const isManualScroll = useRef(false);
   const scrollRef = useRef(null);
   const listRef = useCallback(node => {
-    if (!lyric) {
+    if (!getPlayingLyric()) {
       return;
     }
     if (IS_RN) {
@@ -33,7 +44,7 @@ export default function useLyric(props) {
         UIManager.measure(handle, (x, y, width, height, pageX, pageY) => {
           // console.log('UIManager', x, y, width, height, pageX, pageY);
           // 歌词长度
-          const size = lyric.length;
+          const size = getPlayingLyric().length;
           // 歌词DOM距离上方和下方的距离
           const marginBottom = +Taro.pxTransform(40);
           const padding = +Taro.pxTransform(800);
@@ -48,7 +59,7 @@ export default function useLyric(props) {
         });
       }
     }
-  }, [lyric]);
+  }, [getPlayingLyric()]);
   useEffect(() => {
     events.on('stopPlay', () => {
       onScrollEnd();
@@ -56,16 +67,18 @@ export default function useLyric(props) {
     });
   }, []);
   useEffect(() => {
-    if (lyric) {
+    if (getPlayingLyric()) {
       // H5和小程序在歌词更新后再计算DOM
       if (IS_H5) {
         const lyricItem = document.getElementsByClassName('player-lyric__list__item');
         if (lyricItem && lyricItem.length > 0) {
           const rect = lyricItem[0].getBoundingClientRect();
-          // 计算每一段歌词的真实高度
-          const itemHeight = Number(rect.height.toFixed(2));
-          setLyricItemHeight(itemHeight);
-          // console.log('lyric', 'itemHeight=' + itemHeight);
+          console.log(lyricItem[0], rect);
+          if (rect.height > 0) {
+            // 计算每一段歌词的真实高度
+            const itemHeight = Number(rect.height.toFixed(2));
+            setLyricItemHeight(itemHeight);
+          }
         }
       } else if (IS_WEAPP) {
         Taro.createSelectorQuery()
@@ -79,17 +92,18 @@ export default function useLyric(props) {
           .exec();
       }
     }
-  }, [lyric]);
+  }, [getPlayingLyric()]);
   useEffect(() => {
     updateScrollTop();
   }, [currentTime]);
 
   function updateScrollTop() {
-    if (lyric && !isManualScroll.current && currentTime >= 0) {
+    if (getPlayingLyric() && !isManualScroll.current && currentTime >= 0) {
       clearTimeout(updateTask); // 事件节流
       updateTask = setTimeout(() => {
         // 计算当前时间对应的歌词位置
         const _currentTime = formatNumber(currentTime);
+        const lyric = getPlayingLyric();
         let _lyricIndex = lyric.findIndex(lyricItem => {
           return lte(lyricItem.startTime, _currentTime) && lt(_currentTime, lyricItem.endTime);
         });
@@ -138,7 +152,7 @@ export default function useLyric(props) {
   }
 
   function onScroll(e) {
-    // console.log('onScroll', isManualScroll.current);
+    // console.log('onScroll', lyricItemHeight, isManualScroll.current);
     if (lyricItemHeight > 0 && isManualScroll.current) {
       clearTimeout(updateTask);
       // 获取当前滚动位置距顶部距离
@@ -148,8 +162,8 @@ export default function useLyric(props) {
       // 处理边界问题
       if (index < 0) {
         index = 0;
-      } else if (index > lyric.length - 1) {
-        index = lyric.length - 1;
+      } else if (getPlayingLyric() && index > getPlayingLyric().length - 1) {
+        index = getPlayingLyric().length - 1;
       }
       // 更新高亮歌词
       setLyricIndex(index);
@@ -182,8 +196,7 @@ export default function useLyric(props) {
 
   function seekTo() {
     onScrollEnd();
-    // console.log('seekTo', Math.ceil(lyric[lyricIndex].startTime));
-    doSeek(Math.ceil(lyric[lyricIndex].startTime));
+    seek(Math.ceil(getPlayingLyric()[lyricIndex].startTime));
   }
 
   return {
@@ -192,10 +205,10 @@ export default function useLyric(props) {
     scrollRef, // 滚动DOM
     listRef, // 歌词列表DOM
     scrollTop, // 歌词距顶部距离
+    isManualScroll: isManualScroll.current, // 是否为手动触发滚动
     onScroll, // 监听歌词滚动事件
     onTouchStart, // 处理屏幕开始触摸事件
     onTouchEnd, // 处理屏幕停止触摸事件
-    isManualScroll: isManualScroll.current, // 是否为手动触发滚动
     seekTo, // 跳转到指定位置
   };
 }

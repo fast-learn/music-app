@@ -29,11 +29,11 @@
       "@/src": [
         "src/"
       ],
+      "@/hooks": [
+        "src/hooks/"
+      ],
       "@/img": [
         "src/asserts/img/"
-      ],
-      "@/images": [
-        "src/asserts/images/"
       ],
       "@/pages": [
         "src/pages/"

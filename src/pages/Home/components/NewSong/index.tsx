@@ -1,24 +1,21 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { View, Text, Image, Swiper, SwiperItem } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { SONG_LIST, SONG_INDEX } from '@/stores/constants';
-import { getPersonalizedNewsong, generateSongPlayUrl } from '@/services/api';
+import { View, Text, Image, Swiper, SwiperItem } from '@tarojs/components';
+import { getPersonalizedNewsong } from '@/services/api';
 import { genImgUrl, wrapperClassName } from '@/utils';
 
 import './index.scss';
 
-
-export default function NewSong(): any {
+export default function NewSong(props): any {
   const [originalData, setOriginalData] = useState([]);
   const [data, setData] = useState([]);
-  const dispatch = useDispatch();
+  const { setSongList, setPlayIndex } = props;
 
   useEffect(() => {
+    console.log('getPersonalizedNewsong');
     getPersonalizedNewsong().then((response) => {
       console.log('getPersonalizedNewsong', response);
       const _data = [];
-      response.forEach(_ => _.playUrl = generateSongPlayUrl(_.id));
       for (let i = 0; i < response.length; i += 3) {
         // @ts-ignore
         _data.push(response.slice(i, i + 3));
@@ -32,9 +29,9 @@ export default function NewSong(): any {
 
   function playAll() {
     // 将歌曲存入Redux播放列表
-    dispatch({ type: SONG_LIST, payload: originalData });
-    dispatch({ type: SONG_INDEX, payload: 0 });
-    Taro.navigateTo({ url: 'pages/Player/index' });
+    setSongList(originalData);
+    setPlayIndex(0);
+    Taro.navigateTo({ url: '/pages/Player/index' });
   }
 
   return data && data.length > 0 && (

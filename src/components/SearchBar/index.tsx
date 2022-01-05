@@ -55,7 +55,7 @@ export default function SearchBar(props) {
               <View
                 className={`search-bar__input-bg${!isScrolling ? '' : ' search-bar__input-bg--scrolling'}`}
                 onClick={() => Taro.navigateTo({
-                  url: 'pages/Search/index',
+                  url: '/pages/Search/index',
                 })}
               >
                 <Image

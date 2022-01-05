@@ -2,8 +2,8 @@ import { Dimensions } from 'react-native';
 import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { View, Image, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
+import { useLyric } from '@/hooks';
 import classnames from 'classnames';
-import useLyric from '../../hooks/useLyric';
 
 import './index.scss';
 
@@ -17,7 +17,7 @@ const PLAYER_BOTTOM_HEIGHT = +Taro.pxTransform(369);
 lyricHeight = HEIGHT - BOTTOM_SPACE - STATUS_BAR - PLAYER_HEADER_HEIGHT - PLAYER_BOTTOM_HEIGHT;
 
 export default function PlayerLyric(props) {
-  const { error, lyric, formatTime, isLoaded } = props;
+  const { error, getPlayingLyric, formatTime, isLoaded } = props;
   const {
     scrollRef,
     listRef,
@@ -45,9 +45,9 @@ export default function PlayerLyric(props) {
       onTouchEnd={onTouchEnd}
       scrollEventThrottle={0} // onScroll事件节流
     >
-      {lyric && lyric.length > 0 ? (
+      {getPlayingLyric() && getPlayingLyric().length > 0 ? (
         <View className="player-lyric__list" ref={listRef}>
-          {lyric.map((item: any, index) => (
+          {getPlayingLyric().map((item: any, index) => (
             <View
               key={index}
               className={classnames([

@@ -2,6 +2,7 @@ import { View, Image, Swiper, SwiperItem } from '@tarojs/components';
 import useBannerList from './useBannerList';
 
 import './index.scss';
+import { genImgUrl } from '@/utils';
 
 export default function Banner(): any {
   const { bannerList } = useBannerList();
@@ -19,7 +20,7 @@ export default function Banner(): any {
       >
         {bannerList.map((item: any) => (
           <SwiperItem className="banner__swiper__item" key={item.imageUrlWithHttps}>
-            <Image className="banner__swiper__item__img" src={item.imageUrlWithHttps} />
+            <Image className="banner__swiper__item__img" src={genImgUrl(item.imageUrlWithHttps, 784, 332)} />
           </SwiperItem>
         ))}
       </Swiper>

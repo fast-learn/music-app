@@ -13,3 +13,4 @@ export * from './px2rem';
 export * from './calc-play-count';
 export * from './constant';
 export * from './lyric';
+export * from './format-time';

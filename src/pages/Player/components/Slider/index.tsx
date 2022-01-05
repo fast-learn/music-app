@@ -11,11 +11,11 @@ export default function PlayerSlider(props) {
     currentTime = 0,
     volume,
     isSeeking,
-    seek,
-    seeking,
+    onSeek,
+    onSeeking,
     type = 'seek',
-    volumeChange,
-    volumeChanging,
+    onVolumeChange,
+    onVolumeChanging,
   } = props;
 
   function isSetSeek() {
@@ -41,9 +41,9 @@ export default function PlayerSlider(props) {
       thumbTintColor="white"
       thumbStyle={thumbStyle}
       trackStyle={trackStyle}
-      onValueChange={type === 'seek' ? seeking : volumeChanging}
-      onSlidingStart={type === 'seek' ? seeking : volumeChanging}
-      onSlidingComplete={type === 'seek' ? seek : volumeChange}
+      onValueChange={type === 'seek' ? onSeeking : onVolumeChanging}
+      onSlidingStart={type === 'seek' ? onSeeking : onVolumeChanging}
+      onSlidingComplete={type === 'seek' ? onSeek : onVolumeChange}
     />
   ) : (
     <Slider
@@ -54,8 +54,8 @@ export default function PlayerSlider(props) {
       backgroundColor="rgba(255,255,255,0.2)"
       activeColor="rgba(255,255,255,0.5)"
       blockSize={blockSize}
-      onChange={type === 'seek' ? seek : volumeChange}
-      onChanging={type === 'seek' ? seeking : volumeChanging}
+      onChange={type === 'seek' ? onSeek : onVolumeChange}
+      onChanging={type === 'seek' ? onSeeking : onVolumeChanging}
       className="player-bottom__bottom__center__progress__Slider"
     />
   );

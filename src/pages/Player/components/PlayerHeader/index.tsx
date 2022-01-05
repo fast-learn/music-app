@@ -13,15 +13,19 @@ import './index.scss';
 
 // @ts-ignore
 export default function PlayerHeader(props) {
-  const { songDetail } = props;
+  const { getPlayingSong } = props;
   const [songName, setSongName] = useState('');
   const [artist, setArtist] = useState('');
   const [pic, setPic] = useState('');
   useEffect(() => {
-    setSongName(songDetail?.songs[0]?.name || '');
-    setArtist(songDetail?.songs[0]?.ar[0]?.name || '');
-    setPic(songDetail?.songs[0]?.al?.picUrl || '');
-  }, [songDetail]);
+    const playingSong = getPlayingSong();
+    console.log('playingSong', playingSong, playingSong?.songs?.name);
+    if (playingSong) {
+      setSongName(playingSong?.song?.name || '');
+      setArtist(playingSong?.song?.artists[0]?.name || '');
+      setPic(playingSong?.song?.album?.picUrl || '');
+    }
+  }, [getPlayingSong()]);
   return (
     <View
       className="player-header"

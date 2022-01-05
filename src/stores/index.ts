@@ -1,3 +1,4 @@
+// @ts-ignore
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import rootReducer from './reducers';
@@ -18,7 +19,7 @@ if (process.env.NODE_ENV === 'development' && process.env.TARO_ENV !== 'quickapp
 }
 
 const enhancer = composeEnhancers(
-  applyMiddleware(...middlewares),
+  // applyMiddleware(...middlewares),
   // other store enhancers if any
 );
 

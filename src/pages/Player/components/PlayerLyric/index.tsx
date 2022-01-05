@@ -2,7 +2,7 @@ import { View, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { AtIcon } from 'taro-ui'
 import classnames from 'classnames';
-import useLyric from '../../hooks/useLyric';
+import { useLyric } from '@/hooks';
 
 import './index.scss';
 
@@ -19,7 +19,7 @@ if (IS_WEAPP) {
   lyricHeight = (HEIGHT - STATUS_BAR - PLAYER_HEADER_HEIGHT - PLAYER_BOTTOM_HEIGHT) + 'PX';
 }
 export default function PlayerLyric(props) {
-  const { error, lyric, formatTime, isLoaded } = props;
+  const { error, getPlayingLyric, formatTime, isLoaded } = props;
   // @ts-ignore
   const { scrollRef, listRef, lyricIndex, onScroll, onTouchStart, onTouchEnd, isManualScroll, seekTo, scrollTop } = useLyric(props);
 
@@ -37,9 +37,9 @@ export default function PlayerLyric(props) {
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
-      {lyric && lyric.length > 0 ? (
+      {getPlayingLyric() && getPlayingLyric().length > 0 ? (
         <View className="player-lyric__list" ref={listRef}>
-          {lyric.map((item: any, index) => (
+          {getPlayingLyric().map((item: any, index) => (
             <View
               key={index}
               className={classnames([
